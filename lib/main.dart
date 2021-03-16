@@ -35,7 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
   var port = 64123;
   bool isConnected = false;
   bool isDone = false;
-  bool hasData = false;
+  bool hasReceivedData = false;
+  bool hasSentData = false;
   var clientSocketStreamSub;
 
   void newPrint(var error) {
@@ -49,6 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
           isConnected = true;
         });
         print('Connected');
+        print('address: ${value.address}');
+        print('port: ${value.port}');
+        print('server address: ${value.remoteAddress}');
+        print('server port: ${value.remotePort}');
         clientSocket = value;
         isDone = false;
       });
@@ -58,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
         print(received);
 
         setState(() {
-          hasData = true;
+          hasReceivedData = true;
           isDone = false;
         });
       })
@@ -67,7 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             isDone = true;
             isConnected = false;
-            hasData = false;
+            hasReceivedData = false;
+            hasSentData = false;
           });
         });
     }
@@ -85,29 +91,50 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              onPressed: !isConnected ? null : () => clientSocket.writeln('DateTime: ${DateTime.now()}'),
+              onPressed: !isConnected
+                  ? null
+                  : () {
+                      clientSocket.writeln('DateTime: ${DateTime.now()}');
+                      setState(() {
+                        hasSentData = true;
+                      });
+                    },
               child: Text('Send DateTime.now()'),
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: () => print('socket is done: $isDone'),
               child: Text('Check status'),
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('#Socket has data '),
+                Text('#Has received data '),
                 ClipOval(
                   child: Container(
                     width: 30,
                     height: 30,
-                    color: hasData ? Colors.green : Colors.red,
+                    color: hasReceivedData ? Colors.green : Colors.red,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('#Has sent data '),
+                ClipOval(
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    color: hasSentData ? Colors.green : Colors.red,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
