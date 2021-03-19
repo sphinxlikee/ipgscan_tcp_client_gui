@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter-TCP/IP Client'),
     );
   }
 }
@@ -31,23 +32,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Socket clientSocket;
-  var hostAddress = '127.0.0.1';
-  var port = 64123;
-  bool isConnected = false;
-  bool isDone = false;
-  bool hasReceivedData = false;
-  bool hasSentData = false;
-  var clientSocketStreamSub;
+  String hostAddress = '127.0.0.1';
+  int port = 64123;
+  bool isConnected = false,
+      isDone = false,
+      hasReceivedData = false,
+      hasSentData = false;
 
-  void newPrint(var error) {
-    print('cem error: $error');
-  }
-
-  createConnection() async {
+  Future<void> createConnection() async {
     if (!isConnected) {
       await Socket.connect(hostAddress, port).then((value) {
         setState(() {
           isConnected = true;
+          isDone = false;
         });
         print('Connected');
         print('address: ${value.address}');
@@ -55,27 +52,30 @@ class _MyHomePageState extends State<MyHomePage> {
         print('server address: ${value.remoteAddress}');
         print('server port: ${value.remotePort}');
         clientSocket = value;
-        isDone = false;
       });
 
-      clientSocket.listen((event) {
-        var received = String.fromCharCodes(event);
-        print(received);
+      clientSocket.listen(
+        (event) {
+          var received = String.fromCharCodes(event);
+          print(received);
 
-        setState(() {
-          hasReceivedData = true;
-          isDone = false;
-        });
-      })
-        ..onDone(() {
-          print('socket is done: $isDone');
           setState(() {
-            isDone = true;
-            isConnected = false;
-            hasReceivedData = false;
-            hasSentData = false;
+            hasReceivedData = true;
+            isDone = false;
           });
-        });
+        },
+      )..onDone(
+          () {
+            setState(() {
+              isDone = true;
+              isConnected = false;
+              hasReceivedData = false;
+              hasSentData = false;
+            });
+
+            print('socket is closed: $isDone');
+          },
+        );
     }
   }
 
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: !isConnected
                   ? null
                   : () {
-                      clientSocket.writeln('DateTime: ${DateTime.now()}');
+                      clientSocket.write('DateTime: ${DateTime.now()}\r\n');
                       setState(() {
                         hasSentData = true;
                       });
@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () => print('socket is done: $isDone'),
+              onPressed: () => print('socket is closed: $isDone'),
               child: Text('Check status'),
             ),
             SizedBox(height: 10),
@@ -152,10 +152,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        // onPressed: isConnected ? null : createConnection,
-        onPressed: createConnection,
+        onPressed: isConnected ? null : createConnection,
         tooltip: isConnected ? 'Connected' : 'Connect',
-        child: isConnected ? Icon(Icons.connect_without_contact_outlined) : Icon(Icons.touch_app_sharp),
+        child: isConnected
+            ? Icon(Icons.connect_without_contact_outlined)
+            : Icon(Icons.touch_app_sharp),
       ),
     );
   }
