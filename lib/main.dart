@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -34,10 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Socket clientSocket;
   String hostAddress = '127.0.0.1';
   int port = 64123;
-  bool isConnected = false,
-      isDone = false,
-      hasReceivedData = false,
-      hasSentData = false;
+  bool isConnected = false, isDone = false, hasReceivedData = false, hasSentData = false;
 
   Future<void> createConnection() async {
     if (!isConnected) {
@@ -154,9 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: isConnected ? null : createConnection,
         tooltip: isConnected ? 'Connected' : 'Connect',
-        child: isConnected
-            ? Icon(Icons.connect_without_contact_outlined)
-            : Icon(Icons.touch_app_sharp),
+        child: isConnected ? Icon(Icons.connect_without_contact_outlined) : Icon(Icons.touch_app_sharp),
       ),
     );
   }
