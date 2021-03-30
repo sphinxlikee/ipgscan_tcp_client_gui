@@ -1,9 +1,10 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tcp_client/tcp_client.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -29,46 +30,49 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Socket clientSocket;
-  String hostAddress = '127.0.0.1';
-  int port = 64123;
-  bool isConnected = false, isDone = false, hasReceivedData = false, hasSentData = false;
+  TCPClient tcpClient = TCPClient(hostAddress: '127.0.0.1', hostPort: 64123);
+
+  @override
+  void dispose() async {
+    super.dispose();
+    await tcpClient.socket.flush();
+    await tcpClient.socket.close();
+  }
 
   Future<void> createConnection() async {
-    if (!isConnected) {
-      await Socket.connect(hostAddress, port).then((value) {
+    if (!tcpClient.isConnected) {
+      await Socket.connect(tcpClient.hostAddress, tcpClient.hostPort).then((value) {
+        tcpClient.socket = value;
         setState(() {
-          isConnected = true;
-          isDone = false;
+          tcpClient.isConnected = true;
+          tcpClient.isDone = false;
         });
-        print('Connected');
-        print('address: ${value.address}');
-        print('port: ${value.port}');
-        print('server address: ${value.remoteAddress}');
-        print('server port: ${value.remotePort}');
-        clientSocket = value;
+        print(
+          'Connected to ${tcpClient.socket.address}:${tcpClient.socket.port} from ${tcpClient.socket.remoteAddress}:${tcpClient.socket.remotePort}.',
+        );
       });
 
-      clientSocket.listen(
+      tcpClient.socket.listen(
         (event) {
           var received = String.fromCharCodes(event);
           print(received);
 
-          setState(() {
-            hasReceivedData = true;
-            isDone = false;
-          });
+          if (!tcpClient.hasReceivedData) {
+            setState(() {
+              tcpClient.hasReceivedData = true;
+              tcpClient.isDone = false;
+            });
+          }
         },
       )..onDone(
           () {
             setState(() {
-              isDone = true;
-              isConnected = false;
-              hasReceivedData = false;
-              hasSentData = false;
+              tcpClient.isDone = true;
+              tcpClient.isConnected = false;
+              tcpClient.hasReceivedData = false;
+              tcpClient.hasSentData = false;
             });
-
-            print('socket is closed: $isDone');
+            print('socket is closed: ${tcpClient.isDone}');
           },
         );
     }
@@ -86,19 +90,19 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              onPressed: !isConnected
+              onPressed: !tcpClient.isConnected
                   ? null
                   : () {
-                      clientSocket.write('DateTime: ${DateTime.now()}\r\n');
+                      tcpClient.socket.write('DateTime: ${DateTime.now()}\r\n');
                       setState(() {
-                        hasSentData = true;
+                        tcpClient.hasSentData = true;
                       });
                     },
               child: Text('Send DateTime.now()'),
             ),
             SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () => print('socket is closed: $isDone'),
+              onPressed: () => print('socket is closed: ${tcpClient.isDone}'),
               child: Text('Check status'),
             ),
             SizedBox(height: 10),
@@ -110,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Container(
                     width: 30,
                     height: 30,
-                    color: hasReceivedData ? Colors.green : Colors.red,
+                    color: tcpClient.hasReceivedData ? Colors.green : Colors.red,
                   ),
                 ),
               ],
@@ -124,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Container(
                     width: 30,
                     height: 30,
-                    color: hasSentData ? Colors.green : Colors.red,
+                    color: tcpClient.hasSentData ? Colors.green : Colors.red,
                   ),
                 ),
               ],
@@ -138,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Container(
                     width: 30,
                     height: 30,
-                    color: isConnected ? Colors.green : Colors.red,
+                    color: tcpClient.isConnected ? Colors.green : Colors.red,
                   ),
                 ),
               ],
@@ -147,9 +151,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: isConnected ? null : createConnection,
-        tooltip: isConnected ? 'Connected' : 'Connect',
-        child: isConnected ? Icon(Icons.connect_without_contact_outlined) : Icon(Icons.touch_app_sharp),
+        onPressed: tcpClient.isConnected ? null : createConnection,
+        tooltip: tcpClient.isConnected ? 'Connected' : 'Connect',
+        child: tcpClient.isConnected ? Icon(Icons.connect_without_contact_outlined) : Icon(Icons.touch_app_sharp),
       ),
     );
   }
