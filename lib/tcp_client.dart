@@ -2,14 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'dart:io';
 
 class TCPClient {
-  final String hostAddress;
-  final int hostPort;
+  final String serverAddress;
+  final int serverPort;
   Socket socket;
   bool isConnected, isDone, hasReceivedData, hasSentData;
 
   TCPClient({
-    @required this.hostAddress,
-    @required this.hostPort,
+    @required this.serverAddress,
+    @required this.serverPort,
   })  : isConnected = false,
         isDone = false,
         hasReceivedData = false,
