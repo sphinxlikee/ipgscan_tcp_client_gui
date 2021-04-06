@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tcp_client/tcp_client.dart';
 import 'dart:developer' as developer;
+import 'package:flutter_tcp_client/tcp_client.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -35,45 +35,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Future<void> createConnection() async {
-    if (!tcpClient.isConnected) {
-      await Socket.connect(tcpClient.serverAddress, tcpClient.serverPort).then((value) {
-        tcpClient.socket = value;
-        setState(() {
-          tcpClient.isConnected = true;
-          tcpClient.isDone = false;
-        });
-        developer.log(
-          'connected to ${tcpClient.socket.address}:${tcpClient.socket.port} from ${tcpClient.socket.remoteAddress}:${tcpClient.socket.remotePort}.',
-        );
-      });
-
-      tcpClient.socket.listen(
-        (event) {
-          var received = String.fromCharCodes(event);
-          developer.log('received: $received');
-
-          if (!tcpClient.hasReceivedData) {
-            setState(() {
-              tcpClient.hasReceivedData = true;
-              tcpClient.isDone = false;
-            });
-          }
-        },
-      )..onDone(
-          () {
-            setState(() {
-              tcpClient.isDone = true;
-              tcpClient.isConnected = false;
-              tcpClient.hasReceivedData = false;
-              tcpClient.hasSentData = false;
-            });
-            developer.log('socket is closed: ${tcpClient.isDone}');
-          },
-        );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: tcpClient.isConnected ? null : createConnection,
+        onPressed: tcpClient.isConnected ? null : () async => await tcpClient.createSocket(tcpClient),
         tooltip: tcpClient.isConnected ? 'Connected' : 'Connect',
         child: tcpClient.isConnected ? Icon(Icons.connect_without_contact_outlined) : Icon(Icons.touch_app_sharp),
       ),
