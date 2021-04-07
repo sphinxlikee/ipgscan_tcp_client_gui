@@ -53,7 +53,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: tcpClient.isConnected ? null : () async => await tcpClient.createSocket(tcpClient),
+        onPressed: tcpClient.isConnected
+            ? null
+            : () async {
+                await tcpClient.createConnection(tcpClient);
+                setState(() {});
+              },
         tooltip: tcpClient.isConnected ? 'Connected' : 'Connect',
         child: tcpClient.isConnected ? Icon(Icons.connect_without_contact_outlined) : Icon(Icons.touch_app_sharp),
       ),
@@ -75,7 +80,7 @@ class _TCPDataSendButtonState extends State<TCPDataSendButton> {
           : () {
               tcpClient.socket.write('DateTime: ${DateTime.now()}\r\n');
               setState(() {
-                tcpClient.hasSentData = true;
+                tcpClient.dataSent = true;
               });
             },
       child: Text('Send DateTime.now()'),
@@ -92,11 +97,11 @@ class TCPDataSendIndicator extends StatelessWidget {
         height: 30,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: tcpClient.hasSentData ? Colors.green : Colors.red,
+          color: tcpClient.dataSent ? Colors.green : Colors.red,
         ),
       ),
       title: Text('Data'),
-      subtitle: tcpClient.hasSentData ? Text('Sent') : Text('Not sent'),
+      subtitle: tcpClient.dataSent ? Text('Sent') : Text('Not sent'),
     );
   }
 }
@@ -110,11 +115,11 @@ class TCPDataReceiveIndicator extends StatelessWidget {
         height: 30,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: tcpClient.hasReceivedData ? Colors.green : Colors.red,
+          color: tcpClient.dataReceived ? Colors.green : Colors.red,
         ),
       ),
       title: Text('Data'),
-      subtitle: tcpClient.hasReceivedData ? Text('Received') : Text('Not received'),
+      subtitle: tcpClient.dataReceived ? Text('Received') : Text('Not received'),
     );
   }
 }

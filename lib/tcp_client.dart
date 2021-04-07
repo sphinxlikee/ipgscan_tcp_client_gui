@@ -8,17 +8,17 @@ class TCPClient {
   final String serverAddress;
   final int serverPort;
   Socket socket;
-  bool isConnected, isDone, hasReceivedData, hasSentData;
+  bool isConnected, isDone, dataReceived, dataSent;
 
   TCPClient({
     @required this.serverAddress,
     @required this.serverPort,
   })  : isConnected = false,
         isDone = false,
-        hasReceivedData = false,
-        hasSentData = false;
+        dataReceived = false,
+        dataSent = false;
 
-  Future<void> createSocket(TCPClient tc) async {
+  Future<void> createConnection(TCPClient tc) async {
     await Socket.connect(tc.serverAddress, tc.serverPort).catchError(
       (e) {
         print('connection has an error and socket is null.');
@@ -33,13 +33,14 @@ class TCPClient {
           'connected to ${tc.socket.address}:${tc.socket.port} from ${tc.socket.remoteAddress}:${tc.socket.remotePort}.',
         );
 
+        // use onData method in the code where you need.
         tc.socket.listen(
           (event) {
             var received = String.fromCharCodes(event);
             developer.log('received: $received');
 
-            if (!tc.hasReceivedData) {
-              tc.hasReceivedData = true;
+            if (!tc.dataReceived) {
+              tc.dataReceived = true;
               tc.isDone = false;
             }
           },
@@ -47,9 +48,9 @@ class TCPClient {
             () {
               tc.isDone = true;
               tc.isConnected = false;
-              tc.hasReceivedData = false;
-              tc.hasSentData = false;
-              developer.log('socket is closed: ${tc.isDone}');
+              tc.dataReceived = false;
+              tc.dataSent = false;
+              developer.log('socket is closed');
             },
           );
       },
