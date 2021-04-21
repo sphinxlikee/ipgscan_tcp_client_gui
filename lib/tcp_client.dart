@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'dart:developer' as developer;
 
 class TCPClient with ChangeNotifier {
   final String serverAddress;
   final int serverPort;
   Socket _socket;
+  String receivedData;
   bool _isConnected, _dataReceived, _dataSent;
 
   TCPClient({
@@ -14,12 +14,12 @@ class TCPClient with ChangeNotifier {
     @required this.serverPort,
   })  : _isConnected = false,
         _dataReceived = false,
-        _dataSent = false;
+        _dataSent = false,
+        receivedData = 'empty';
 
   get connectionState => _isConnected;
   get dataReceivedState => _dataReceived;
   get dataSentState => _dataSent;
-  get clientSocket => _socket;
 
   void changeConnectionState() {
     if (!_isConnected)
@@ -43,6 +43,7 @@ class TCPClient with ChangeNotifier {
   void streamDone() async {
     _dataReceived = false;
     _dataSent = false;
+    receivedData = 'empty';
     await _socket.flush();
     await _socket.close();
     notifyListeners();
@@ -55,13 +56,15 @@ class TCPClient with ChangeNotifier {
     }
   }
 
+  void getData(var data) {
+    receivedData = data;
+    notifyListeners();
+  }
+
   Future<void> createConnection() async {
     try {
       _socket = await Socket.connect(serverAddress, serverPort);
       changeConnectionState();
-      developer.log(
-        'connected to ${_socket.address}:${_socket.port} from ${_socket.remoteAddress}:${_socket.remotePort}.',
-      );
     } catch (e) {
       print('connection has an error and socket is null.');
       print(e);
@@ -70,8 +73,8 @@ class TCPClient with ChangeNotifier {
 
     _socket.listen(
       (event) {
-        var received = String.fromCharCodes(event);
-        developer.log('received: $received');
+        getData(String.fromCharCodes(event));
+        print('received: $receivedData');
 
         if (!_dataReceived) {
           changeDataReceivedState();
@@ -82,7 +85,7 @@ class TCPClient with ChangeNotifier {
         () {
           changeConnectionState();
           streamDone();
-          developer.log('socket is closed');
+          print('socket is closed');
         },
       )
       ..onError(
