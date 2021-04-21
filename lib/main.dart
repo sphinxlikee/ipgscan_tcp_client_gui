@@ -28,12 +28,12 @@ final tcpClientProvider = ChangeNotifierProvider<TCPClient>(
   ),
 );
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
   final String title;
   MyHomePage({this.title});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     return Scaffold(
       appBar: AppBar(
         title: Text('$title'),
@@ -44,6 +44,8 @@ class MyHomePage extends StatelessWidget {
         children: <Widget>[
           DataSendButton(),
           SizedBox(height: 10),
+          ReceivedData(),
+          SizedBox(height: 20),
           DataSendIndicator(),
           DataReceiveIndicator(),
           ConnectionIndicator(),
@@ -51,6 +53,14 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: ConnectButton(),
     );
+  }
+}
+
+class ReceivedData extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, ScopedReader watch) {
+    final receivedData = watch(tcpClientProvider).receivedData;
+    return Text('Received data: $receivedData');
   }
 }
 
