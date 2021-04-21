@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:developer' as developer;
 
 class TCPClient with ChangeNotifier {
@@ -50,19 +48,19 @@ class TCPClient with ChangeNotifier {
     notifyListeners();
   }
 
-  void writeToStream(TCPClient tcpClient, String data) {
-    tcpClient.clientSocket.write('$data\r\n');
-    if (!tcpClient.dataSentState) {
-      tcpClient.changeDataSentState();
+  void writeToStream(String data) {
+    _socket.write('$data\r\n');
+    if (!dataSentState) {
+      changeDataSentState();
     }
   }
 
-  Future<void> createConnection(TCPClient tcpc) async {
+  Future<void> createConnection() async {
     try {
-      tcpc._socket = await Socket.connect(tcpc.serverAddress, tcpc.serverPort);
-      tcpc.changeConnectionState();
+      _socket = await Socket.connect(serverAddress, serverPort);
+      changeConnectionState();
       developer.log(
-        'connected to ${tcpc._socket.address}:${tcpc._socket.port} from ${tcpc._socket.remoteAddress}:${tcpc._socket.remotePort}.',
+        'connected to ${_socket.address}:${_socket.port} from ${_socket.remoteAddress}:${_socket.remotePort}.',
       );
     } catch (e) {
       print('connection has an error and socket is null.');
@@ -70,20 +68,20 @@ class TCPClient with ChangeNotifier {
       return;
     }
 
-    tcpc.clientSocket.listen(
+    _socket.listen(
       (event) {
         var received = String.fromCharCodes(event);
         developer.log('received: $received');
 
-        if (!tcpc._dataReceived) {
-          tcpc.changeDataReceivedState();
+        if (!_dataReceived) {
+          changeDataReceivedState();
         }
       },
     )
       ..onDone(
         () {
-          tcpc.changeConnectionState();
-          tcpc.streamDone();
+          changeConnectionState();
+          streamDone();
           developer.log('socket is closed');
         },
       )
@@ -94,5 +92,3 @@ class TCPClient with ChangeNotifier {
       );
   }
 }
-
-final firebaseAuthProvider = StreamProvider.autoDispose<Socket>((ref) {});
