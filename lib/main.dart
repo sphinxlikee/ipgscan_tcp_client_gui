@@ -19,17 +19,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-TCPClient tcpClient;
 final serverAddressProvider = Provider<String>((ref) => '127.0.0.1');
 final serverPortProvider = Provider<int>((ref) => 64123);
-final tcpSocketProvider = ChangeNotifierProvider<TCPClient>(
-  (ref) {
-    tcpClient = TCPClient(
-        serverAddress: ref.read(serverAddressProvider),
-        serverPort: ref.read(serverPortProvider),
-        );
-    return tcpClient;
-  },
+final tcpClientProvider = ChangeNotifierProvider<TCPClient>(
+  (ref) => TCPClient(
+    serverAddress: ref.read(serverAddressProvider),
+    serverPort: ref.read(serverPortProvider),
+  ),
 );
 
 class MyHomePage extends StatelessWidget {
@@ -61,16 +57,11 @@ class MyHomePage extends StatelessWidget {
 class ConnectButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpSocketProvider).connectionState;
+    final isConnected = watch(tcpClientProvider).connectionState;
     return FloatingActionButton(
-      onPressed: isConnected
-          ? null
-          : () async =>
-              await context.read(tcpSocketProvider).createConnection(tcpClient),
+      onPressed: isConnected ? null : () async => await context.read(tcpClientProvider).createConnection(),
       tooltip: isConnected ? 'Connected' : 'Connect',
-      child: isConnected
-          ? Icon(Icons.connect_without_contact_outlined)
-          : Icon(Icons.touch_app_sharp),
+      child: isConnected ? Icon(Icons.connect_without_contact_outlined) : Icon(Icons.touch_app_sharp),
     );
   }
 }
@@ -78,7 +69,7 @@ class ConnectButton extends ConsumerWidget {
 class ConnectionIndicator extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpSocketProvider).connectionState;
+    final isConnected = watch(tcpClientProvider).connectionState;
     return ListTile(
       leading: Container(
         width: 30,
@@ -97,14 +88,12 @@ class ConnectionIndicator extends ConsumerWidget {
 class DataSendButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpSocketProvider).connectionState;
+    final isConnected = watch(tcpClientProvider).connectionState;
     return ElevatedButton(
       onPressed: !isConnected
           ? null
           : () {
-              context
-                  .read(tcpSocketProvider)
-                  .writeToStream(tcpClient, 'DateTime: ${DateTime.now()}');
+              context.read(tcpClientProvider).writeToStream('DateTime: ${DateTime.now()}');
             },
       child: Text('Send DateTime.now()'),
     );
@@ -114,7 +103,7 @@ class DataSendButton extends ConsumerWidget {
 class DataSendIndicator extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isDataSent = watch(tcpSocketProvider).dataSentState;
+    final isDataSent = watch(tcpClientProvider).dataSentState;
     return ListTile(
       leading: Container(
         width: 30,
@@ -133,7 +122,7 @@ class DataSendIndicator extends ConsumerWidget {
 class DataReceiveIndicator extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isDataReceived = watch(tcpSocketProvider).dataReceivedState;
+    final isDataReceived = watch(tcpClientProvider).dataReceivedState;
     return ListTile(
       leading: Container(
         width: 30,
