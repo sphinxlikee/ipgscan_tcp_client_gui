@@ -42,15 +42,12 @@ class IPGScanRemoteAPI {
   final String commandInit;
   final String parameters;
   final String returns;
-  final String error;
-
   String fullCommand;
 
   IPGScanRemoteAPI({
     this.commandInit,
     this.parameters,
     this.returns,
-    this.error,
   }) : fullCommand = '$commandInit $parameters\r\n';
 }
 
@@ -68,14 +65,60 @@ var jobOpen = IPGScanRemoteAPI(
   commandInit: 'JobOpen',
   parameters: fileName, // it will get filename from jobs folder(ex: choose the job from list view widget )
   returns: '$fileName opened',
-  error: 'Error: $fileName not found',
 );
 
-enum IPGScanRemoteAPICommands {
+var jobStart = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName, // it will get filename from jobs folder(ex: choose the job from list view widget )
+  returns: '$fileName started',
+);
+
+List<String> errorList = [
+  'Error: $fileName not found',
+  'Error: ScanController not connected',
+  'Error: Weld in progress',
+  'Error: $fileName not opened',
+  'Error: No running Job found',
+  'Error: $fileName not closed',
+  'Error: IPGScan directory not found',
+  'Error: No TCP Connection',
+  ' ', // ScannerGetStatus
+  'Error: ScanController not connected',
+  'Error: Not Connected',
+];
+
+const Map<commandEnums, String> commandList = {
+  commandEnums.JobOpen: 'Job Open',
+  commandEnums.JobStart: 'Job Start',
+  commandEnums.JobStopAbort: 'Job Stop/Abort',
+  commandEnums.JobClose: 'Job Close',
+  commandEnums.JobList: 'Job List',
+  commandEnums.ConnectionGetStatus: 'Connection Get Status',
+  commandEnums.ScannerGetStatus: 'Scanner Get Status',
+  commandEnums.JobGetStatus: 'Job Get Status',
+  commandEnums.GetEncoding: 'Get Encoding',
+  commandEnums.ScannerGetStartBit: 'Scanner Get Start Bit',
+  commandEnums.ScannerGetEnableBit: 'Scanner Get Enable Bit',
+  commandEnums.ScannerGetPortA: 'Scanner Get Port A',
+  commandEnums.ScannerLock: 'Scanner Lock',
+  commandEnums.ScannerUnlock: 'Scanner Unlock',
+  commandEnums.ScannerInit: 'Scanner Init',
+  commandEnums.ScannerParkAt: 'Scanner Park At',
+  commandEnums.ScannerGetWorkspacePosition: 'Scanner Get Workspace Position',
+  commandEnums.ScannerGetList: 'Scanner Get List',
+  commandEnums.ScannerGetConnectionStatus: 'Scanner Get Connection Status',
+  commandEnums.SystemSetVariable: 'System Set Variable',
+  commandEnums.SystemGetVariable: 'System Get Variable',
+  commandEnums.JobGetStatus2: 'Job Get Status2 - Group Info',
+  commandEnums.JobLastRunSuccessful: 'Job Last Run Successful',
+  commandEnums.Help: 'Help - Command List',
+  commandEnums.HelpCommands: 'Help - Command',
+};
+
+enum commandEnums {
   JobOpen,
   JobStart,
-  JobStop,
-  JobAbort,
+  JobStopAbort,
   JobClose,
   JobList,
   ConnectionGetStatus,
@@ -93,6 +136,7 @@ enum IPGScanRemoteAPICommands {
   ScannerGetList,
   ScannerGetConnectionStatus,
   SystemSetVariable,
+  SystemGetVariable,
   JobGetStatus2,
   JobLastRunSuccessful,
   Help, // list of commands
@@ -101,7 +145,7 @@ enum IPGScanRemoteAPICommands {
 
 // parameters
 /// it will come from ListView - inside of IPGScan Jobs folder
-String fileName;
+String fileName = '210424_ipgweld';
 
 /// none parameter
 String none = '';
