@@ -40,14 +40,12 @@
 ///
 class IPGScanRemoteAPI {
   final String commandInit;
-  final String parameters;
-  final String returns;
+  final String parameters; // don't use job file's extension
   String fullCommand;
 
   IPGScanRemoteAPI({
     this.commandInit,
     this.parameters,
-    this.returns,
   }) : fullCommand = '$commandInit $parameters\r\n';
 }
 
@@ -64,27 +62,140 @@ class IPGScanRemoteAPI {
 var jobOpen = IPGScanRemoteAPI(
   commandInit: 'JobOpen',
   parameters: fileName, // it will get filename from jobs folder(ex: choose the job from list view widget )
-  returns: '$fileName opened',
 );
 
 var jobStart = IPGScanRemoteAPI(
+  commandInit: 'JobOpen',
+  parameters: fileName,
+);
+
+var jobStopAbort = IPGScanRemoteAPI(
+  commandInit: 'JobStop',
+  parameters: fileName,
+);
+
+var jobClose = IPGScanRemoteAPI(
+  commandInit: 'JobClose',
+  parameters: fileName,
+);
+
+var jobList = IPGScanRemoteAPI(
+  commandInit: 'JobList',
+  parameters: emptyString,
+);
+
+var connectionGetStatus = IPGScanRemoteAPI(
+  commandInit: commandList[commandEnums.ConnectionGetStatus],
+  parameters: emptyString,
+);
+
+var scannerGetStatus = IPGScanRemoteAPI(
   commandInit: 'JobStart',
-  parameters: fileName, // it will get filename from jobs folder(ex: choose the job from list view widget )
-  returns: '$fileName started',
+  parameters: fileName,
+);
+
+var jobGetStatus = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var getEncoding = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var scannerGetStartBit = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var scannerGetEnableBit = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var scannerGetPortA = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var scannerLock = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var scannerUnlock = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var scannerInit = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var scannerParkAt = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var scannerGetWorkspacePosition = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var scannerGetList = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var scannerGetConnectionStatus = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var systemSetVariable = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var systemGetVariable = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var jobGetStatus2 = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var jobLastRunSuccessful = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var help = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
+);
+
+var helpCommand = IPGScanRemoteAPI(
+  commandInit: 'JobStart',
+  parameters: fileName,
 );
 
 List<String> errorList = [
-  'Error: $fileName not found',
-  'Error: ScanController not connected',
-  'Error: Weld in progress',
-  'Error: $fileName not opened',
-  'Error: No running Job found',
-  'Error: $fileName not closed',
-  'Error: IPGScan directory not found',
-  'Error: No TCP Connection',
-  ' ', // ScannerGetStatus
-  'Error: ScanController not connected',
-  'Error: Not Connected',
+  'Error: $fileName not found', // JobOpen
+  'Error: ScanController not connected', // JobStart
+  'Error: Weld in progress', // JobStart
+  'Error: $fileName not opened', // JobStart
+  'Error: No running Job found', // JobStart/Abort
+  'Error: $fileName not closed', // JobClose
+  'Error: IPGScan directory not found', // JobList
+  'Error: No TCP Connection', // ConnectionGetStatus
+  ' ', // ScannerGetStatus - It should has one space in the string
+  'Error: ScanController not connected', // ScannerGetEnableBit
+  'Error: Not Connected', // ScannerGetStatus
 ];
 
 const Map<commandEnums, String> commandList = {
@@ -112,7 +223,7 @@ const Map<commandEnums, String> commandList = {
   commandEnums.JobGetStatus2: 'Job Get Status2 - Group Info',
   commandEnums.JobLastRunSuccessful: 'Job Last Run Successful',
   commandEnums.Help: 'Help - Command List',
-  commandEnums.HelpCommands: 'Help - Command',
+  commandEnums.HelpCommand: 'Help - Command',
 };
 
 enum commandEnums {
@@ -140,7 +251,7 @@ enum commandEnums {
   JobGetStatus2,
   JobLastRunSuccessful,
   Help, // list of commands
-  HelpCommands, //command help
+  HelpCommand, //command help
 }
 
 // parameters
@@ -148,7 +259,7 @@ enum commandEnums {
 String fileName = '210424_ipgweld';
 
 /// none parameter
-String none = '';
+String emptyString = '';
 String scannerName;
 String galvoPositionSet; // ScannerParkAt 5 5 5
 String variableNumber; // SystemSetVariable 1 IPG //// SystemGetVariable 1

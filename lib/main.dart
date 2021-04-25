@@ -37,7 +37,7 @@ final streamProvider = StreamProvider.autoDispose<Uint8List>(
 
 final receivedDataProvider = StateProvider((ref) => 'empty');
 
-final streamProvider2 = StreamProvider<Uint8List>(
+final socketListenProvider = StreamProvider<Uint8List>(
   (ref) {
     final client = ref.watch(tcpClientProvider);
 
@@ -66,7 +66,7 @@ final streamProvider2 = StreamProvider<Uint8List>(
 class ReceivedDataWithProvider extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final sPro = watch(streamProvider2);
+    final sPro = watch(socketListenProvider);
     sPro.whenData((value) => watch(receivedDataProvider).state = String.fromCharCodes(value));
     final receivedData = watch(receivedDataProvider).state;
 
@@ -113,8 +113,9 @@ class IPGScanJobCommandButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final isConnected = watch(tcpClientProvider).connectionState;
+    final fullCommand = jobList.fullCommand;
     return ElevatedButton(
-      onPressed: !isConnected ? null : () => context.read(tcpClientProvider).writeToStream('${jobOpen.fullCommand}'),
+      onPressed: !isConnected ? null : () => context.read(tcpClientProvider).writeToStream('$fullCommand'),
       child: Text('$labelName: ${jobOpen.parameters}'),
     );
   }
