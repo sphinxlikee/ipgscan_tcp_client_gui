@@ -1,8 +1,9 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tcp_client/tcp_client.dart';
 import 'package:flutter_tcp_client/ipg_ipgscan_api.dart';
+import 'package:flutter_tcp_client/widget/connection_info.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -89,6 +90,7 @@ class MyHomePage extends ConsumerWidget {
         children: <Widget>[
           DataSendButton(),
           SizedBox(height: 10),
+          IPGScanJobCommandButton(commandType: commandEnums.JobOpen),
           SizedBox(height: 10),
           ReceivedDataWithProvider(),
           SizedBox(height: 20),
@@ -102,101 +104,18 @@ class MyHomePage extends ConsumerWidget {
   }
 }
 
-class ReceivedData extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final receivedData = watch(tcpClientProvider).receivedData;
-    return Text('Received data: $receivedData');
-  }
-}
+class IPGScanJobCommandButton extends ConsumerWidget {
+  final String labelName;
+  final commandEnums commandType;
 
-class ConnectButton extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpClientProvider).connectionState;
+  IPGScanJobCommandButton({@required this.commandType}) : labelName = commandList[commandType];
 
-    return isConnected
-        ? FloatingActionButton(
-            onPressed: null,
-            tooltip: 'Connected',
-            child: Icon(Icons.connect_without_contact_outlined),
-          )
-        : FloatingActionButton(
-            onPressed: () async => await context.read(tcpClientProvider).createConnection(),
-            tooltip: 'Connect',
-            child: Icon(Icons.touch_app_sharp),
-          );
-  }
-}
-
-class ConnectionIndicator extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpClientProvider).connectionState;
-    return ListTile(
-      leading: Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isConnected ? Colors.green : Colors.red,
-        ),
-      ),
-      title: Text('Connection Status '),
-      subtitle: isConnected ? Text('Connected') : Text('Disconnected'),
-    );
-  }
-}
-
-class DataSendButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final isConnected = watch(tcpClientProvider).connectionState;
     return ElevatedButton(
-      onPressed: !isConnected
-          ? null
-          : () {
-              context.read(tcpClientProvider).writeToStream('DateTime: ${DateTime.now()}\r\n');
-            },
-      child: Text('Send DateTime.now()'),
-    );
-  }
-}
-
-class DataSendIndicator extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final isDataSent = watch(tcpClientProvider).dataSentState;
-    return ListTile(
-      leading: Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isDataSent ? Colors.green : Colors.red,
-        ),
-      ),
-      title: Text('Data'),
-      subtitle: isDataSent ? Text('Sent') : Text('Not sent'),
-    );
-  }
-}
-
-class DataReceiveIndicator extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final isDataReceived = watch(tcpClientProvider).dataReceivedState;
-    return ListTile(
-      leading: Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isDataReceived ? Colors.green : Colors.red,
-        ),
-      ),
-      title: Text('Data'),
-      subtitle: isDataReceived ? Text('Received') : Text('Not received'),
+      onPressed: !isConnected ? null : () => context.read(tcpClientProvider).writeToStream('${jobOpen.fullCommand}'),
+      child: Text('$labelName: ${jobOpen.parameters}'),
     );
   }
 }
