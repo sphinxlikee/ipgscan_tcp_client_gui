@@ -1,6 +1,8 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tcp_client/tcp_client.dart';
+import 'package:flutter_tcp_client/ipg_ipgscan_api.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -19,14 +21,57 @@ class MyApp extends StatelessWidget {
   }
 }
 
-final serverAddressProvider = Provider<String>((ref) => '127.0.0.1');
-final serverPortProvider = Provider<int>((ref) => 64123);
+final serverAddressProvider = StateProvider<String>((ref) => '127.0.0.1');
+final serverPortProvider = StateProvider<int>((ref) => 64123);
 final tcpClientProvider = ChangeNotifierProvider<TCPClient>(
   (ref) => TCPClient(
-    serverAddress: ref.read(serverAddressProvider),
-    serverPort: ref.read(serverPortProvider),
+    serverAddress: ref.read(serverAddressProvider).state,
+    serverPort: ref.read(serverPortProvider).state,
   ),
 );
+
+final streamProvider = StreamProvider.autoDispose<Uint8List>(
+  (ref) => ref.watch(tcpClientProvider).socket,
+);
+
+final receivedDataProvider = StateProvider((ref) => 'empty');
+
+final streamProvider2 = StreamProvider<Uint8List>(
+  (ref) {
+    final client = ref.watch(tcpClientProvider);
+
+    client.socket
+      ..listen(
+        (event) {
+          print(String.fromCharCodes(event));
+          ref.watch(receivedDataProvider).state = String.fromCharCodes(event);
+          if (!client.dataReceivedState) {
+            client.changeDataReceivedState();
+          }
+        },
+      ).onDone(
+        () {
+          client
+            ..changeConnectionState()
+            ..streamDone();
+          print('socket is closed');
+        },
+      );
+
+    return client.socket;
+  },
+);
+
+class ReceivedDataWithProvider extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, ScopedReader watch) {
+    final sPro = watch(streamProvider2);
+    sPro.whenData((value) => watch(receivedDataProvider).state = String.fromCharCodes(value));
+    final receivedData = watch(receivedDataProvider).state;
+
+    return receivedData == null ? Text('not connected') : Text('Received data: $receivedData');
+  }
+}
 
 class MyHomePage extends ConsumerWidget {
   final String title;
@@ -44,7 +89,8 @@ class MyHomePage extends ConsumerWidget {
         children: <Widget>[
           DataSendButton(),
           SizedBox(height: 10),
-          ReceivedData(),
+          SizedBox(height: 10),
+          ReceivedDataWithProvider(),
           SizedBox(height: 20),
           DataSendIndicator(),
           DataReceiveIndicator(),
@@ -68,11 +114,18 @@ class ConnectButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final isConnected = watch(tcpClientProvider).connectionState;
-    return FloatingActionButton(
-      onPressed: isConnected ? null : () async => await context.read(tcpClientProvider).createConnection(),
-      tooltip: isConnected ? 'Connected' : 'Connect',
-      child: isConnected ? Icon(Icons.connect_without_contact_outlined) : Icon(Icons.touch_app_sharp),
-    );
+
+    return isConnected
+        ? FloatingActionButton(
+            onPressed: null,
+            tooltip: 'Connected',
+            child: Icon(Icons.connect_without_contact_outlined),
+          )
+        : FloatingActionButton(
+            onPressed: () async => await context.read(tcpClientProvider).createConnection(),
+            tooltip: 'Connect',
+            child: Icon(Icons.touch_app_sharp),
+          );
   }
 }
 
@@ -103,7 +156,7 @@ class DataSendButton extends ConsumerWidget {
       onPressed: !isConnected
           ? null
           : () {
-              context.read(tcpClientProvider).writeToStream('DateTime: ${DateTime.now()}');
+              context.read(tcpClientProvider).writeToStream('DateTime: ${DateTime.now()}\r\n');
             },
       child: Text('Send DateTime.now()'),
     );

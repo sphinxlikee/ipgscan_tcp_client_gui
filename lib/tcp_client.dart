@@ -1,13 +1,13 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'dart:io';
 
 class TCPClient with ChangeNotifier {
   final String serverAddress;
   final int serverPort;
-  Socket _socket;
   String receivedData;
   bool _isConnected, _dataReceived, _dataSent;
+  Socket _socket;
 
   TCPClient({
     @required this.serverAddress,
@@ -17,9 +17,10 @@ class TCPClient with ChangeNotifier {
         _dataSent = false,
         receivedData = 'empty';
 
-  get connectionState => _isConnected;
-  get dataReceivedState => _dataReceived;
-  get dataSentState => _dataSent;
+  bool get connectionState => _isConnected;
+  bool get dataReceivedState => _dataReceived;
+  bool get dataSentState => _dataSent;
+  Socket get socket => _socket;
 
   void changeConnectionState() {
     if (!_isConnected)
@@ -35,7 +36,7 @@ class TCPClient with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeDataSentState() {
+  void _changeDataSentState() {
     _dataSent = true;
     notifyListeners();
   }
@@ -49,16 +50,16 @@ class TCPClient with ChangeNotifier {
     notifyListeners();
   }
 
-  void writeToStream(String data) {
-    _socket.write('$data\r\n');
-    if (!dataSentState) {
-      changeDataSentState();
-    }
-  }
-
-  void getData(var data) {
+  void _getData(var data) {
     receivedData = data;
     notifyListeners();
+  }
+
+  void writeToStream(String data) {
+    _socket.write('$data');
+    if (!dataSentState) {
+      _changeDataSentState();
+    }
   }
 
   Future<void> createConnection() async {
@@ -68,30 +69,6 @@ class TCPClient with ChangeNotifier {
     } catch (e) {
       print('connection has an error and socket is null.');
       print(e);
-      return;
     }
-
-    _socket.listen(
-      (event) {
-        getData(String.fromCharCodes(event));
-        print('received: $receivedData');
-
-        if (!_dataReceived) {
-          changeDataReceivedState();
-        }
-      },
-    )
-      ..onDone(
-        () {
-          changeConnectionState();
-          streamDone();
-          print('socket is closed');
-        },
-      )
-      ..onError(
-        (error, stackTrace) {
-          print('$error');
-        },
-      );
   }
 }
