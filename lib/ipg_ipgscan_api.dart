@@ -264,3 +264,23 @@ String scannerName;
 String galvoPositionSet; // ScannerParkAt 5 5 5
 String variableNumber; // SystemSetVariable 1 IPG //// SystemGetVariable 1
 String command;
+
+String setCommand(commandEnums command, String parameter) {
+  switch (command) {
+    case commandEnums.JobOpen:
+      return 'JobOpen $parameter\r\n';
+      break;
+    case commandEnums.JobStart:
+      return 'JobStart $parameter\r\n';
+      break;
+    case commandEnums.JobStopAbort:
+      return 'JobStop $parameter\r\n';
+      break;
+    case commandEnums.JobClose:
+      return 'JobClose $parameter\r\n';
+      break;
+    default:
+      return '';
+      break;
+  }
+}

@@ -90,7 +90,14 @@ class MyHomePage extends ConsumerWidget {
         children: <Widget>[
           DataSendButton(),
           SizedBox(height: 10),
-          IPGScanJobCommandButton(commandType: commandEnums.JobOpen),
+          IPGScanJobCommandButton(
+            commandType: commandEnums.JobOpen,
+            parameter: fileName,
+          ),
+          IPGScanJobCommandButton(
+            commandType: commandEnums.JobClose,
+            parameter: fileName,
+          ),
           SizedBox(height: 10),
           ReceivedDataWithProvider(),
           SizedBox(height: 20),
@@ -107,16 +114,23 @@ class MyHomePage extends ConsumerWidget {
 class IPGScanJobCommandButton extends ConsumerWidget {
   final String labelName;
   final commandEnums commandType;
+  final String parameter;
 
-  IPGScanJobCommandButton({@required this.commandType}) : labelName = commandList[commandType];
+  IPGScanJobCommandButton({
+    @required this.commandType,
+    @required this.parameter,
+  }) : labelName = commandList[commandType];
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final isConnected = watch(tcpClientProvider).connectionState;
-    final fullCommand = jobList.fullCommand;
     return ElevatedButton(
-      onPressed: !isConnected ? null : () => context.read(tcpClientProvider).writeToStream('$fullCommand'),
-      child: Text('$labelName: ${jobOpen.parameters}'),
+      onPressed: !isConnected
+          ? null
+          : () => context.read(tcpClientProvider).writeToStream(
+                setCommand(commandType, parameter),
+              ),
+      child: Text('$labelName'),
     );
   }
 }
