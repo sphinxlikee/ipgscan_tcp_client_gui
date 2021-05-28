@@ -63,11 +63,13 @@ final socketListenProvider = StreamProvider<Uint8List>(
   },
 );
 
-class ReceivedDataWithProvider extends ConsumerWidget {
+class ReceivedData extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final sPro = watch(socketListenProvider);
-    sPro.whenData((value) => watch(receivedDataProvider).state = String.fromCharCodes(value));
+    final socketProvider = watch(socketListenProvider);
+    socketProvider.whenData(
+      (value) => watch(receivedDataProvider).state = String.fromCharCodes(value),
+    );
     final receivedData = watch(receivedDataProvider).state;
 
     return receivedData == null ? Text('not connected') : Text('Received data: $receivedData');
@@ -84,26 +86,41 @@ class MyHomePage extends ConsumerWidget {
       appBar: AppBar(
         title: Text('$title'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: Row(
         children: <Widget>[
-          DataSendButton(),
-          SizedBox(height: 10),
-          IPGScanJobCommandButton(
-            commandType: commandEnums.JobOpen,
-            parameter: fileName,
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: [
+                DataSendIndicator(),
+                DataReceiveIndicator(),
+                ConnectionIndicator(),
+              ],
+            ),
           ),
-          IPGScanJobCommandButton(
-            commandType: commandEnums.JobClose,
-            parameter: fileName,
+          Container(
+            width: 2,
+            color: Colors.black26,
           ),
-          SizedBox(height: 10),
-          ReceivedDataWithProvider(),
-          SizedBox(height: 20),
-          DataSendIndicator(),
-          DataReceiveIndicator(),
-          ConnectionIndicator(),
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: [
+                DataSendButton(),
+                SizedBox(height: 10),
+                IPGScanJobCommandButton(
+                  commandType: commandEnums.JobOpen,
+                  parameter: fileName,
+                ),
+                IPGScanJobCommandButton(
+                  commandType: commandEnums.JobClose,
+                  parameter: fileName,
+                ),
+                SizedBox(height: 10),
+                ReceivedData(),
+              ],
+            ),
+          ),
         ],
       ),
       floatingActionButton: ConnectButton(),
