@@ -92,6 +92,7 @@ class MyHomePage extends ConsumerWidget {
             flex: 1,
             child: Column(
               children: [
+                IPAddressTextField(),
                 DataSendIndicator(),
                 DataReceiveIndicator(),
                 ConnectionIndicator(),
