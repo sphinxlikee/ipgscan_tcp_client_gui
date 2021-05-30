@@ -2,38 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tcp_client/main.dart';
 
+final ipAddressTextController = TextEditingController()..text = '127.0.0.1';
+final portTextController = TextEditingController()..text = '64123';
+
 class IPAddressTextField extends StatelessWidget {
-  const IPAddressTextField({
-    Key key,
-  }) : super(key: key);
+  void dispose() {
+    ipAddressTextController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: TextField(
+        controller: ipAddressTextController,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          labelText: "IPGScan's IP Address",
+          labelText: "IPGScan's IP address",
         ),
-        onSubmitted: (String value) async {
-          await showDialog<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Thanks!'),
-                content: Text('You typed "$value", which has length ${value.characters.length}.'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
+      ),
+    );
+  }
+}
+
+class PortTextField extends StatelessWidget {
+  void dispose() {
+    portTextController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: TextField(
+        controller: portTextController,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: "IPGScan's port",
+        ),
+        onChanged: (String val) {
+          portTextController.value = TextEditingValue(text: val);
         },
       ),
     );
@@ -56,13 +64,14 @@ class ConnectButton extends ConsumerWidget {
     return isConnected
         ? FloatingActionButton(
             onPressed: null,
-            tooltip: 'Connected',
             child: Icon(Icons.connect_without_contact_outlined),
+            tooltip: 'Connected',
           )
         : FloatingActionButton(
-            onPressed: () async => await context.read(tcpClientProvider).createConnection(),
-            tooltip: 'Connect',
+            onPressed: () async =>
+                await context.read(tcpClientProvider).createConnection(),
             child: Icon(Icons.touch_app_sharp),
+            tooltip: 'Press for connect',
           );
   }
 }
@@ -82,21 +91,6 @@ class ConnectionIndicator extends ConsumerWidget {
       ),
       title: Text('Connection Status '),
       subtitle: isConnected ? Text('Connected') : Text('Disconnected'),
-    );
-  }
-}
-
-class DataSendButton extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpClientProvider).connectionState;
-    return ElevatedButton(
-      onPressed: !isConnected
-          ? null
-          : () {
-              context.read(tcpClientProvider).writeToStream('DateTime: ${DateTime.now()}\r\n');
-            },
-      child: Text('Send DateTime.now()'),
     );
   }
 }
