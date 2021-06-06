@@ -50,11 +50,6 @@ class TCPClient with ChangeNotifier {
     notifyListeners();
   }
 
-  void _getData(var data) {
-    receivedData = data;
-    notifyListeners();
-  }
-
   void writeToStream(String data) {
     _socket.write('$data');
     if (!dataSentState) {

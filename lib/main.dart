@@ -24,11 +24,6 @@ class MyApp extends StatelessWidget {
 
 final serverAddressProvider = StateProvider<String>((ref) => '127.0.0.1');
 final serverPortProvider = StateProvider<int>((ref) => 64123);
-// final serverAddressProvider =
-//     StateProvider<String>((ref) => ipAddressTextController.text);
-// final serverPortProvider = StateProvider<int>(
-//   (ref) => int.parse(portTextController.value.text),
-// );
 
 final tcpClientProvider = ChangeNotifierProvider<TCPClient>(
   (ref) => TCPClient(
@@ -74,14 +69,11 @@ class ReceivedData extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final socketProvider = watch(socketListenProvider);
     socketProvider.whenData(
-      (value) =>
-          watch(receivedDataProvider).state = String.fromCharCodes(value),
+      (value) => watch(receivedDataProvider).state = String.fromCharCodes(value),
     );
     final receivedData = watch(receivedDataProvider).state;
 
-    return receivedData == null
-        ? Text('not connected')
-        : Text('Received data: $receivedData');
+    return receivedData == null ? Text('not connected') : Text('Received data: $receivedData');
   }
 }
 
@@ -100,11 +92,17 @@ class MyHomePage extends ConsumerWidget {
           Expanded(
             flex: 1,
             child: Column(
-
               children: [
                 IPAddressTextField(),
                 PortTextField(),
-                ConnectButton(),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: ConnectButton(),
+                ),
+                Container(
+                  height: 2,
+                  color: Colors.black26,
+                ),
                 DataSendIndicator(),
                 DataReceiveIndicator(),
                 ConnectionIndicator(),
@@ -133,11 +131,33 @@ class MyHomePage extends ConsumerWidget {
               ],
             ),
           ),
+          Container(
+            width: 2,
+            color: Colors.black26,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: widgetList.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: widgetList[index],
+                  onTap: () {
+                    print('${widgetList[index]}');
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 }
+
+var widgetList = List<Widget>.generate(
+  100,
+  (index) => Text('Job $index'),
+);
 
 class IPGScanJobCommandButton extends ConsumerWidget {
   final String labelName;
