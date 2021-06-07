@@ -136,17 +136,7 @@ class MyHomePage extends ConsumerWidget {
             color: Colors.black26,
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: widgetList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: widgetList[index],
-                  onTap: () {
-                    print('${widgetList[index]}');
-                  },
-                );
-              },
-            ),
+            child: JobListView(),
           ),
         ],
       ),
@@ -154,10 +144,32 @@ class MyHomePage extends ConsumerWidget {
   }
 }
 
-var widgetList = List<Widget>.generate(
-  100,
-  (index) => Text('Job $index'),
-);
+class JobListView extends StatefulWidget {
+  @override
+  _JobListViewState createState() => _JobListViewState();
+}
+
+class _JobListViewState extends State<JobListView> {
+  var jobList = List<Widget>.generate(
+    100,
+    (index) => Text('Job $index'),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: jobList.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: jobList[index],
+          onTap: () {
+            print('${jobList[index]}');
+          },
+        );
+      },
+    );
+  }
+}
 
 class IPGScanJobCommandButton extends ConsumerWidget {
   final String labelName;
