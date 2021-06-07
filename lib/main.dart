@@ -150,10 +150,13 @@ class JobListView extends StatefulWidget {
 }
 
 class _JobListViewState extends State<JobListView> {
-  var jobList = List<Widget>.generate(
+  var jobList = List<String>.generate(
     100,
-    (index) => Text('Job $index'),
+    (index) => 'Job $index',
   );
+
+  var _selectedIndex = 0;
+  var _selectedColor = Colors.transparent;
 
   @override
   Widget build(BuildContext context) {
@@ -161,9 +164,24 @@ class _JobListViewState extends State<JobListView> {
       itemCount: jobList.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: jobList[index],
+          leading: index == _selectedIndex
+              ? Icon(
+                  Icons.work,
+                  color: index == _selectedIndex ? _selectedColor : Colors.transparent,
+                )
+              : Icon(Icons.work_outline),
+          title: Text(
+            jobList[index],
+            style: TextStyle(
+              color: index == _selectedIndex ? _selectedColor : Colors.black,
+            ),
+          ),
           onTap: () {
-            print('${jobList[index]}');
+            setState(() {
+              _selectedIndex = index;
+              _selectedColor = Colors.orange.shade600;
+            });
+            print('selected index: $_selectedIndex / selected job: ${jobList[index]}');
           },
         );
       },
