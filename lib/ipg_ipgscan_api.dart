@@ -38,16 +38,6 @@
 /// 'Jobs in Session'
 /// ```
 ///
-class IPGScanRemoteAPI {
-  final String commandInit;
-  final String parameters; // don't use job file's extension
-  String fullCommand;
-
-  IPGScanRemoteAPI({
-    this.commandInit,
-    this.parameters,
-  }) : fullCommand = '$commandInit $parameters\r\n';
-}
 
 /// `[IPGScanRemoteAPI]`'s `[JobOpen]` command
 ///
@@ -59,130 +49,34 @@ class IPGScanRemoteAPI {
 /// Error: 'Error: $fileName not found',
 /// ```
 ///
-var jobOpen = IPGScanRemoteAPI(
-  commandInit: 'JobOpen',
-  parameters: fileName, // it will get filename from jobs folder(ex: choose the job from list view widget )
-);
-
-var jobStart = IPGScanRemoteAPI(
-  commandInit: 'JobOpen',
-  parameters: fileName,
-);
-
-var jobStopAbort = IPGScanRemoteAPI(
-  commandInit: 'JobStop',
-  parameters: fileName,
-);
-
-var jobClose = IPGScanRemoteAPI(
-  commandInit: 'JobClose',
-  parameters: fileName,
-);
-
-var jobList = IPGScanRemoteAPI(
-  commandInit: 'JobList',
-  parameters: emptyString,
-);
-
-var connectionGetStatus = IPGScanRemoteAPI(
-  commandInit: commandList[commandEnums.ConnectionGetStatus],
-  parameters: emptyString,
-);
-
-var scannerGetStatus = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var jobGetStatus = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var getEncoding = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var scannerGetStartBit = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var scannerGetEnableBit = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var scannerGetPortA = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var scannerLock = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var scannerUnlock = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var scannerInit = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var scannerParkAt = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var scannerGetWorkspacePosition = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var scannerGetList = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var scannerGetConnectionStatus = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var systemSetVariable = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var systemGetVariable = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var jobGetStatus2 = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var jobLastRunSuccessful = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var help = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
-
-var helpCommand = IPGScanRemoteAPI(
-  commandInit: 'JobStart',
-  parameters: fileName,
-);
+/*
+jobOpen
+jobStart  
+jobStop 
+jobAbort
+jobClose 
+jobList 
+connectionGetStatus 
+scannerGetStatus
+jobGetStatus  
+getEncoding 
+scannerGetStartBit 
+scannerGetEnableBit
+scannerGetPortA 
+scannerLock 
+scannerUnlock
+scannerInit 
+scannerParkAt
+scannerGetWorkspacePosition 
+scannerGetList 
+scannerGetConnectionStatus 
+systemSetVariable 
+systemGetVariable 
+jobGetStatus2 
+jobLastRunSuccessful 
+help 
+helpCommand
+*/
 
 List<String> errorList = [
   'Error: $fileName not found', // JobOpen
@@ -201,7 +95,8 @@ List<String> errorList = [
 const Map<commandEnums, String> commandList = {
   commandEnums.JobOpen: 'Job Open',
   commandEnums.JobStart: 'Job Start',
-  commandEnums.JobStopAbort: 'Job Stop/Abort',
+  commandEnums.JobStop: 'Job Stop',
+  commandEnums.JobAbort: 'Job Abort',
   commandEnums.JobClose: 'Job Close',
   commandEnums.JobList: 'Job List',
   commandEnums.ConnectionGetStatus: 'Connection Get Status',
@@ -229,7 +124,8 @@ const Map<commandEnums, String> commandList = {
 enum commandEnums {
   JobOpen,
   JobStart,
-  JobStopAbort,
+  JobStop,
+  JobAbort,
   JobClose,
   JobList,
   ConnectionGetStatus,
@@ -266,21 +162,18 @@ String variableNumber; // SystemSetVariable 1 IPG //// SystemGetVariable 1
 String command;
 
 String setCommand(commandEnums command, String parameter) {
-  switch (command) {
-    case commandEnums.JobOpen:
-      return 'JobOpen $parameter\r\n';
-      break;
-    case commandEnums.JobStart:
-      return 'JobStart $parameter\r\n';
-      break;
-    case commandEnums.JobStopAbort:
-      return 'JobStop $parameter\r\n';
-      break;
-    case commandEnums.JobClose:
-      return 'JobClose $parameter\r\n';
-      break;
-    default:
-      return '';
-      break;
+  if (command == commandEnums.JobOpen ||
+      command == commandEnums.JobStart ||
+      command == commandEnums.JobStop ||
+      command == commandEnums.JobAbort ||
+      command == commandEnums.JobClose ||
+      command == commandEnums.ScannerLock ||
+      command == commandEnums.ScannerUnlock ||
+      command == commandEnums.ScannerParkAt ||
+      command == commandEnums.ScannerGetConnectionStatus ||
+      command == commandEnums.SystemSetVariable) {
+    return '$command $parameter\r\n';
+  } else {
+    return '$command\r\n';
   }
 }
