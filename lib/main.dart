@@ -115,21 +115,7 @@ class MyHomePage extends ConsumerWidget {
           ),
           Expanded(
             flex: 2,
-            child: Column(
-              children: [
-                SizedBox(height: 10),
-                IPGScanJobCommandButton(
-                  commandType: commandEnums.JobOpen,
-                  parameter: fileName,
-                ),
-                IPGScanJobCommandButton(
-                  commandType: commandEnums.JobClose,
-                  parameter: fileName,
-                ),
-                SizedBox(height: 10),
-                ReceivedData(),
-              ],
-            ),
+            child: ControlButtonGrid(),
           ),
           Container(
             width: 2,
@@ -140,6 +126,130 @@ class MyHomePage extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ControlButtonGrid extends StatefulWidget {
+  @override
+  _ControlButtonGridState createState() => _ControlButtonGridState();
+}
+
+class _ControlButtonGridState extends State<ControlButtonGrid> {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 2,
+      padding: EdgeInsets.all(8.0),
+      mainAxisSpacing: 4.0,
+      crossAxisSpacing: 4.0,
+      childAspectRatio: 8.0,
+      children: [
+        IPGScanJobCommandButton(
+          commandType: commandEnums.JobOpen,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.JobStart,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.JobStop,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.JobAbort,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.JobClose,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.JobList,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ConnectionGetStatus,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerGetStatus,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.JobGetStatus,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.GetEncoding,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerGetStartBit,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerGetEnableBit,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerGetPortA,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerLock,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerUnlock,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerInit,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerParkAt,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerGetWorkspacePosition,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerGetList,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.ScannerGetConnectionStatus,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.SystemSetVariable,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.SystemGetVariable,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.JobGetStatus2,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.JobLastRunSuccessful,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.Help,
+          parameter: fileName,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.HelpCommand,
+          parameter: fileName,
+        ),
+      ],
     );
   }
 }
@@ -197,7 +307,7 @@ class IPGScanJobCommandButton extends ConsumerWidget {
   IPGScanJobCommandButton({
     @required this.commandType,
     @required this.parameter,
-  }) : labelName = commandList[commandType];
+  }) : labelName = commandType != null ? commandList[commandType] : 'null';
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
