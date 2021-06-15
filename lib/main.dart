@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter-TCP/IP Client'),
+      home: MyHomePage(title: 'IPGScan Remote API - TCP/IP Client'),
     );
   }
 }
@@ -90,7 +90,7 @@ class MyHomePage extends ConsumerWidget {
       body: Row(
         children: <Widget>[
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Column(
               children: [
                 IPAddressTextField(),
@@ -114,15 +114,57 @@ class MyHomePage extends ConsumerWidget {
             color: Colors.black26,
           ),
           Expanded(
-            flex: 2,
-            child: ControlButtonGrid(),
+            flex: 4,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 20,
+                    child: Text('State: ??----??'),
+                  ),
+                ),
+                Container(
+                  height: 2,
+                  color: Colors.black26,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 20,
+                    child: Text('Control Buttons'),
+                  ),
+                ),
+                Container(
+                  height: 2,
+                  color: Colors.black26,
+                ),
+                Expanded(child: ControlButtonGrid()),
+              ],
+            ),
           ),
           Container(
             width: 2,
             color: Colors.black26,
           ),
           Expanded(
-            child: JobListView(),
+            flex: 2,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 20,
+                    child: Text('Job List in C:\\'),
+                  ),
+                ),
+                Container(
+                  height: 2,
+                  color: Colors.black26,
+                ),
+                Expanded(child: JobListView()),
+              ],
+            ),
           ),
         ],
       ),
