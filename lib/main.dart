@@ -287,10 +287,6 @@ class _ControlButtonGridState extends State<ControlButtonGrid> {
           commandType: commandEnums.Help,
           parameter: fileName,
         ),
-        IPGScanJobCommandButton(
-          commandType: commandEnums.HelpCommand,
-          parameter: fileName,
-        ),
       ],
     );
   }

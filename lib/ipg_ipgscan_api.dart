@@ -117,7 +117,7 @@ const Map<commandEnums, String> commandList = {
   commandEnums.SystemGetVariable: 'System Get Variable',
   commandEnums.JobGetStatus2: 'Job Get Status2 - Group Info',
   commandEnums.JobLastRunSuccessful: 'Job Last Run Successful',
-  commandEnums.Help: 'Help - Command List',
+  commandEnums.Help: 'Help', // - Command List',
   commandEnums.HelpCommand: 'Help - Command',
 };
 
@@ -172,8 +172,10 @@ String setCommand(commandEnums command, String parameter) {
       command == commandEnums.ScannerParkAt ||
       command == commandEnums.ScannerGetConnectionStatus ||
       command == commandEnums.SystemSetVariable) {
-    return '$command $parameter\r\n';
+    return '${commandList[command].replaceAll(' ', '')} $parameter\r\n';
+  } else if (command == commandEnums.Help) {
+    return '${commandList[command]}\r\n';
   } else {
-    return '$command\r\n';
+    return '${commandList[command].replaceAll(' ', '')}\r\n';
   }
 }
