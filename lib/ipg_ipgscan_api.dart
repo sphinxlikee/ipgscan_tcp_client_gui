@@ -49,42 +49,14 @@
 /// Error: 'Error: $fileName not found',
 /// ```
 ///
-/*
-jobOpen
-jobStart  
-jobStop 
-jobAbort
-jobClose 
-jobList 
-connectionGetStatus 
-scannerGetStatus
-jobGetStatus  
-getEncoding 
-scannerGetStartBit 
-scannerGetEnableBit
-scannerGetPortA 
-scannerLock 
-scannerUnlock
-scannerInit 
-scannerParkAt
-scannerGetWorkspacePosition 
-scannerGetList 
-scannerGetConnectionStatus 
-systemSetVariable 
-systemGetVariable 
-jobGetStatus2 
-jobLastRunSuccessful 
-help 
-helpCommand
-*/
 
 List<String> errorList = [
-  'Error: $fileName not found', // JobOpen
+  'Error: $parameterFileName not found', // JobOpen
   'Error: ScanController not connected', // JobStart
   'Error: Weld in progress', // JobStart
-  'Error: $fileName not opened', // JobStart
+  'Error: $parameterFileName not opened', // JobStart
   'Error: No running Job found', // JobStart/Abort
-  'Error: $fileName not closed', // JobClose
+  'Error: $parameterFileName not closed', // JobClose
   'Error: IPGScan directory not found', // JobList
   'Error: No TCP Connection', // ConnectionGetStatus
   ' ', // ScannerGetStatus - It should has one space in the string
@@ -115,10 +87,9 @@ const Map<commandEnums, String> commandList = {
   commandEnums.ScannerGetConnectionStatus: 'Scanner Get Connection Status',
   commandEnums.SystemSetVariable: 'System Set Variable',
   commandEnums.SystemGetVariable: 'System Get Variable',
-  commandEnums.JobGetStatus2: 'Job Get Status2 - Group Info',
+  commandEnums.JobGetStatus2: 'Job Get Status2', // currently executing group&object name
   commandEnums.JobLastRunSuccessful: 'Job Last Run Successful',
-  commandEnums.Help: 'Help', // - Command List',
-  commandEnums.HelpCommand: 'Help - Command',
+  commandEnums.Help: 'Help', // w/o parameter -> Command List ||| w/ parameter -> specific command,
 };
 
 enum commandEnums {
@@ -151,15 +122,13 @@ enum commandEnums {
 }
 
 // parameters
-/// it will come from ListView - inside of IPGScan Jobs folder
-String fileName = '210424_ipgweld';
-
-/// none parameter
-String emptyString = '';
-String scannerName;
-String galvoPositionSet; // ScannerParkAt 5 5 5
-String variableNumber; // SystemSetVariable 1 IPG //// SystemGetVariable 1
-String command;
+String parameterFileName = '210424_ipgweld'; // it will come from ListView - inside of IPGScan Jobs folder
+String parameterNone = '';
+String parameterScannerName = 'laser213fduhfu28s';
+String parameterGalvoPositionSet = '5 5 5';
+String parameterVariableNumber = '1';
+String parameterVariableValue = 'IPG';
+String parameterCommandName = 'JobOpen';
 
 String setCommand(commandEnums command, String parameter) {
   if (command == commandEnums.JobOpen ||
@@ -171,10 +140,15 @@ String setCommand(commandEnums command, String parameter) {
       command == commandEnums.ScannerUnlock ||
       command == commandEnums.ScannerParkAt ||
       command == commandEnums.ScannerGetConnectionStatus ||
-      command == commandEnums.SystemSetVariable) {
+      command == commandEnums.SystemSetVariable ||
+      command == commandEnums.SystemGetVariable) {
     return '${commandList[command].replaceAll(' ', '')} $parameter\r\n';
   } else if (command == commandEnums.Help) {
-    return '${commandList[command]}\r\n';
+    if (parameter == parameterNone) {
+      return '${commandList[command]}\r\n';
+    } else {
+      return '${commandList[command]} $parameter\r\n';
+    }
   } else {
     return '${commandList[command].replaceAll(' ', '')}\r\n';
   }

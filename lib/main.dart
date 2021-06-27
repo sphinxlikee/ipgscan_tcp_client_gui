@@ -189,103 +189,107 @@ class _ControlButtonGridState extends State<ControlButtonGrid> {
       children: [
         IPGScanJobCommandButton(
           commandType: commandEnums.JobOpen,
-          parameter: fileName,
+          parameter: parameterFileName,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.JobStart,
-          parameter: fileName,
+          parameter: parameterFileName,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.JobStop,
-          parameter: fileName,
+          parameter: parameterFileName,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.JobAbort,
-          parameter: fileName,
+          parameter: parameterFileName,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.JobClose,
-          parameter: fileName,
+          parameter: parameterFileName,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.JobList,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ConnectionGetStatus,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerGetStatus,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.JobGetStatus,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.GetEncoding,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerGetStartBit,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerGetEnableBit,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerGetPortA,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerLock,
-          parameter: fileName,
+          parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerUnlock,
-          parameter: fileName,
+          parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerInit,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerParkAt,
-          parameter: fileName,
+          parameter: parameterGalvoPositionSet,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerGetWorkspacePosition,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerGetList,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.ScannerGetConnectionStatus,
-          parameter: fileName,
+          parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.SystemSetVariable,
-          parameter: fileName,
+          parameter: '$parameterVariableNumber $parameterVariableValue',
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.SystemGetVariable,
-          parameter: fileName,
+          parameter: parameterVariableNumber,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.JobGetStatus2,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.JobLastRunSuccessful,
-          parameter: fileName,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
           commandType: commandEnums.Help,
-          parameter: fileName,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: commandEnums.Help,
+          parameter: parameterCommandName,
         ),
       ],
     );
