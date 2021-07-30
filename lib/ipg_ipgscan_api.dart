@@ -89,7 +89,6 @@ const Map<commandEnums, String> commandList = {
   commandEnums.SystemGetVariable: 'System Get Variable',
   commandEnums.JobGetStatus2: 'Job Get Status2', // currently executing group&object name
   commandEnums.JobLastRunSuccessful: 'Job Last Run Successful',
-  commandEnums.Help: 'Help', // w/o parameter -> Command List ||| w/ parameter -> specific command,
 };
 
 enum commandEnums {
@@ -117,8 +116,6 @@ enum commandEnums {
   SystemGetVariable,
   JobGetStatus2,
   JobLastRunSuccessful,
-  Help, // list of commands
-  HelpCommand, //command help
 }
 
 // parameters
@@ -143,12 +140,6 @@ String setCommand(commandEnums command, String parameter) {
       command == commandEnums.SystemSetVariable ||
       command == commandEnums.SystemGetVariable) {
     return '${commandList[command].replaceAll(' ', '')} $parameter\r\n';
-  } else if (command == commandEnums.Help) {
-    if (parameter == parameterNone) {
-      return '${commandList[command]}\r\n';
-    } else {
-      return '${commandList[command]} $parameter\r\n';
-    }
   } else {
     return '${commandList[command].replaceAll(' ', '')}\r\n';
   }
