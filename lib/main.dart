@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tcp_client/tcp_client.dart';
 import 'package:flutter_tcp_client/ipg_ipgscan_api.dart';
 import 'package:flutter_tcp_client/widget/connection_info.dart';
+import 'package:flutter_tcp_client/widget/joblistview.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -69,11 +70,14 @@ class ReceivedData extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final socketProvider = watch(socketListenProvider);
     socketProvider.whenData(
-      (value) => watch(receivedDataProvider).state = String.fromCharCodes(value),
+      (value) =>
+          watch(receivedDataProvider).state = String.fromCharCodes(value),
     );
     final receivedData = watch(receivedDataProvider).state;
 
-    return receivedData == null ? Text('not connected') : Text('Received data: $receivedData');
+    return receivedData == null
+        ? Text('not connected')
+        : Text('Received data: $receivedData');
   }
 }
 
@@ -283,60 +287,7 @@ class _ControlButtonGridState extends State<ControlButtonGrid> {
           commandType: commandEnums.JobLastRunSuccessful,
           parameter: parameterNone,
         ),
-        IPGScanJobCommandButton(
-          commandType: commandEnums.Help,
-          parameter: parameterNone,
-        ),
-        IPGScanJobCommandButton(
-          commandType: commandEnums.Help,
-          parameter: parameterCommandName,
-        ),
       ],
-    );
-  }
-}
-
-class JobListView extends StatefulWidget {
-  @override
-  _JobListViewState createState() => _JobListViewState();
-}
-
-class _JobListViewState extends State<JobListView> {
-  var jobList = List<String>.generate(
-    100,
-    (index) => 'Job $index',
-  );
-
-  var _selectedIndex = 0;
-  var _selectedColor = Colors.transparent;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: jobList.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          leading: index == _selectedIndex
-              ? Icon(
-                  Icons.work,
-                  color: index == _selectedIndex ? _selectedColor : Colors.transparent,
-                )
-              : Icon(Icons.work_outline),
-          title: Text(
-            jobList[index],
-            style: TextStyle(
-              color: index == _selectedIndex ? _selectedColor : Colors.black,
-            ),
-          ),
-          onTap: () {
-            setState(() {
-              _selectedIndex = index;
-              _selectedColor = Colors.orange.shade600;
-            });
-            print('selected index: $_selectedIndex / selected job: ${jobList[index]}');
-          },
-        );
-      },
     );
   }
 }
@@ -357,9 +308,9 @@ class IPGScanJobCommandButton extends ConsumerWidget {
     return ElevatedButton(
       onPressed: !isConnected
           ? null
-          : () => context.read(tcpClientProvider).writeToStream(
-                setCommand(commandType, parameter),
-              ),
+          : () => context
+              .read(tcpClientProvider)
+              .writeToStream(setCommand(commandType, parameter)),
       child: Text('$labelName'),
     );
   }
