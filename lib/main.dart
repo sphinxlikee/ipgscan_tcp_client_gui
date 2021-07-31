@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tcp_client/tcp_client.dart';
 import 'package:flutter_tcp_client/ipg_ipgscan_api.dart';
 import 'package:flutter_tcp_client/widget/connection_info.dart';
-import 'package:flutter_tcp_client/widget/joblistview.dart';
+import 'package:flutter_tcp_client/widget/job_list_view.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -110,6 +110,7 @@ class MyHomePage extends ConsumerWidget {
                 DataSendIndicator(),
                 DataReceiveIndicator(),
                 ConnectionIndicator(),
+                ParseList(),
               ],
             ),
           ),
@@ -159,7 +160,7 @@ class MyHomePage extends ConsumerWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     height: 20,
-                    child: Text('Job List in C:\\'),
+                    child: Text('Job list in C:\\IPGP\\IPGScan\\Jobs'),
                   ),
                 ),
                 Container(
@@ -175,6 +176,7 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 }
+
 
 class ControlButtonGrid extends StatefulWidget {
   @override

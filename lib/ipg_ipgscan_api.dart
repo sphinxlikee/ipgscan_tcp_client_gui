@@ -1,3 +1,5 @@
+import 'package:flutter_tcp_client/widget/job_list_view.dart';
+
 /// IPG Photonics Corporation
 ///
 /// IPGScan TCP/IP API Commands
@@ -87,7 +89,8 @@ const Map<commandEnums, String> commandList = {
   commandEnums.ScannerGetConnectionStatus: 'Scanner Get Connection Status',
   commandEnums.SystemSetVariable: 'System Set Variable',
   commandEnums.SystemGetVariable: 'System Get Variable',
-  commandEnums.JobGetStatus2: 'Job Get Status2', // currently executing group&object name
+  commandEnums.JobGetStatus2:
+      'Job Get Status2', //currently executing group&object name
   commandEnums.JobLastRunSuccessful: 'Job Last Run Successful',
 };
 
@@ -119,7 +122,8 @@ enum commandEnums {
 }
 
 // parameters
-String parameterFileName = '210424_ipgweld'; // it will come from ListView - inside of IPGScan Jobs folder
+String parameterFileName =
+    '210424_ipgweld'; // it will come from ListView - inside of IPGScan Jobs folder
 String parameterNone = '';
 String parameterScannerName = 'laser213fduhfu28s';
 String parameterGalvoPositionSet = '5 5 5';
