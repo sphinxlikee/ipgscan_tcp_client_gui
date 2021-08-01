@@ -1,4 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+String sampleJobList = 'deneme\nfocus_run\npoint_and_shoot_example\n';
+
+class JobListNotifier extends ChangeNotifier {
+  List<String> jobList = [];
+
+  void jobListParser(String jobListFromIPGScan) {
+    jobList = jobListFromIPGScan.split("\n");
+    jobList.removeLast();
+    notifyListeners();
+  }
+}
+
+final jobListProvider = ChangeNotifierProvider<JobListNotifier>(
+  (ref) {
+    return JobListNotifier();
+  },
+);
+
+class ParseListButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () =>
+          context.read(jobListProvider).jobListParser(sampleJobList),
+      child: Text('Parse the job list'),
+    );
+  }
+}
+
+class JobListView extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, ScopedReader watch) {
+    final jobListWatcher = watch(jobListProvider);
+    return ListView.builder(
+      itemCount: jobListWatcher.jobList.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          leading: Icon(Icons.work_outline),
+          title: Text(
+            jobListWatcher.jobList[index],
+          ),
+          onTap: () {},
+        );
+      },
+    );
+  }
+}
+
+
+/*
+import 'package:flutter/material.dart';
 
 List<String> jobList = [];
 
@@ -65,3 +118,4 @@ class _JobListViewState extends State<JobListView> {
     );
   }
 }
+*/

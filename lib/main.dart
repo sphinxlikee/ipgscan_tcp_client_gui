@@ -110,7 +110,6 @@ class MyHomePage extends ConsumerWidget {
                 DataSendIndicator(),
                 DataReceiveIndicator(),
                 ConnectionIndicator(),
-                ParseList(),
               ],
             ),
           ),
@@ -163,6 +162,7 @@ class MyHomePage extends ConsumerWidget {
                     child: Text('Job list in C:\\IPGP\\IPGScan\\Jobs'),
                   ),
                 ),
+                ParseListButton(),
                 Container(
                   height: 2,
                   color: Colors.black26,
@@ -176,7 +176,6 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 }
-
 
 class ControlButtonGrid extends StatefulWidget {
   @override
@@ -317,3 +316,4 @@ class IPGScanJobCommandButton extends ConsumerWidget {
     );
   }
 }
+
