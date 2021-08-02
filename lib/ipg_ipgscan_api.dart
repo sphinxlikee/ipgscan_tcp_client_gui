@@ -1,5 +1,3 @@
-import 'package:flutter_tcp_client/widget/job_list_view.dart';
-
 /// IPG Photonics Corporation
 ///
 /// IPGScan TCP/IP API Commands
