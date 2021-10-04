@@ -121,12 +121,12 @@ enum commandEnums {
 
 // parameters
 String parameterFileName =
-    '210424_ipgweld'; // it will come from ListView - inside of IPGScan Jobs folder
+    'deneme'; // it will come from ListView - inside of IPGScan Jobs folder
 String parameterNone = '';
 String parameterScannerName = 'laser213fduhfu28s';
 String parameterGalvoPositionSet = '5 5 5';
 String parameterVariableNumber = '1';
-String parameterVariableValue = 'IPG';
+String parameterVariableValue = 'abc';
 String parameterCommandName = 'JobOpen';
 
 String setCommand(commandEnums command, String parameter) {
@@ -146,3 +146,14 @@ String setCommand(commandEnums command, String parameter) {
     return '${commandList[command].replaceAll(' ', '')}\r\n';
   }
 }
+
+
+
+/// bugs
+/// 
+/// 5.8.21
+/// 1-bağlantı kurulduktan sonra gelen stop ekranı kapatılabiliyor.
+/// kapattıktan sonra job start komutu verirsem devam edip çalışıyor
+/// 
+/// 2-SystemSetVariable 1 abc yaptıktan sonra 1 numaralı değişken okunmak
+/// istendiğinde "bc" olarak döndürüyor. IPGWeld ekranında gözüken.

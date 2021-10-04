@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tcp_client/main.dart';
+import 'package:flutter_tcp_client/provider/tcp_provider.dart';
+
 
 final ipAddressTextController = TextEditingController()..text = '127.0.0.1';
-final portTextController = TextEditingController()..text = '64123';
+final portTextController = TextEditingController()..text = '88';
 
 class IPAddressTextField extends StatelessWidget {
   void dispose() {

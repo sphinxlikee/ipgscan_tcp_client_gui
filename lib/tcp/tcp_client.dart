@@ -15,7 +15,7 @@ class TCPClient with ChangeNotifier {
   })  : _isConnected = false,
         _dataReceived = false,
         _dataSent = false,
-        receivedData = 'empty';
+        receivedData = ' ';
 
   bool get connectionState => _isConnected;
   bool get dataReceivedState => _dataReceived;
