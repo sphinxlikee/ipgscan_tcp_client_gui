@@ -64,35 +64,7 @@ List<String> errorList = [
   'Error: Not Connected', // ScannerGetStatus
 ];
 
-const Map<commandEnums, String> commandList = {
-  commandEnums.JobOpen: 'Job Open',
-  commandEnums.JobStart: 'Job Start',
-  commandEnums.JobStop: 'Job Stop',
-  commandEnums.JobAbort: 'Job Abort',
-  commandEnums.JobClose: 'Job Close',
-  commandEnums.JobList: 'Job List',
-  commandEnums.ConnectionGetStatus: 'Connection Get Status',
-  commandEnums.ScannerGetStatus: 'Scanner Get Status',
-  commandEnums.JobGetStatus: 'Job Get Status',
-  commandEnums.GetEncoding: 'Get Encoding',
-  commandEnums.ScannerGetStartBit: 'Scanner Get Start Bit',
-  commandEnums.ScannerGetEnableBit: 'Scanner Get Enable Bit',
-  commandEnums.ScannerGetPortA: 'Scanner Get Port A',
-  commandEnums.ScannerLock: 'Scanner Lock',
-  commandEnums.ScannerUnlock: 'Scanner Unlock',
-  commandEnums.ScannerInit: 'Scanner Init',
-  commandEnums.ScannerParkAt: 'Scanner Park At',
-  commandEnums.ScannerGetWorkspacePosition: 'Scanner Get Workspace Position',
-  commandEnums.ScannerGetList: 'Scanner Get List',
-  commandEnums.ScannerGetConnectionStatus: 'Scanner Get Connection Status',
-  commandEnums.SystemSetVariable: 'System Set Variable',
-  commandEnums.SystemGetVariable: 'System Get Variable',
-  commandEnums.JobGetStatus2:
-      'Job Get Status2', //currently executing group&object name
-  commandEnums.JobLastRunSuccessful: 'Job Last Run Successful',
-};
-
-enum commandEnums {
+enum ipgScanCommandList {
   JobOpen,
   JobStart,
   JobStop,
@@ -119,6 +91,34 @@ enum commandEnums {
   JobLastRunSuccessful,
 }
 
+const Map<ipgScanCommandList, String> ipgScanCommandMap = {
+  ipgScanCommandList.JobOpen: 'Job Open',
+  ipgScanCommandList.JobStart: 'Job Start',
+  ipgScanCommandList.JobStop: 'Job Stop',
+  ipgScanCommandList.JobAbort: 'Job Abort',
+  ipgScanCommandList.JobClose: 'Job Close',
+  ipgScanCommandList.JobList: 'Job List',
+  ipgScanCommandList.ConnectionGetStatus: 'Connection Get Status',
+  ipgScanCommandList.ScannerGetStatus: 'Scanner Get Status',
+  ipgScanCommandList.JobGetStatus: 'Job Get Status',
+  ipgScanCommandList.GetEncoding: 'Get Encoding',
+  ipgScanCommandList.ScannerGetStartBit: 'Scanner Get Start Bit',
+  ipgScanCommandList.ScannerGetEnableBit: 'Scanner Get Enable Bit',
+  ipgScanCommandList.ScannerGetPortA: 'Scanner Get Port A',
+  ipgScanCommandList.ScannerLock: 'Scanner Lock',
+  ipgScanCommandList.ScannerUnlock: 'Scanner Unlock',
+  ipgScanCommandList.ScannerInit: 'Scanner Init',
+  ipgScanCommandList.ScannerParkAt: 'Scanner Park At',
+  ipgScanCommandList.ScannerGetWorkspacePosition: 'Scanner Get Workspace Position',
+  ipgScanCommandList.ScannerGetList: 'Scanner Get List',
+  ipgScanCommandList.ScannerGetConnectionStatus: 'Scanner Get Connection Status',
+  ipgScanCommandList.SystemSetVariable: 'System Set Variable',
+  ipgScanCommandList.SystemGetVariable: 'System Get Variable',
+  ipgScanCommandList.JobGetStatus2:
+      'Job Get Status2', //currently executing group&object name
+  ipgScanCommandList.JobLastRunSuccessful: 'Job Last Run Successful',
+};
+
 // parameters
 String parameterFileName =
     'deneme'; // it will come from ListView - inside of IPGScan Jobs folder
@@ -129,21 +129,21 @@ String parameterVariableNumber = '1';
 String parameterVariableValue = 'abc';
 String parameterCommandName = 'JobOpen';
 
-String setCommand(commandEnums command, String parameter) {
-  if (command == commandEnums.JobOpen ||
-      command == commandEnums.JobStart ||
-      command == commandEnums.JobStop ||
-      command == commandEnums.JobAbort ||
-      command == commandEnums.JobClose ||
-      command == commandEnums.ScannerLock ||
-      command == commandEnums.ScannerUnlock ||
-      command == commandEnums.ScannerParkAt ||
-      command == commandEnums.ScannerGetConnectionStatus ||
-      command == commandEnums.SystemSetVariable ||
-      command == commandEnums.SystemGetVariable) {
-    return '${commandList[command].replaceAll(' ', '')} $parameter\r\n';
+String setCommand(ipgScanCommandList command, String parameter) {
+  if (command == ipgScanCommandList.JobOpen ||
+      command == ipgScanCommandList.JobStart ||
+      command == ipgScanCommandList.JobStop ||
+      command == ipgScanCommandList.JobAbort ||
+      command == ipgScanCommandList.JobClose ||
+      command == ipgScanCommandList.ScannerLock ||
+      command == ipgScanCommandList.ScannerUnlock ||
+      command == ipgScanCommandList.ScannerParkAt ||
+      command == ipgScanCommandList.ScannerGetConnectionStatus ||
+      command == ipgScanCommandList.SystemSetVariable ||
+      command == ipgScanCommandList.SystemGetVariable) {
+    return '${ipgScanCommandMap[command].replaceAll(' ', '')} $parameter\r\n';
   } else {
-    return '${commandList[command].replaceAll(' ', '')}\r\n';
+    return '${ipgScanCommandMap[command].replaceAll(' ', '')}\r\n';
   }
 }
 

@@ -48,17 +48,35 @@ class JobListNotifier extends ChangeNotifier {
   List<String> jobList = [];
 
   void jobListParser(String jobListFromIPGScan) {
-    jobList = jobListFromIPGScan.split("\n");
+    jobList = jobListFromIPGScan.split('\n');
+    print(jobList);
     jobList.removeLast();
+    print(jobList.length);
+
     notifyListeners();
   }
 }
+
+final selectedJobIndexProvider = StateProvider<int>((ref) => 0);
 
 final jobListProvider = ChangeNotifierProvider<JobListNotifier>(
   (ref) {
     return JobListNotifier();
   },
 );
+
+String sampleJobList = 'first_job\nfocus_run\npoint_and_shoot_example\n';
+
+class ParseListButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, ScopedReader watch) {
+    final jobListWatcher = watch(jobListProvider);
+    return ElevatedButton(
+      onPressed: () => jobListWatcher.jobListParser(sampleJobList),
+      child: Text('Parse the job list'),
+    );
+  }
+}
 
 final receivedDataProvider = StateProvider<String>((ref) => '');
 

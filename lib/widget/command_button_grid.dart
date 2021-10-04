@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tcp_client/ipg/ipg_ipgscan_api.dart';
-import 'package:flutter_tcp_client/widget/job_command_button.dart';
+import 'package:flutter_tcp_client/ipg/ipgscan_api.dart';
+import 'package:flutter_tcp_client/widget/command_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tcp_client/provider/tcp_provider.dart';
 
-class ControlButtonGrid extends StatefulWidget {
+class CommandButtonGrid extends ConsumerWidget {
   @override
-  _ControlButtonGridState createState() => _ControlButtonGridState();
-}
+  Widget build(BuildContext context, ScopedReader watch) {
+    final selectedJobIndex = watch(selectedJobIndexProvider);
+    final jobListWatcher = watch(jobListProvider);
 
-class _ControlButtonGridState extends State<ControlButtonGrid> {
-  @override
-  Widget build(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,
       padding: EdgeInsets.all(8.0),
@@ -18,99 +18,101 @@ class _ControlButtonGridState extends State<ControlButtonGrid> {
       childAspectRatio: 8.0,
       children: [
         IPGScanJobCommandButton(
-          commandType: commandEnums.JobOpen,
+          commandType: ipgScanCommandList.JobOpen,
+          parameter: jobListWatcher.jobList.length == 0
+              ? 'not selected'
+              : jobListWatcher.jobList[selectedJobIndex.state],
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.JobStart,
           parameter: parameterFileName,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.JobStart,
+          commandType: ipgScanCommandList.JobStop,
           parameter: parameterFileName,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.JobStop,
+          commandType: ipgScanCommandList.JobAbort,
           parameter: parameterFileName,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.JobAbort,
+          commandType: ipgScanCommandList.JobClose,
           parameter: parameterFileName,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.JobClose,
-          parameter: parameterFileName,
-        ),
-        IPGScanJobCommandButton(
-          commandType: commandEnums.JobList,
+          commandType: ipgScanCommandList.JobList,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ConnectionGetStatus,
+          commandType: ipgScanCommandList.ConnectionGetStatus,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerGetStatus,
+          commandType: ipgScanCommandList.ScannerGetStatus,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.JobGetStatus,
+          commandType: ipgScanCommandList.JobGetStatus,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.GetEncoding,
+          commandType: ipgScanCommandList.GetEncoding,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerGetStartBit,
+          commandType: ipgScanCommandList.ScannerGetStartBit,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerGetEnableBit,
+          commandType: ipgScanCommandList.ScannerGetEnableBit,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerGetPortA,
+          commandType: ipgScanCommandList.ScannerGetPortA,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerLock,
+          commandType: ipgScanCommandList.ScannerLock,
           parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerUnlock,
+          commandType: ipgScanCommandList.ScannerUnlock,
           parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerInit,
+          commandType: ipgScanCommandList.ScannerInit,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerParkAt,
+          commandType: ipgScanCommandList.ScannerParkAt,
           parameter: parameterGalvoPositionSet,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerGetWorkspacePosition,
+          commandType: ipgScanCommandList.ScannerGetWorkspacePosition,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerGetList,
+          commandType: ipgScanCommandList.ScannerGetList,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.ScannerGetConnectionStatus,
+          commandType: ipgScanCommandList.ScannerGetConnectionStatus,
           parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.SystemSetVariable,
+          commandType: ipgScanCommandList.SystemSetVariable,
           parameter: '$parameterVariableNumber $parameterVariableValue',
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.SystemGetVariable,
+          commandType: ipgScanCommandList.SystemGetVariable,
           parameter: parameterVariableNumber,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.JobGetStatus2,
+          commandType: ipgScanCommandList.JobGetStatus2,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: commandEnums.JobLastRunSuccessful,
+          commandType: ipgScanCommandList.JobLastRunSuccessful,
           parameter: parameterNone,
         ),
       ],

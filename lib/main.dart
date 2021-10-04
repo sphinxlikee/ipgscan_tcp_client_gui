@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tcp_client/widget/connection_info.dart';
 import 'package:flutter_tcp_client/widget/job_list_view.dart';
-import 'package:flutter_tcp_client/widget/control_buttons_grid.dart';
-import 'package:flutter_tcp_client/provider/tcp_provider.dart';
+import 'package:flutter_tcp_client/widget/command_button_grid.dart';
+
+import 'provider/tcp_provider.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -84,7 +85,7 @@ class MyHomePage extends ConsumerWidget {
                   height: 2,
                   color: Colors.black26,
                 ),
-                Expanded(child: ControlButtonGrid()),
+                Expanded(child: CommandButtonGrid()),
               ],
             ),
           ),
