@@ -15,10 +15,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'IPGScan Remote API - TCP/IP Client'),
+      home: MyHomePage(title: 'TCP/IP Client'),
     );
   }
 }
@@ -52,6 +53,11 @@ class MyHomePage extends ConsumerWidget {
                 DataSendIndicator(),
                 DataReceiveIndicator(),
                 ConnectionIndicator(),
+                Container(
+                  height: 2,
+                  color: Colors.black26,
+                ),
+                ReceivedDataDisplay(),
               ],
             ),
           ),
