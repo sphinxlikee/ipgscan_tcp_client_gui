@@ -13,10 +13,6 @@ final tcpClientProvider = ChangeNotifierProvider<TCPClient>(
   ),
 );
 
-final streamProvider = StreamProvider.autoDispose<Uint8List>(
-  (ref) => ref.watch(tcpClientProvider).socket,
-);
-
 class JobListNotifier extends ChangeNotifier {
   String ipgJobs = '';
   List<String> jobList = [];
@@ -41,7 +37,7 @@ final jobListProvider = ChangeNotifierProvider<JobListNotifier>(
 
 String sampleJobList = 'first_job\nfocus_run\npoint_and_shoot_example\n';
 
-final socketListenProvider = StreamProvider.autoDispose<Uint8List>(
+final clientSocketStateProvider = StreamProvider.autoDispose<Uint8List>(
   (ref) {
     final tcpClient = ref.watch(tcpClientProvider);
 
