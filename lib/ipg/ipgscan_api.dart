@@ -148,6 +148,11 @@ String setCommand(ipgScanCommandList command, String parameter) {
 }
 
 
+/// notes
+/// 7.10.2021
+/// /windows/runner/main.cpp icerisinden CreateAndShow kısmından
+/// uygulama title degistirilebiliyor.
+
 
 /// bugs
 /// 
@@ -157,3 +162,7 @@ String setCommand(ipgScanCommandList command, String parameter) {
 /// 
 /// 2-SystemSetVariable 1 abc yaptıktan sonra 1 numaralı değişken okunmak
 /// istendiğinde "bc" olarak döndürüyor. IPGWeld ekranında gözüken.
+/// 
+/// 6.10.21
+/// 3-Error bilgisi yazı olarak gelmemeli. Hata kodu olarak gelmeli0
+/// 

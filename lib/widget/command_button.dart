@@ -18,6 +18,7 @@ class IPGScanJobCommandButton extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final isConnected = watch(tcpClientProvider).connectionState;
     return ElevatedButton(
+      
       onPressed: !isConnected
           ? null
           : () {

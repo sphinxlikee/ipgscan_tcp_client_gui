@@ -17,32 +17,6 @@ final streamProvider = StreamProvider.autoDispose<Uint8List>(
   (ref) => ref.watch(tcpClientProvider).socket,
 );
 
-final socketListenProvider = StreamProvider.autoDispose<Uint8List>(
-  (ref) {
-    final client = ref.watch(tcpClientProvider);
-
-    client.socket
-      ..listen(
-        (event) {
-          ref.watch(receivedDataProvider).state = String.fromCharCodes(event);
-          //print(String.fromCharCodes(event));
-          if (!client.dataReceivedState) {
-            client.changeDataReceivedState();
-          }
-        },
-      ).onDone(
-        () {
-          client
-            ..changeConnectionState()
-            ..streamDone();
-          print('socket is closed');
-        },
-      );
-
-    return client.socket;
-  },
-);
-
 class JobListNotifier extends ChangeNotifier {
   String ipgJobs = '';
   List<String> jobList = [];
@@ -67,40 +41,27 @@ final jobListProvider = ChangeNotifierProvider<JobListNotifier>(
 
 String sampleJobList = 'first_job\nfocus_run\npoint_and_shoot_example\n';
 
-class ParseListButton extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final jobListWatcher = watch(jobListProvider);
-    return ElevatedButton(
-      onPressed: () => jobListWatcher.jobListParser(sampleJobList),
-      child: Text('Parse the job list'),
-    );
-  }
-}
+final socketListenProvider = StreamProvider.autoDispose<Uint8List>(
+  (ref) {
+    final tcpClient = ref.watch(tcpClientProvider);
 
-final receivedDataProvider = StateProvider<String>((ref) => '');
+    tcpClient.socket
+      ..listen(
+        (event) {
+          tcpClient.receivedData = String.fromCharCodes(event);
+          if (!tcpClient.dataReceivedState) {
+            tcpClient.changeDataReceivedState();
+          }
+        },
+      ).onDone(
+        () {
+          tcpClient
+            ..changeConnectionState()
+            ..streamDone();
+          print('socket is closed');
+        },
+      );
 
-class ReceivedData extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final socketProvider = watch(socketListenProvider);
-    final receivedData = watch(receivedDataProvider).state;
-    final jobListWatcher = watch(jobListProvider);
-
-    socketProvider.whenData(
-      (value) {
-        context.read(receivedDataProvider).state = String.fromCharCodes(value);
-        print(receivedData);
-        jobListWatcher.ipgJobs = receivedData;
-      },
-    );
-
-    /// son kaldigim yer;
-    /// ipgscan'den gelen job list'i
-    /// ekranda gösteremiyorum
-
-    return receivedData == null
-        ? Text('not connected')
-        : Text('Received data: --');
-  }
-}
+    return tcpClient.socket;
+  },
+);

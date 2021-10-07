@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tcp_client/provider/tcp_provider.dart';
 
-
 final ipAddressTextController = TextEditingController()..text = '127.0.0.1';
 final portTextController = TextEditingController()..text = '88';
 
@@ -49,14 +48,6 @@ class PortTextField extends StatelessWidget {
   }
 }
 
-class ReceivedData extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final receivedData = watch(tcpClientProvider).receivedData;
-    return Text('Received data: $receivedData');
-  }
-}
-
 class ConnectButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
@@ -70,7 +61,7 @@ class ConnectButton extends ConsumerWidget {
           )
         : FloatingActionButton(
             onPressed: () async =>
-                await context.read(tcpClientProvider).createConnection(),
+                await context.read(tcpClientProvider).createConnection(context),
             child: Icon(Icons.touch_app_sharp),
             tooltip: 'Press for connect',
           );
@@ -131,5 +122,29 @@ class DataReceiveIndicator extends ConsumerWidget {
       title: Text('Data'),
       subtitle: isDataReceived ? Text('Received') : Text('Not received'),
     );
+  }
+}
+
+class ReceivedDataDisplay extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, ScopedReader watch) {
+    final socketListen = watch(socketListenProvider);
+    final jobListWatcher = watch(jobListProvider);
+    final tcpClient = watch(tcpClientProvider);
+
+    socketListen.whenData(
+      (value) {
+        print(tcpClient.receivedData);
+        jobListWatcher.ipgJobs = tcpClient.receivedData;
+      },
+    );
+
+    /// son kaldigim yer;
+    /// ipgscan'den gelen job list'i
+    /// ekranda gösteremiyorum
+
+    return tcpClient.receivedData == null
+        ? Text('not connected')
+        : Text('Received data:\n ${tcpClient.receivedData}');
   }
 }

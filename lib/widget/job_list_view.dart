@@ -2,6 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tcp_client/provider/tcp_provider.dart';
 
+class ParseListButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, ScopedReader watch) {
+    final isClientConnected = watch(tcpClientProvider).connectionState;
+    final jobListWatcher = watch(jobListProvider);
+    final tcpClient = watch(tcpClientProvider);
+    return ElevatedButton(
+      onPressed: !isClientConnected
+          ? null
+          : () => jobListWatcher.jobListParser(tcpClient.receivedData),
+      child: Text('Parse the job list'),
+    );
+  }
+}
 
 class JobListView extends ConsumerWidget {
   @override

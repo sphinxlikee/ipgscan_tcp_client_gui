@@ -25,19 +25,27 @@ class CommandButtonGrid extends ConsumerWidget {
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.JobStart,
-          parameter: parameterFileName,
+          parameter: jobListWatcher.jobList.length == 0
+              ? 'not selected'
+              : jobListWatcher.jobList[selectedJobIndex.state],
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.JobStop,
-          parameter: parameterFileName,
+          parameter: jobListWatcher.jobList.length == 0
+              ? 'not selected'
+              : jobListWatcher.jobList[selectedJobIndex.state],
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.JobAbort,
-          parameter: parameterFileName,
+          parameter: jobListWatcher.jobList.length == 0
+              ? 'not selected'
+              : jobListWatcher.jobList[selectedJobIndex.state],
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.JobClose,
-          parameter: parameterFileName,
+          parameter: jobListWatcher.jobList.length == 0
+              ? 'not selected'
+              : jobListWatcher.jobList[selectedJobIndex.state],
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.JobList,

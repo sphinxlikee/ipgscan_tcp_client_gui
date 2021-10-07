@@ -6,44 +6,44 @@ class TCPClient with ChangeNotifier {
   final String serverAddress;
   final int serverPort;
   String receivedData;
-  bool _isConnected, _dataReceived, _dataSent;
+  bool _isClientConnected, _isDataReceived, _isDataSent;
   Socket _socket;
 
   TCPClient({
     @required this.serverAddress,
     @required this.serverPort,
-  })  : _isConnected = false,
-        _dataReceived = false,
-        _dataSent = false,
+  })  : _isClientConnected = false,
+        _isDataReceived = false,
+        _isDataSent = false,
         receivedData = ' ';
 
-  bool get connectionState => _isConnected;
-  bool get dataReceivedState => _dataReceived;
-  bool get dataSentState => _dataSent;
+  bool get connectionState => _isClientConnected;
+  bool get dataReceivedState => _isDataReceived;
+  bool get dataSentState => _isDataSent;
   Socket get socket => _socket;
 
   void changeConnectionState() {
-    if (!_isConnected)
-      _isConnected = true;
+    if (!_isClientConnected)
+      _isClientConnected = true;
     else
-      _isConnected = false;
+      _isClientConnected = false;
 
     notifyListeners();
   }
 
   void changeDataReceivedState() {
-    _dataReceived = true;
+    _isDataReceived = true;
     notifyListeners();
   }
 
   void _changeDataSentState() {
-    _dataSent = true;
+    _isDataSent = true;
     notifyListeners();
   }
 
   void streamDone() async {
-    _dataReceived = false;
-    _dataSent = false;
+    _isDataReceived = false;
+    _isDataSent = false;
     receivedData = 'empty';
     await _socket.flush();
     await _socket.close();
@@ -57,13 +57,26 @@ class TCPClient with ChangeNotifier {
     }
   }
 
-  Future<void> createConnection() async {
+  Future<void> createConnection(BuildContext context) async {
     try {
       _socket = await Socket.connect(serverAddress, serverPort);
       changeConnectionState();
-    } catch (e) {
-      print('connection has an error and socket is null.');
-      print(e);
+    } catch (error, stack) {
+      return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Connection Warning'),
+          content: Text(stack.toString()),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
   }
+
+
 }
