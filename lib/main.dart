@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tcp_client/widget/connection_info.dart';
-import 'package:flutter_tcp_client/widget/job_list_view.dart';
-import 'package:flutter_tcp_client/widget/command_button_grid.dart';
-
-import 'provider/tcp_provider.dart';
-
+import 'widget/connection_info.dart';
+import 'widget/job_list_view.dart';
+import 'widget/command_button_grid.dart';
 void main() {
   runApp(ProviderScope(child: MyApp()));
 }
