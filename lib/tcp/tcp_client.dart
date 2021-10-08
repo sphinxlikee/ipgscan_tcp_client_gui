@@ -57,16 +57,35 @@ class TCPClient with ChangeNotifier {
     }
   }
 
+  void listenSocket(TCPClient tcpClient) {
+    tcpClient.socket
+      ..listen(
+        (event) {
+          tcpClient.receivedData = String.fromCharCodes(event);
+          if (!tcpClient.dataReceivedState) {
+            tcpClient.changeDataReceivedState();
+          }
+        },
+      ).onDone(
+        () {
+          tcpClient
+            ..changeConnectionState()
+            ..streamDone();
+          print('socket is closed');
+        },
+      );
+  }
+
   Future<void> createConnection(BuildContext context) async {
     try {
       _socket = await Socket.connect(serverAddress, serverPort);
       changeConnectionState();
-    } catch (error, stack) {
+    } catch (error) {
       return showDialog<void>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Connection Warning'),
-          content: Text(stack.toString()),
+          content: Text(error.toString()),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'OK'),
@@ -77,6 +96,4 @@ class TCPClient with ChangeNotifier {
       );
     }
   }
-
-
 }

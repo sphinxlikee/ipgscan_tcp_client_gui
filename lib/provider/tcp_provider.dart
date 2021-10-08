@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:typed_data';
-import 'package:flutter_tcp_client/tcp/tcp_client.dart';
+import '../tcp/tcp_client.dart';
 
 final serverAddressProvider = StateProvider<String>((ref) => '127.0.0.1');
 final serverPortProvider = StateProvider<int>((ref) => 88);
@@ -37,27 +36,25 @@ final jobListProvider = ChangeNotifierProvider<JobListNotifier>(
 
 String sampleJobList = 'first_job\nfocus_run\npoint_and_shoot_example\n';
 
-final clientSocketStateProvider = StreamProvider.autoDispose<Uint8List>(
-  (ref) {
-    final tcpClient = ref.watch(tcpClientProvider);
+// final socketStreamProvider = StreamProvider.autoDispose<Uint8List>(
+//   (ref) {
+//     final tcpClient = ref.watch(tcpClientProvider);
 
-    tcpClient.socket
-      ..listen(
-        (event) {
-          tcpClient.receivedData = String.fromCharCodes(event);
-          if (!tcpClient.dataReceivedState) {
-            tcpClient.changeDataReceivedState();
-          }
-        },
-      ).onDone(
-        () {
-          tcpClient
-            ..changeConnectionState()
-            ..streamDone();
-          print('socket is closed');
-        },
-      );
-
-    return tcpClient.socket;
-  },
-);
+//     return tcpClient.socket
+//       ..listen(
+//         (event) {
+//           tcpClient.receivedData = String.fromCharCodes(event);
+//           if (!tcpClient.dataReceivedState) {
+//             tcpClient.changeDataReceivedState();
+//           }
+//         },
+//       ).onDone(
+//         () {
+//           tcpClient
+//             ..changeConnectionState()
+//             ..streamDone();
+//           print('socket is closed');
+//         },
+//       );
+//   },
+// );
