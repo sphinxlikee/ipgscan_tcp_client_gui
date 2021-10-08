@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tcp_client/provider/tcp_provider.dart';
+import '../provider/tcp_provider.dart';
 
 class ParseListButton extends ConsumerWidget {
   @override

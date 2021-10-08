@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tcp_client/provider/tcp_provider.dart';
+import '../provider/tcp_provider.dart';
 
 final ipAddressTextController = TextEditingController()..text = '127.0.0.1';
 final portTextController = TextEditingController()..text = '88';
@@ -51,17 +51,18 @@ class PortTextField extends StatelessWidget {
 class ConnectButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpClientProvider).connectionState;
-
-    return isConnected
+    final tcpClient = watch(tcpClientProvider);
+    return tcpClient.connectionState
         ? FloatingActionButton(
             onPressed: null,
             child: Icon(Icons.connect_without_contact_outlined),
             tooltip: 'Connected',
           )
         : FloatingActionButton(
-            onPressed: () async =>
-                await context.read(tcpClientProvider).createConnection(context),
+            onPressed: () async {
+              await tcpClient.createConnection(context);
+              tcpClient.listenSocket(tcpClient);
+            },
             child: Icon(Icons.touch_app_sharp),
             tooltip: 'Press for connect',
           );
@@ -128,16 +129,7 @@ class DataReceiveIndicator extends ConsumerWidget {
 class ReceivedDataDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final socketListen = watch(socketListenProvider);
-    final jobListWatcher = watch(jobListProvider);
     final tcpClient = watch(tcpClientProvider);
-
-    socketListen.whenData(
-      (value) {
-        print(tcpClient.receivedData);
-        jobListWatcher.ipgJobs = tcpClient.receivedData;
-      },
-    );
 
     /// son kaldigim yer;
     /// ipgscan'den gelen job list'i

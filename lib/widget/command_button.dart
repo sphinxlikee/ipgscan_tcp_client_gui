@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'package:flutter_tcp_client/ipg/ipgscan_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tcp_client/provider/tcp_provider.dart';
+import '../provider/tcp_provider.dart';
+import '../ipg/ipgscan_api.dart';
 
 class IPGScanJobCommandButton extends ConsumerWidget {
   final String labelName;
