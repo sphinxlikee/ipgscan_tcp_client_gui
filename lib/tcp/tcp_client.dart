@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
@@ -32,8 +34,11 @@ class TCPClient with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeDataReceivedState() {
-    _isDataReceived = true;
+  void changeDataReceivedState(Uint8List data) {
+    receivedData = String.fromCharCodes(data);
+    print('received data in function: $receivedData');
+
+    if (!_isDataReceived) _isDataReceived = true;
     notifyListeners();
   }
 
@@ -42,7 +47,7 @@ class TCPClient with ChangeNotifier {
     notifyListeners();
   }
 
-  void streamDone() async {
+  Future<void> streamDone() async {
     _isDataReceived = false;
     _isDataSent = false;
     receivedData = 'empty';
@@ -51,33 +56,26 @@ class TCPClient with ChangeNotifier {
     notifyListeners();
   }
 
+  void writeToServer(String data) {
+    _socket.write(data);
     if (!isDataSent) {
       _changeDataSentState();
     }
   }
 
-  void listenSocket(TCPClient tcpClient) {
-    tcpClient.socket
-      ..listen(
-        (event) {
-          tcpClient.receivedData = String.fromCharCodes(event);
-          if (!tcpClient.dataReceivedState) {
-            tcpClient.changeDataReceivedState();
-          }
-        },
-      ).onDone(
-        () {
-          tcpClient
-            ..changeConnectionState()
-            ..streamDone();
-          print('socket is closed');
-        },
-      );
-  }
-
   Future<void> createConnection(BuildContext context) async {
     try {
       _socket = await Socket.connect(serverAddress, serverPort);
+      _socket.listen(
+        (Uint8List data) {
+          changeDataReceivedState(data);
+        },
+        onDone: () {
+          changeConnectionState();
+          streamDone();
+          print('socket is closed');
+        },
+      );
       changeConnectionState();
     } catch (error) {
       return showDialog<void>(
@@ -92,6 +90,7 @@ class TCPClient with ChangeNotifier {
             ),
           ],
         ),
+        barrierDismissible: false,
       );
     }
   }

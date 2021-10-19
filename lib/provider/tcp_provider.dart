@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../tcp/tcp_client.dart';
@@ -33,28 +35,3 @@ final jobListProvider = ChangeNotifierProvider<JobListNotifier>(
     return JobListNotifier();
   },
 );
-
-String sampleJobList = 'first_job\nfocus_run\npoint_and_shoot_example\n';
-
-// final socketStreamProvider = StreamProvider.autoDispose<Uint8List>(
-//   (ref) {
-//     final tcpClient = ref.watch(tcpClientProvider);
-
-//     return tcpClient.socket
-//       ..listen(
-//         (event) {
-//           tcpClient.receivedData = String.fromCharCodes(event);
-//           if (!tcpClient.dataReceivedState) {
-//             tcpClient.changeDataReceivedState();
-//           }
-//         },
-//       ).onDone(
-//         () {
-//           tcpClient
-//             ..changeConnectionState()
-//             ..streamDone();
-//           print('socket is closed');
-//         },
-//       );
-//   },
-// );

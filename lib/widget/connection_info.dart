@@ -1,3 +1,4 @@
+// ignore_for_file: use_key_in_widget_constructors
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/tcp_provider.dart';
@@ -51,6 +52,8 @@ class PortTextField extends StatelessWidget {
 class ConnectButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    final isConnected = watch(tcpClientProvider).isConnected;
+    return isConnected
         ? const FloatingActionButton(
             onPressed: null,
             child: Icon(Icons.connect_without_contact_outlined),
@@ -58,8 +61,7 @@ class ConnectButton extends ConsumerWidget {
           )
         : FloatingActionButton(
             onPressed: () async {
-              await tcpClient.createConnection(context);
-              tcpClient.listenSocket(tcpClient);
+              await context.read(tcpClientProvider).createConnection(context);
             },
             child: const Icon(Icons.touch_app_sharp),
             tooltip: 'Press for connect',
@@ -70,7 +72,7 @@ class ConnectButton extends ConsumerWidget {
 class ConnectionIndicator extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpClientProvider).connectionState;
+    final isConnected = watch(tcpClientProvider).isConnected;
     return ListTile(
       leading: Container(
         width: 30,
@@ -90,7 +92,7 @@ class ConnectionIndicator extends ConsumerWidget {
 class DataSendIndicator extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isDataSent = watch(tcpClientProvider).dataSentState;
+    final isDataSent = watch(tcpClientProvider).isDataSent;
     return ListTile(
       leading: Container(
         width: 30,
@@ -109,7 +111,7 @@ class DataSendIndicator extends ConsumerWidget {
 class DataReceiveIndicator extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isDataReceived = watch(tcpClientProvider).dataReceivedState;
+    final isDataReceived = watch(tcpClientProvider).isDataReceived;
     return ListTile(
       leading: Container(
         width: 30,
@@ -129,14 +131,8 @@ class DataReceiveIndicator extends ConsumerWidget {
 class ReceivedDataDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final tcpClient = watch(tcpClientProvider);
+    final receivedData = watch(tcpClientProvider).receivedData;
 
-    /// son kaldigim yer;
-    /// ipgscan'den gelen job list'i
-    /// ekranda gösteremiyorum
-
-    return tcpClient.receivedData == null
-        ? Text('not connected')
-        : Text('Received data:\n ${tcpClient.receivedData}');
+    return Text(receivedData);
   }
 }

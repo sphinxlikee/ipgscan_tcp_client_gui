@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/tcp_provider.dart';
@@ -16,17 +18,15 @@ class IPGScanJobCommandButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpClientProvider).connectionState;
+    final tcpClient = watch(tcpClientProvider);
+
     return ElevatedButton(
-      
-      onPressed: !isConnected
+      onPressed: !tcpClient.isConnected
           ? null
-          : () {
-              context
-                  .read(tcpClientProvider)
-                  .writeToStream(setCommand(commandType, parameter));
-            },
-      child: Text('$labelName'),
+          : () => context
+              .read(tcpClientProvider)
+              .writeToServer(setCommand(commandType, parameter)),
+      child: Text(labelName),
     );
   }
 }
