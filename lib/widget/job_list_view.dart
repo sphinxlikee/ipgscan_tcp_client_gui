@@ -12,7 +12,7 @@ class ParseListButton extends ConsumerWidget {
       onPressed: !isClientConnected
           ? null
           : () => jobListWatcher.jobListParser(tcpClient.receivedData),
-      child: Text('Parse the job list'),
+      child: const Text('Parse the job list'),
     );
   }
 }
@@ -28,14 +28,14 @@ class JobListView extends ConsumerWidget {
       itemBuilder: (context, index) {
         return ListTile(
           leading: index == selectedJobIndex.state
-              ? Icon(Icons.work, color: Colors.orange)
-              : Icon(Icons.work_outline, color: Colors.black),
+              ? const Icon(Icons.work, color: Colors.orange)
+              : const Icon(Icons.work_outline, color: Colors.black),
           title: index == selectedJobIndex.state
               ? Text(jobListWatcher.jobList[index],
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.orange, fontWeight: FontWeight.bold))
               : Text(jobListWatcher.jobList[index],
-                  style: TextStyle(color: Colors.black)),
+                  style: const TextStyle(color: Colors.black)),
           onTap: () => selectedJobIndex.state = index,
         );
       },

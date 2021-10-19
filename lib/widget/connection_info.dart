@@ -16,7 +16,7 @@ class IPAddressTextField extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: TextField(
         controller: ipAddressTextController,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: OutlineInputBorder(),
           labelText: "IPGScan's IP address",
         ),
@@ -36,7 +36,7 @@ class PortTextField extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: TextField(
         controller: portTextController,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: OutlineInputBorder(),
           labelText: "IPGScan's port",
         ),
@@ -51,9 +51,7 @@ class PortTextField extends StatelessWidget {
 class ConnectButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final tcpClient = watch(tcpClientProvider);
-    return tcpClient.connectionState
-        ? FloatingActionButton(
+        ? const FloatingActionButton(
             onPressed: null,
             child: Icon(Icons.connect_without_contact_outlined),
             tooltip: 'Connected',
@@ -63,7 +61,7 @@ class ConnectButton extends ConsumerWidget {
               await tcpClient.createConnection(context);
               tcpClient.listenSocket(tcpClient);
             },
-            child: Icon(Icons.touch_app_sharp),
+            child: const Icon(Icons.touch_app_sharp),
             tooltip: 'Press for connect',
           );
   }
@@ -82,8 +80,9 @@ class ConnectionIndicator extends ConsumerWidget {
           color: isConnected ? Colors.green : Colors.red,
         ),
       ),
-      title: Text('Connection Status '),
-      subtitle: isConnected ? Text('Connected') : Text('Disconnected'),
+      title: const Text('Connection Status '),
+      subtitle:
+          isConnected ? const Text('Connected') : const Text('Disconnected'),
     );
   }
 }
@@ -101,8 +100,8 @@ class DataSendIndicator extends ConsumerWidget {
           color: isDataSent ? Colors.green : Colors.red,
         ),
       ),
-      title: Text('Data'),
-      subtitle: isDataSent ? Text('Sent') : Text('Not sent'),
+      title: const Text('Data'),
+      subtitle: isDataSent ? const Text('Sent') : const Text('Not sent'),
     );
   }
 }
@@ -120,8 +119,9 @@ class DataReceiveIndicator extends ConsumerWidget {
           color: isDataReceived ? Colors.green : Colors.red,
         ),
       ),
-      title: Text('Data'),
-      subtitle: isDataReceived ? Text('Received') : Text('Not received'),
+      title: const Text('Data'),
+      subtitle:
+          isDataReceived ? const Text('Received') : const Text('Not received'),
     );
   }
 }

@@ -16,14 +16,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'TCP/IP Client'),
+      home: const MyHomePage(title: 'TCP/IP Client'),
     );
   }
 }
 
 class MyHomePage extends ConsumerWidget {
   final String title;
-  MyHomePage({this.title});
+  const MyHomePage({this.title});
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
@@ -77,6 +77,8 @@ class MyHomePage extends ConsumerWidget {
                   height: 2,
                   color: Colors.black26,
                 ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -100,9 +102,8 @@ class MyHomePage extends ConsumerWidget {
             flex: 2,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                     height: 20,
                     child: Text('Job list in C:\\IPGP\\IPGScan\\Jobs'),
                   ),

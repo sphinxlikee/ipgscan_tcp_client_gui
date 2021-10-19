@@ -12,7 +12,7 @@ class CommandButtonGrid extends ConsumerWidget {
 
     return GridView.count(
       crossAxisCount: 2,
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       mainAxisSpacing: 4.0,
       crossAxisSpacing: 4.0,
       childAspectRatio: 8.0,
