@@ -29,7 +29,7 @@ class MyHomePage extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$title'),
+        title: Text(title),
       ),
       body: Row(
         children: <Widget>[
@@ -79,9 +79,7 @@ class MyHomePage extends ConsumerWidget {
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
+                  child: SizedBox(
                     height: 20,
                     child: Text('Control Buttons'),
                   ),
@@ -104,6 +102,7 @@ class MyHomePage extends ConsumerWidget {
               children: [
                 const Padding(
                   padding: EdgeInsets.all(8.0),
+                  child: SizedBox(
                     height: 20,
                     child: Text('Job list in C:\\IPGP\\IPGScan\\Jobs'),
                   ),
