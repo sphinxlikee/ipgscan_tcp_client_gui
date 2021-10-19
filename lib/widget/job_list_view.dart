@@ -5,7 +5,7 @@ import '../provider/tcp_provider.dart';
 class ParseListButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isClientConnected = watch(tcpClientProvider).connectionState;
+    final isClientConnected = watch(tcpClientProvider).isConnected;
     final jobListWatcher = watch(jobListProvider);
     final tcpClient = watch(tcpClientProvider);
     return ElevatedButton(

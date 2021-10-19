@@ -11,7 +11,8 @@ class IPGScanJobCommandButton extends ConsumerWidget {
   IPGScanJobCommandButton({
     @required this.commandType,
     @required this.parameter,
-  }) : labelName = commandType != null ? ipgScanCommandMap[commandType] : 'null';
+  }) : labelName =
+            commandType != null ? ipgScanCommandMap[commandType] : 'null';
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {

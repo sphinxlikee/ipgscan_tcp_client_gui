@@ -6,27 +6,28 @@ class TCPClient with ChangeNotifier {
   final String serverAddress;
   final int serverPort;
   String receivedData;
-  bool _isClientConnected, _isDataReceived, _isDataSent;
+  bool _isConnected, _isDataReceived, _isDataSent;
   Socket _socket;
 
   TCPClient({
-    @required this.serverAddress,
-    @required this.serverPort,
-  })  : _isClientConnected = false,
+    this.serverAddress,
+    this.serverPort,
+  })  : _isConnected = false,
         _isDataReceived = false,
         _isDataSent = false,
         receivedData = ' ';
 
-  bool get connectionState => _isClientConnected;
-  bool get dataReceivedState => _isDataReceived;
-  bool get dataSentState => _isDataSent;
+  bool get isConnected => _isConnected;
+  bool get isDataReceived => _isDataReceived;
+  bool get isDataSent => _isDataSent;
   Socket get socket => _socket;
 
   void changeConnectionState() {
-    if (!_isClientConnected)
-      _isClientConnected = true;
-    else
-      _isClientConnected = false;
+    if (!_isConnected) {
+      _isConnected = true;
+    } else {
+      _isConnected = false;
+    }
 
     notifyListeners();
   }
@@ -50,9 +51,7 @@ class TCPClient with ChangeNotifier {
     notifyListeners();
   }
 
-  void writeToStream(String data) {
-    _socket.write('$data');
-    if (!dataSentState) {
+    if (!isDataSent) {
       _changeDataSentState();
     }
   }
