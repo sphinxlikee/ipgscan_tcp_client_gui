@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tcp_client/ipg/ipgscan_api.dart';
 import 'package:flutter_tcp_client/widget/command_button.dart';
@@ -18,109 +20,109 @@ class CommandButtonGrid extends ConsumerWidget {
       childAspectRatio: 8.0,
       children: [
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.JobOpen,
-          parameter: jobListWatcher.jobList.length == 0
+          commandType: ipgScanCommandList.jobOpen,
+          parameter:jobListWatcher.jobList.isEmpty
               ? 'not selected'
               : jobListWatcher.jobList[selectedJobIndex.state],
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.JobStart,
-          parameter: jobListWatcher.jobList.length == 0
+          commandType: ipgScanCommandList.jobStart,
+          parameter: jobListWatcher.jobList.isEmpty
               ? 'not selected'
               : jobListWatcher.jobList[selectedJobIndex.state],
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.JobStop,
-          parameter: jobListWatcher.jobList.length == 0
+          commandType: ipgScanCommandList.jobStop,
+          parameter: jobListWatcher.jobList.isEmpty
               ? 'not selected'
               : jobListWatcher.jobList[selectedJobIndex.state],
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.JobAbort,
-          parameter: jobListWatcher.jobList.length == 0
+          commandType: ipgScanCommandList.jobAbort,
+          parameter: jobListWatcher.jobList.isEmpty
               ? 'not selected'
               : jobListWatcher.jobList[selectedJobIndex.state],
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.JobClose,
-          parameter: jobListWatcher.jobList.length == 0
+          commandType: ipgScanCommandList.jobClose,
+          parameter: jobListWatcher.jobList.isEmpty
               ? 'not selected'
               : jobListWatcher.jobList[selectedJobIndex.state],
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.JobList,
+          commandType: ipgScanCommandList.jobList,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ConnectionGetStatus,
+          commandType: ipgScanCommandList.connectionGetStatus,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerGetStatus,
+          commandType: ipgScanCommandList.scannerGetStatus,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.JobGetStatus,
+          commandType: ipgScanCommandList.jobGetStatus,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.GetEncoding,
+          commandType: ipgScanCommandList.getEncoding,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerGetStartBit,
+          commandType: ipgScanCommandList.scannerGetStartBit,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerGetEnableBit,
+          commandType: ipgScanCommandList.scannerGetEnableBit,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerGetPortA,
+          commandType: ipgScanCommandList.scannerGetPortA,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerLock,
+          commandType: ipgScanCommandList.scannerLock,
           parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerUnlock,
+          commandType: ipgScanCommandList.scannerUnlock,
           parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerInit,
+          commandType: ipgScanCommandList.scannerInit,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerParkAt,
+          commandType: ipgScanCommandList.scannerParkAt,
           parameter: parameterGalvoPositionSet,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerGetWorkspacePosition,
+          commandType: ipgScanCommandList.scannerGetWorkspacePosition,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerGetList,
+          commandType: ipgScanCommandList.scannerGetList,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.ScannerGetConnectionStatus,
+          commandType: ipgScanCommandList.scannerGetConnectionStatus,
           parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.SystemSetVariable,
+          commandType: ipgScanCommandList.systemSetVariable,
           parameter: '$parameterVariableNumber $parameterVariableValue',
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.SystemGetVariable,
+          commandType: ipgScanCommandList.systemGetVariable,
           parameter: parameterVariableNumber,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.JobGetStatus2,
+          commandType: ipgScanCommandList.jobGetStatus2,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.JobLastRunSuccessful,
+          commandType: ipgScanCommandList.jobLastRunSuccessful,
           parameter: parameterNone,
         ),
       ],

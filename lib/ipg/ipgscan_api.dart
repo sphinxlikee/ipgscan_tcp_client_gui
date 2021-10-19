@@ -65,58 +65,58 @@ List<String> errorList = [
 ];
 
 enum ipgScanCommandList {
-  JobOpen,
-  JobStart,
-  JobStop,
-  JobAbort,
-  JobClose,
-  JobList,
-  ConnectionGetStatus,
-  ScannerGetStatus,
-  JobGetStatus,
-  GetEncoding,
-  ScannerGetStartBit,
-  ScannerGetEnableBit,
-  ScannerGetPortA,
-  ScannerLock,
-  ScannerUnlock,
-  ScannerInit,
-  ScannerParkAt,
-  ScannerGetWorkspacePosition,
-  ScannerGetList,
-  ScannerGetConnectionStatus,
-  SystemSetVariable,
-  SystemGetVariable,
-  JobGetStatus2,
-  JobLastRunSuccessful,
+  jobOpen,
+  jobStart,
+  jobStop,
+  jobAbort,
+  jobClose,
+  jobList,
+  connectionGetStatus,
+  scannerGetStatus,
+  jobGetStatus,
+  getEncoding,
+  scannerGetStartBit,
+  scannerGetEnableBit,
+  scannerGetPortA,
+  scannerLock,
+  scannerUnlock,
+  scannerInit,
+  scannerParkAt,
+  scannerGetWorkspacePosition,
+  scannerGetList,
+  scannerGetConnectionStatus,
+  systemSetVariable,
+  systemGetVariable,
+  jobGetStatus2,
+  jobLastRunSuccessful,
 }
 
 const Map<ipgScanCommandList, String> ipgScanCommandMap = {
-  ipgScanCommandList.JobOpen: 'Job Open',
-  ipgScanCommandList.JobStart: 'Job Start',
-  ipgScanCommandList.JobStop: 'Job Stop',
-  ipgScanCommandList.JobAbort: 'Job Abort',
-  ipgScanCommandList.JobClose: 'Job Close',
-  ipgScanCommandList.JobList: 'Job List',
-  ipgScanCommandList.ConnectionGetStatus: 'Connection Get Status',
-  ipgScanCommandList.ScannerGetStatus: 'Scanner Get Status',
-  ipgScanCommandList.JobGetStatus: 'Job Get Status',
-  ipgScanCommandList.GetEncoding: 'Get Encoding',
-  ipgScanCommandList.ScannerGetStartBit: 'Scanner Get Start Bit',
-  ipgScanCommandList.ScannerGetEnableBit: 'Scanner Get Enable Bit',
-  ipgScanCommandList.ScannerGetPortA: 'Scanner Get Port A',
-  ipgScanCommandList.ScannerLock: 'Scanner Lock',
-  ipgScanCommandList.ScannerUnlock: 'Scanner Unlock',
-  ipgScanCommandList.ScannerInit: 'Scanner Init',
-  ipgScanCommandList.ScannerParkAt: 'Scanner Park At',
-  ipgScanCommandList.ScannerGetWorkspacePosition: 'Scanner Get Workspace Position',
-  ipgScanCommandList.ScannerGetList: 'Scanner Get List',
-  ipgScanCommandList.ScannerGetConnectionStatus: 'Scanner Get Connection Status',
-  ipgScanCommandList.SystemSetVariable: 'System Set Variable',
-  ipgScanCommandList.SystemGetVariable: 'System Get Variable',
-  ipgScanCommandList.JobGetStatus2:
+  ipgScanCommandList.jobOpen: 'Job Open',
+  ipgScanCommandList.jobStart: 'Job Start',
+  ipgScanCommandList.jobStop: 'Job Stop',
+  ipgScanCommandList.jobAbort: 'Job Abort',
+  ipgScanCommandList.jobClose: 'Job Close',
+  ipgScanCommandList.jobList: 'Job List',
+  ipgScanCommandList.connectionGetStatus: 'Connection Get Status',
+  ipgScanCommandList.scannerGetStatus: 'Scanner Get Status',
+  ipgScanCommandList.jobGetStatus: 'Job Get Status',
+  ipgScanCommandList.getEncoding: 'Get Encoding',
+  ipgScanCommandList.scannerGetStartBit: 'Scanner Get Start Bit',
+  ipgScanCommandList.scannerGetEnableBit: 'Scanner Get Enable Bit',
+  ipgScanCommandList.scannerGetPortA: 'Scanner Get Port A',
+  ipgScanCommandList.scannerLock: 'Scanner Lock',
+  ipgScanCommandList.scannerUnlock: 'Scanner Unlock',
+  ipgScanCommandList.scannerInit: 'Scanner Init',
+  ipgScanCommandList.scannerParkAt: 'Scanner Park At',
+  ipgScanCommandList.scannerGetWorkspacePosition: 'Scanner Get Workspace Position',
+  ipgScanCommandList.scannerGetList: 'Scanner Get List',
+  ipgScanCommandList.scannerGetConnectionStatus: 'Scanner Get Connection Status',
+  ipgScanCommandList.systemSetVariable: 'System Set Variable',
+  ipgScanCommandList.systemGetVariable: 'System Get Variable',
+  ipgScanCommandList.jobGetStatus2:
       'Job Get Status2', //currently executing group&object name
-  ipgScanCommandList.JobLastRunSuccessful: 'Job Last Run Successful',
+  ipgScanCommandList.jobLastRunSuccessful: 'Job Last Run Successful',
 };
 
 // parameters
@@ -130,17 +130,17 @@ String parameterVariableValue = 'abc';
 String parameterCommandName = 'JobOpen';
 
 String setCommand(ipgScanCommandList command, String parameter) {
-  if (command == ipgScanCommandList.JobOpen ||
-      command == ipgScanCommandList.JobStart ||
-      command == ipgScanCommandList.JobStop ||
-      command == ipgScanCommandList.JobAbort ||
-      command == ipgScanCommandList.JobClose ||
-      command == ipgScanCommandList.ScannerLock ||
-      command == ipgScanCommandList.ScannerUnlock ||
-      command == ipgScanCommandList.ScannerParkAt ||
-      command == ipgScanCommandList.ScannerGetConnectionStatus ||
-      command == ipgScanCommandList.SystemSetVariable ||
-      command == ipgScanCommandList.SystemGetVariable) {
+  if (command == ipgScanCommandList.jobOpen ||
+      command == ipgScanCommandList.jobStart ||
+      command == ipgScanCommandList.jobStop ||
+      command == ipgScanCommandList.jobAbort ||
+      command == ipgScanCommandList.jobClose ||
+      command == ipgScanCommandList.scannerLock ||
+      command == ipgScanCommandList.scannerUnlock ||
+      command == ipgScanCommandList.scannerParkAt ||
+      command == ipgScanCommandList.scannerGetConnectionStatus ||
+      command == ipgScanCommandList.systemSetVariable ||
+      command == ipgScanCommandList.systemGetVariable) {
     return '${ipgScanCommandMap[command].replaceAll(' ', '')} $parameter\r\n';
   } else {
     return '${ipgScanCommandMap[command].replaceAll(' ', '')}\r\n';
