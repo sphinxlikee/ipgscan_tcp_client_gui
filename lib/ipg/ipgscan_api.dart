@@ -123,10 +123,10 @@ const Map<ipgScanCommandList, String> ipgScanCommandMap = {
 String parameterFileName =
     'deneme'; // it will come from ListView - inside of IPGScan Jobs folder
 String parameterNone = '';
-String parameterScannerName = 'laser213fduhfu28s';
+String parameterScannerName = 'laser-801F123F43B1.local.';
 String parameterGalvoPositionSet = '5 5 5';
 String parameterVariableNumber = '1';
-String parameterVariableValue = 'abc';
+String parameterVariableValue = '123';
 String parameterCommandName = 'JobOpen';
 
 String setCommand(ipgScanCommandList command, String parameter) {
@@ -166,3 +166,6 @@ String setCommand(ipgScanCommandList command, String parameter) {
 /// 6.10.21
 /// 3-Error bilgisi yazı olarak gelmemeli. Hata kodu olarak gelmeli0
 /// 
+/// 22.10.21
+/// 4-JobList cevabında End Of Job List'in sonunda \r\n olduğu için listede
+///  bir tane daha varmış gibi görüyor.
