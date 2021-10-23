@@ -82,10 +82,14 @@ class CommandButtonGrid extends ConsumerWidget {
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
+          /// update parameter
+          /// parameter: scanner name
           commandType: ipgScanCommandList.scannerLock,
           parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
+          /// update parameter
+          /// parameter: scanner name
           commandType: ipgScanCommandList.scannerUnlock,
           parameter: parameterScannerName,
         ),
@@ -94,6 +98,8 @@ class CommandButtonGrid extends ConsumerWidget {
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
+          /// update parameter
+          /// parameter: galvo position to set to
           commandType: ipgScanCommandList.scannerParkAt,
           parameter: parameterGalvoPositionSet,
         ),
@@ -106,14 +112,20 @@ class CommandButtonGrid extends ConsumerWidget {
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
+          /// update parameter
+          /// parameter: scanner name
           commandType: ipgScanCommandList.scannerGetConnectionStatus,
           parameter: parameterScannerName,
         ),
         IPGScanJobCommandButton(
+          /// update parameter
+          /// parameter: check it
           commandType: ipgScanCommandList.systemSetVariable,
           parameter: '$parameterVariableNumber $parameterVariableValue',
         ),
         IPGScanJobCommandButton(
+          /// update parameter
+          /// parameter: check it
           commandType: ipgScanCommandList.systemGetVariable,
           parameter: parameterVariableNumber,
         ),
