@@ -9,11 +9,11 @@ class TCPClient with ChangeNotifier {
   final int serverPort;
   String receivedData;
   bool _isConnected, _isDataReceived, _isDataSent;
-  Socket _socket;
+  late Socket _socket;
 
   TCPClient({
-    this.serverAddress,
-    this.serverPort,
+    required this.serverAddress,
+    required this.serverPort,
   })  : _isConnected = false,
         _isDataReceived = false,
         _isDataSent = false,

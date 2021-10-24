@@ -6,15 +6,14 @@ import '../provider/tcp_provider.dart';
 import '../ipg/ipgscan_api.dart';
 
 class IPGScanJobCommandButton extends ConsumerWidget {
-  final String labelName;
   final ipgScanCommandList commandType;
   final String parameter;
+  final String? labelName;
 
   IPGScanJobCommandButton({
-    @required this.commandType,
-    @required this.parameter,
-  }) : labelName =
-            commandType != null ? ipgScanCommandMap[commandType] : 'null';
+    required this.commandType,
+    required this.parameter,
+  }) : labelName = ipgScanCommandMap[commandType];
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
@@ -26,7 +25,7 @@ class IPGScanJobCommandButton extends ConsumerWidget {
           : () => context
               .read(tcpClientProvider)
               .writeToServer(setCommand(commandType, parameter)),
-      child: Text(labelName),
+      child: Text(labelName ?? 'label problem'),
     );
   }
 }

@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   final String title;
-  const MyHomePage({this.title});
+  const MyHomePage({required this.title});
 
   @override
   Widget build(BuildContext context) {

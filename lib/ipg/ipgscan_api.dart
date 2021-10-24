@@ -65,6 +65,7 @@ List<String> errorList = [
 ];
 
 enum ipgScanCommandList {
+  noCommand,
   jobOpen,
   jobStart,
   jobStop,
@@ -109,9 +110,11 @@ const Map<ipgScanCommandList, String> ipgScanCommandMap = {
   ipgScanCommandList.scannerUnlock: 'Scanner Unlock',
   ipgScanCommandList.scannerInit: 'Scanner Init',
   ipgScanCommandList.scannerParkAt: 'Scanner Park At',
-  ipgScanCommandList.scannerGetWorkspacePosition: 'Scanner Get Workspace Position',
+  ipgScanCommandList.scannerGetWorkspacePosition:
+      'Scanner Get Workspace Position',
   ipgScanCommandList.scannerGetList: 'Scanner Get List',
-  ipgScanCommandList.scannerGetConnectionStatus: 'Scanner Get Connection Status',
+  ipgScanCommandList.scannerGetConnectionStatus:
+      'Scanner Get Connection Status',
   ipgScanCommandList.systemSetVariable: 'System Set Variable',
   ipgScanCommandList.systemGetVariable: 'System Get Variable',
   ipgScanCommandList.jobGetStatus2:
@@ -141,9 +144,9 @@ String setCommand(ipgScanCommandList command, String parameter) {
       command == ipgScanCommandList.scannerGetConnectionStatus ||
       command == ipgScanCommandList.systemSetVariable ||
       command == ipgScanCommandList.systemGetVariable) {
-    return '${ipgScanCommandMap[command].replaceAll(' ', '')} $parameter\r\n';
+    return '${ipgScanCommandMap[command]?.replaceAll(' ', '')} $parameter\r\n';
   } else {
-    return '${ipgScanCommandMap[command].replaceAll(' ', '')}\r\n';
+    return '${ipgScanCommandMap[command]?.replaceAll(' ', '')}\r\n';
   }
 }
 
