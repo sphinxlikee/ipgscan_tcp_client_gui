@@ -51,8 +51,8 @@ class PortTextField extends StatelessWidget {
 
 class ConnectButton extends ConsumerWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpClientProvider).isConnected;
+  Widget build(BuildContext context,  WidgetRef ref) {
+    final isConnected = ref.watch(tcpClientProvider).isConnected;
     return isConnected
         ? const FloatingActionButton(
             onPressed: null,
@@ -61,7 +61,7 @@ class ConnectButton extends ConsumerWidget {
           )
         : FloatingActionButton(
             onPressed: () async {
-              await context.read(tcpClientProvider).createConnection(context);
+              await ref.read(tcpClientProvider).createConnection(context);
             },
             child: const Icon(Icons.touch_app_sharp),
             tooltip: 'Press for connect',
@@ -71,8 +71,8 @@ class ConnectButton extends ConsumerWidget {
 
 class ConnectionIndicator extends ConsumerWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final isConnected = watch(tcpClientProvider).isConnected;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isConnected = ref.watch(tcpClientProvider).isConnected;
     return ListTile(
       leading: Container(
         width: 30,
@@ -91,8 +91,8 @@ class ConnectionIndicator extends ConsumerWidget {
 
 class DataSendIndicator extends ConsumerWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final isDataSent = watch(tcpClientProvider).isDataSent;
+  Widget build(BuildContext context,  WidgetRef ref) {
+    final isDataSent = ref.watch(tcpClientProvider).isDataSent;
     return ListTile(
       leading: Container(
         width: 30,
@@ -110,8 +110,8 @@ class DataSendIndicator extends ConsumerWidget {
 
 class DataReceiveIndicator extends ConsumerWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final isDataReceived = watch(tcpClientProvider).isDataReceived;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDataReceived = ref.watch(tcpClientProvider).isDataReceived;
     return ListTile(
       leading: Container(
         width: 30,
@@ -130,8 +130,8 @@ class DataReceiveIndicator extends ConsumerWidget {
 
 class ReceivedDataDisplay extends ConsumerWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final receivedData = watch(tcpClientProvider).receivedData;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final receivedData = ref.watch(tcpClientProvider).receivedData;
 
     return Text(receivedData);
   }

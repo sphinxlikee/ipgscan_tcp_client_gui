@@ -16,13 +16,13 @@ class IPGScanJobCommandButton extends ConsumerWidget {
   }) : labelName = ipgScanCommandMap[commandType];
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final tcpClient = watch(tcpClientProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tcpClient = ref.watch(tcpClientProvider);
 
     return ElevatedButton(
       onPressed: !tcpClient.isConnected
           ? null
-          : () => context
+          : () => ref
               .read(tcpClientProvider)
               .writeToServer(setCommand(commandType, parameter)),
       child: Text(labelName ?? 'label problem'),

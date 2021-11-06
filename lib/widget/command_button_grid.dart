@@ -8,9 +8,9 @@ import '../provider/job_list_provider.dart';
 
 class CommandButtonGrid extends ConsumerWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final selectedJobIndex = watch(selectedJobIndexProvider);
-    final jobListWatcher = watch(jobListProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedJobIndex = ref.watch(selectedJobIndexProvider);
+    final jobListWatcher = ref.watch(jobListProvider);
 
     return GridView.count(
       crossAxisCount: 2,
@@ -23,31 +23,31 @@ class CommandButtonGrid extends ConsumerWidget {
           commandType: ipgScanCommandList.jobOpen,
           parameter: jobListWatcher.jobList.isEmpty
               ? 'not selected'
-              : jobListWatcher.jobList[selectedJobIndex.state],
+              : jobListWatcher.jobList[selectedJobIndex],
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.jobStart,
           parameter: jobListWatcher.jobList.isEmpty
               ? 'not selected'
-              : jobListWatcher.jobList[selectedJobIndex.state],
+              : jobListWatcher.jobList[selectedJobIndex],
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.jobStop,
           parameter: jobListWatcher.jobList.isEmpty
               ? 'not selected'
-              : jobListWatcher.jobList[selectedJobIndex.state],
+              : jobListWatcher.jobList[selectedJobIndex],
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.jobAbort,
           parameter: jobListWatcher.jobList.isEmpty
               ? 'not selected'
-              : jobListWatcher.jobList[selectedJobIndex.state],
+              : jobListWatcher.jobList[selectedJobIndex],
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.jobClose,
           parameter: jobListWatcher.jobList.isEmpty
               ? 'not selected'
-              : jobListWatcher.jobList[selectedJobIndex.state],
+              : jobListWatcher.jobList[selectedJobIndex],
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.jobList,

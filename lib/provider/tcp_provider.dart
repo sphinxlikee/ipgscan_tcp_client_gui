@@ -7,7 +7,7 @@ final serverPortProvider = StateProvider<int>((ref) => 88);
 
 final tcpClientProvider = ChangeNotifierProvider<TCPClient>(
   (ref) => TCPClient(
-    serverAddress: ref.read(serverAddressProvider).state,
-    serverPort: ref.read(serverPortProvider).state,
+    serverAddress: ref.read(serverAddressProvider),
+    serverPort: ref.read(serverPortProvider),
   ),
 );
