@@ -69,6 +69,24 @@ class ConnectButton extends ConsumerWidget {
   }
 }
 
+class ConnectionCloseButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isConnected = ref.watch(tcpClientProvider).isConnected;
+    return isConnected
+        ? ElevatedButton(
+            onPressed: () async {
+              await ref.read(tcpClientProvider).socket.close();
+            },
+            child: const Text('Press for disconnect'),
+          )
+        : const ElevatedButton(
+            onPressed: null,
+            child: Text('Waiting for connection'),
+          );
+  }
+}
+
 class ConnectionIndicator extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {

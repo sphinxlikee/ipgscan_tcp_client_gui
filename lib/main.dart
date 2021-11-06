@@ -44,7 +44,14 @@ class MyHomePage extends StatelessWidget {
                 PortTextField(),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: ConnectButton(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ConnectButton(),
+                      const SizedBox(width: 40),
+                      ConnectionCloseButton(),
+                    ],
+                  ),
                 ),
                 Container(
                   height: 2,
