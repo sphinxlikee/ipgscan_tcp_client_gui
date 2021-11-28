@@ -7,7 +7,12 @@ import 'widget/job_list_view.dart';
 import 'widget/command_button_grid.dart';
 
 void main() {
-  runApp(ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      // observers: [Logger()],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -65,6 +70,7 @@ class MyHomePage extends StatelessWidget {
                   color: Colors.black26,
                 ),
                 ReceivedDataDisplay(),
+                IPGScanStateDisplay(),
               ],
             ),
           ),

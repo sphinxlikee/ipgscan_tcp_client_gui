@@ -93,6 +93,7 @@ enum ipgScanCommandList {
 }
 
 const Map<ipgScanCommandList, String> ipgScanCommandMap = {
+  ipgScanCommandList.noCommand: 'Initial connection state',
   ipgScanCommandList.jobOpen: 'Job Open',
   ipgScanCommandList.jobStart: 'Job Start',
   ipgScanCommandList.jobStop: 'Job Stop',
@@ -129,7 +130,7 @@ String parameterNone = '';
 String parameterScannerName = 'laser-801F123F43B1.local.';
 String parameterGalvoPositionSet = '5 5 5';
 String parameterVariableNumber = '1';
-String parameterVariableValue = '123';
+String parameterVariableValue = 'new param2';
 String parameterCommandName = 'JobOpen';
 
 String setCommand(ipgScanCommandList command, String parameter) {

@@ -4,69 +4,96 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 
-class TCPClient with ChangeNotifier {
-  final String serverAddress;
-  final int serverPort;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class TCPClient {
+  String serverAddress;
+  int serverPort;
   String receivedData;
-  bool _isConnected, _isDataReceived, _isDataSent;
-  late Socket _socket;
+  bool isConnected, isDataReceived, isDataSent;
 
-  TCPClient({
-    required this.serverAddress,
-    required this.serverPort,
-  })  : _isConnected = false,
-        _isDataReceived = false,
-        _isDataSent = false,
-        receivedData = ' ';
+  TCPClient(
+    this.serverAddress,
+    this.serverPort,
+    this.receivedData,
+    this.isConnected,
+    this.isDataReceived,
+    this.isDataSent,
+  );
 
-  bool get isConnected => _isConnected;
-  bool get isDataReceived => _isDataReceived;
-  bool get isDataSent => _isDataSent;
-  Socket get socket => _socket;
+  factory TCPClient.initial() {
+    return TCPClient(
+      '127.0.0.1',
+      88,
+      '',
+      false,
+      false,
+      false,
+    );
+  }
+
+  TCPClient copyWith({
+    String? serverAddress,
+    int? serverPort,
+    String? receivedData,
+    bool? isConnected,
+    bool? isDataReceived,
+    bool? isDataSent,
+  }) {
+    return TCPClient(
+      serverAddress ?? this.serverAddress,
+      serverPort ?? this.serverPort,
+      receivedData ?? this.receivedData,
+      isConnected ?? this.isConnected,
+      isDataReceived ?? this.isDataReceived,
+      isDataSent ?? this.isDataSent,
+    );
+  }
+}
+
+class TCPClientNotifier extends StateNotifier<TCPClient> {
+  Socket? socket;
+  final TCPClient tcpClient;
+  TCPClientNotifier(this.tcpClient) : super(tcpClient);
 
   void changeConnectionState() {
-    if (!_isConnected) {
-      _isConnected = true;
+    if (!state.isConnected) {
+      state = state.copyWith(isConnected: true);
     } else {
-      _isConnected = false;
+      state = state.copyWith(isConnected: false);
     }
-
-    notifyListeners();
   }
+
+  void changeDataSentState() => state = state.copyWith(isDataSent: true);
 
   void changeDataReceivedState(Uint8List data) {
-    receivedData = String.fromCharCodes(data);
-    print('received data in function: $receivedData');
-
-    if (!_isDataReceived) _isDataReceived = true;
-    notifyListeners();
-  }
-
-  void _changeDataSentState() {
-    _isDataSent = true;
-    notifyListeners();
+    state = state.copyWith(
+      receivedData: String.fromCharCodes(data),
+      isDataReceived: true,
+    );
+    print('received data in function: ${state.receivedData}');
   }
 
   Future<void> streamDone() async {
-    _isDataReceived = false;
-    _isDataSent = false;
-    receivedData = 'empty';
-    await _socket.flush();
-    await _socket.close();
-    notifyListeners();
+    state = state.copyWith(
+      isConnected: false,
+      receivedData: '',
+      isDataReceived: false,
+      isDataSent: false,
+    );
+    await socket?.flush();
+    await socket?.close();
   }
 
-  void writeToServer(String data) {
-    _socket.write(data);
-    if (!isDataSent) {
-      _changeDataSentState();
-    }
+  Future<void> writeToServer(String data) async {
+    socket?.write(data);
+    if (!state.isDataSent) changeDataSentState();
   }
 
   Future<void> createConnection(BuildContext context) async {
     try {
-      _socket = await Socket.connect(serverAddress, serverPort);
-      _socket.listen(
+      socket = await Socket.connect(state.serverAddress, state.serverPort);
+      socket?.listen(
         (Uint8List data) {
           changeDataReceivedState(data);
         },

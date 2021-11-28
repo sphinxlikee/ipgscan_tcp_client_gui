@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tcp_client/ipg/ipgscan_api.dart';
 
 class JobListNotifier extends ChangeNotifier {
   List<String> jobList = [];

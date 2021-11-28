@@ -10,11 +10,14 @@ class ParseListButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isClientConnected = ref.watch(tcpClientProvider).isConnected;
     final jobListWatcher = ref.watch(jobListProvider);
-    final tcpClient = ref.watch(tcpClientProvider);
+    final tcpReceivedData = ref.watch(tcpClientProvider).receivedData;
+
     return ElevatedButton(
       onPressed: !isClientConnected
           ? null
-          : () => jobListWatcher.jobListParser(tcpClient.receivedData),
+          : () {
+              jobListWatcher.jobListParser(tcpReceivedData);
+            },
       child: const Text('Parse the job list'),
     );
   }
@@ -39,7 +42,8 @@ class JobListView extends ConsumerWidget {
                       color: Colors.orange, fontWeight: FontWeight.bold))
               : Text(jobListWatcher.jobList[index],
                   style: const TextStyle(color: Colors.black)),
-          onTap: () => selectedJobIndex = index,
+          onTap: () =>
+              ref.read(selectedJobIndexProvider.notifier).state = index,
         );
       },
     );

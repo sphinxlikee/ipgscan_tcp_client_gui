@@ -1,8 +1,8 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_tcp_client/widget/command_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../widget/command_button.dart';
 import '../ipg/ipgscan_api.dart';
 import '../provider/job_list_provider.dart';
 

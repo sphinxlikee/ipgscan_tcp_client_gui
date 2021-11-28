@@ -17,14 +17,18 @@ class IPGScanJobCommandButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tcpClient = ref.watch(tcpClientProvider);
+    final isConnected = ref.watch(tcpClientProvider).isConnected;
 
     return ElevatedButton(
-      onPressed: !tcpClient.isConnected
+      onPressed: !isConnected
           ? null
-          : () => ref
-              .read(tcpClientProvider)
-              .writeToServer(setCommand(commandType, parameter)),
+          : () {
+              ref
+                  .read(tcpClientProvider.notifier)
+                  .writeToServer(setCommand(commandType, parameter));
+
+              ref.read(lastCommandProvider.notifier).state = commandType;
+            },
       child: Text(labelName ?? 'label problem'),
     );
   }
