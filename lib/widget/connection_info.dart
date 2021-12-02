@@ -166,6 +166,6 @@ class IPGScanStateDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final lastCommand = ref.watch(lastCommandProvider);
-    return Text(ipgScanCommandMap[lastCommand].toString());
+    return Text('Last command: ' + ipgScanCommandMap[lastCommand].toString());
   }
 }

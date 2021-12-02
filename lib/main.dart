@@ -58,34 +58,23 @@ class MyHomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  height: 2,
-                  color: Colors.black26,
-                ),
+                Container(height: 2, color: Colors.black26),
                 DataSendIndicator(),
                 DataReceiveIndicator(),
                 ConnectionIndicator(),
-                Container(
-                  height: 2,
-                  color: Colors.black26,
-                ),
-                ReceivedDataDisplay(),
+                Container(height: 2, color: Colors.black26),
                 IPGScanStateDisplay(),
+                Container(height: 2, color: Colors.black26),
+                ReceivedDataDisplay(),
               ],
             ),
           ),
-          Container(
-            width: 2,
-            color: Colors.black26,
-          ),
+          Container(width: 2, color: Colors.black26),
           Expanded(
             flex: 4,
             child: Column(
               children: [
-                Container(
-                  height: 2,
-                  color: Colors.black26,
-                ),
+                Container(height: 2, color: Colors.black26),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: SizedBox(
@@ -93,18 +82,12 @@ class MyHomePage extends StatelessWidget {
                     child: Text('Control Buttons'),
                   ),
                 ),
-                Container(
-                  height: 2,
-                  color: Colors.black26,
-                ),
+                Container(height: 2, color: Colors.black26),
                 Expanded(child: CommandButtonGrid()),
               ],
             ),
           ),
-          Container(
-            width: 2,
-            color: Colors.black26,
-          ),
+          Container(width: 2, color: Colors.black26),
           Expanded(
             flex: 2,
             child: Column(
@@ -117,10 +100,7 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ),
                 ParseListButton(),
-                Container(
-                  height: 2,
-                  color: Colors.black26,
-                ),
+                Container(height: 2, color: Colors.black26),
                 Expanded(child: JobListView()),
               ],
             ),
