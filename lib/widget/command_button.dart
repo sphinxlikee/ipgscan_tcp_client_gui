@@ -1,5 +1,3 @@
-// ignore_for_file: use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/tcp_provider.dart';
@@ -10,10 +8,10 @@ class IPGScanJobCommandButton extends ConsumerWidget {
   final String parameter;
   final String? labelName;
 
-  IPGScanJobCommandButton({
+  IPGScanJobCommandButton({Key? key, 
     required this.commandType,
     required this.parameter,
-  }) : labelName = ipgScanCommandMap[commandType];
+  }) : labelName = ipgScanCommandMap[commandType], super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

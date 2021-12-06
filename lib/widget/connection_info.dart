@@ -9,6 +9,8 @@ final ipAddressTextController = TextEditingController()..text = '127.0.0.1';
 final portTextController = TextEditingController()..text = '88';
 
 class IPAddressTextField extends StatelessWidget {
+  const IPAddressTextField({Key? key}) : super(key: key);
+
   void dispose() {
     ipAddressTextController.dispose();
   }
@@ -29,6 +31,8 @@ class IPAddressTextField extends StatelessWidget {
 }
 
 class PortTextField extends StatelessWidget {
+  const PortTextField({Key? key}) : super(key: key);
+
   void dispose() {
     portTextController.dispose();
   }
@@ -52,6 +56,8 @@ class PortTextField extends StatelessWidget {
 }
 
 class ConnectButton extends ConsumerWidget {
+  const ConnectButton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isConnected = ref.watch(tcpClientProvider).isConnected;
@@ -75,6 +81,8 @@ class ConnectButton extends ConsumerWidget {
 }
 
 class ConnectionCloseButton extends ConsumerWidget {
+  const ConnectionCloseButton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isClientConnected = ref.watch(tcpClientProvider).isConnected;
@@ -94,6 +102,8 @@ class ConnectionCloseButton extends ConsumerWidget {
 }
 
 class ConnectionIndicator extends ConsumerWidget {
+  const ConnectionIndicator({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isClientConnected = ref.watch(tcpClientProvider).isConnected;
@@ -116,6 +126,8 @@ class ConnectionIndicator extends ConsumerWidget {
 }
 
 class DataSendIndicator extends ConsumerWidget {
+  const DataSendIndicator({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDataSent = ref.watch(tcpClientProvider).isDataSent;
@@ -135,6 +147,8 @@ class DataSendIndicator extends ConsumerWidget {
 }
 
 class DataReceiveIndicator extends ConsumerWidget {
+  const DataReceiveIndicator({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDataReceived = ref.watch(tcpClientProvider).isDataReceived;

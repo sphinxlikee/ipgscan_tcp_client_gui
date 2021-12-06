@@ -1,11 +1,11 @@
-// ignore_for_file: use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/tcp_provider.dart';
 import '../provider/job_list_provider.dart';
 
 class ParseListButton extends ConsumerWidget {
+  const ParseListButton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isClientConnected = ref.watch(tcpClientProvider).isConnected;
@@ -24,6 +24,8 @@ class ParseListButton extends ConsumerWidget {
 }
 
 class JobListView extends ConsumerWidget {
+  const JobListView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final jobListWatcher = ref.watch(jobListProvider);
