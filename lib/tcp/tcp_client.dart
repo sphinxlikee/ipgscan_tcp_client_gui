@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TCPClient {
@@ -11,6 +10,7 @@ class TCPClient {
   int serverPort;
   String receivedData;
   bool isConnected, isDataReceived, isDataSent;
+  DateTime receivedDataTimestamp, sentDataTimestamp;
 
   TCPClient(
     this.serverAddress,
@@ -19,6 +19,8 @@ class TCPClient {
     this.isConnected,
     this.isDataReceived,
     this.isDataSent,
+    this.receivedDataTimestamp,
+    this.sentDataTimestamp,
   );
 
   factory TCPClient.initial() {
@@ -29,6 +31,8 @@ class TCPClient {
       false,
       false,
       false,
+      DateTime.now(),
+      DateTime.now(),
     );
   }
 
@@ -39,6 +43,8 @@ class TCPClient {
     bool? isConnected,
     bool? isDataReceived,
     bool? isDataSent,
+    DateTime? receivedDataTimestamp,
+    DateTime? sentDataTimestamp,
   }) {
     return TCPClient(
       serverAddress ?? this.serverAddress,
@@ -47,6 +53,8 @@ class TCPClient {
       isConnected ?? this.isConnected,
       isDataReceived ?? this.isDataReceived,
       isDataSent ?? this.isDataSent,
+      receivedDataTimestamp ?? this.receivedDataTimestamp,
+      sentDataTimestamp ?? this.sentDataTimestamp,
     );
   }
 }
@@ -64,10 +72,15 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
     }
   }
 
-  void changeDataSentState() => state = state.copyWith(isDataSent: true);
+  void changeDataSentState() {
+    state = state.copyWith(
+      isDataSent: true,
+    );
+  }
 
   void changeDataReceivedState(Uint8List data) {
     state = state.copyWith(
+      receivedDataTimestamp: DateTime.now(),
       receivedData: String.fromCharCodes(data),
       isDataReceived: true,
     );
@@ -86,8 +99,13 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
   }
 
   Future<void> writeToServer(String data) async {
+    state = state.copyWith(
+      sentDataTimestamp: DateTime.now(),
+    );
     socket?.write(data);
-    if (!state.isDataSent) changeDataSentState();
+    if (!state.isDataSent) {
+      changeDataSentState();
+    }
   }
 
   Future<void> createConnection(BuildContext context) async {

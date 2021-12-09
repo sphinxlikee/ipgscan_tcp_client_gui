@@ -219,17 +219,47 @@ class DataReceiveIndicator extends ConsumerWidget {
 }
 
 class ReceivedDataDisplay extends ConsumerWidget {
+  ReceivedDataDisplay({Key? key}) : super(key: key);
+  final _dateformat = DateFormat.Hms();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final receivedData = ref.watch(tcpClientProvider).receivedData;
-    return Text(receivedData);
+    final tcpClient = ref.watch(tcpClientProvider);
+    return Row(
+      children: [
+        const SizedBox(width: 16),
+        Expanded(
+          child: Align(
+            child: Text(
+                '${_dateformat.format(tcpClient.receivedDataTimestamp)}\n${tcpClient.receivedData}'),
+            alignment: Alignment.centerLeft,
+          ),
+        ),
+      ],
+    );
   }
 }
 
 class IPGScanStateDisplay extends ConsumerWidget {
+  IPGScanStateDisplay({Key? key}) : super(key: key);
+  final _dateformat = DateFormat.Hms();
+  // var commandedList = List<ipgScanCommandList>;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final tcpClient = ref.watch(tcpClientProvider);
     final lastCommand = ref.watch(lastCommandProvider);
-    return Text('Last command: ' + ipgScanCommandMap[lastCommand].toString());
+    return Row(
+      children: [
+        const SizedBox(width: 16),
+        Align(
+          child: Text(
+            '${_dateformat.format(tcpClient.sentDataTimestamp)} Last command: ' +
+                ipgScanCommandMap[lastCommand].toString(),
+          ),
+          alignment: Alignment.centerLeft,
+        ),
+      ],
+    );
   }
 }
