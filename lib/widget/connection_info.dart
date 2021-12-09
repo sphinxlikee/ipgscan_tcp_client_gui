@@ -1,19 +1,50 @@
-// ignore_for_file: use_key_in_widget_constructors
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../ipg/ipgscan_api.dart';
-import '../widget/command_button.dart';
 import '../provider/tcp_provider.dart';
+import 'package:intl/intl.dart';
 
-final ipAddressTextController = TextEditingController()..text = '127.0.0.1';
-final portTextController = TextEditingController()..text = '88';
-
-class IPAddressTextField extends StatelessWidget {
+class IPAddressTextField extends ConsumerStatefulWidget {
   const IPAddressTextField({Key? key}) : super(key: key);
 
+  @override
+  ConsumerState<IPAddressTextField> createState() => _IPAddressTextFieldState();
+}
+
+class _IPAddressTextFieldState extends ConsumerState<IPAddressTextField> {
+  final ipAddressTextController = TextEditingController();
+  @override
+  void initState() {
+    ipAddressTextController.text = ref.read(tcpClientProvider).serverAddress;
+    ipAddressTextController.addListener(_setAddressValue);
+    super.initState();
+  }
+
+  void _setAddressValue() {
+    final value = ipAddressTextController.text;
+    ref.read(tcpClientProvider).serverAddress = value;
+  }
+
+  @override
   void dispose() {
     ipAddressTextController.dispose();
+    super.dispose();
   }
+
+  // // will be applied
+  // RegExp ipExp = RegExp(
+  //     r"^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$",
+  //     caseSensitive: false,
+  //     multiLine: false);
+
+  // void checkAddress() {
+  //   if (ipExp.hasMatch(ipAddressTextController.text)) {
+  //     print('${ipAddressTextController.text} is valid');
+  //   } else {
+  //     print('${ipAddressTextController.text} is not valid');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +61,32 @@ class IPAddressTextField extends StatelessWidget {
   }
 }
 
-class PortTextField extends StatelessWidget {
+class PortTextField extends ConsumerStatefulWidget {
   const PortTextField({Key? key}) : super(key: key);
 
+  @override
+  ConsumerState<PortTextField> createState() => _PortTextFieldState();
+}
+
+class _PortTextFieldState extends ConsumerState<PortTextField> {
+  TextEditingController portTextController = TextEditingController();
+  static const portDefaultValue = 0;
+  @override
+  void initState() {
+    portTextController.text = ref.read(tcpClientProvider).serverPort.toString();
+    portTextController.addListener(_setPortValue);
+    super.initState();
+  }
+
+  void _setPortValue() {
+    final value = int.tryParse(portTextController.text) ?? portDefaultValue;
+    ref.read(tcpClientProvider).serverPort = value;
+  }
+
+  @override
   void dispose() {
     portTextController.dispose();
+    super.dispose();
   }
 
   @override
@@ -42,14 +94,12 @@ class PortTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: TextField(
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         controller: portTextController,
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
           labelText: "IPGScan's port",
         ),
-        onChanged: (String val) {
-          portTextController.value = TextEditingValue(text: val);
-        },
       ),
     );
   }
