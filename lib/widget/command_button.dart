@@ -8,10 +8,12 @@ class IPGScanJobCommandButton extends ConsumerWidget {
   final String parameter;
   final String? labelName;
 
-  IPGScanJobCommandButton({Key? key, 
+  IPGScanJobCommandButton({
+    Key? key,
     required this.commandType,
     required this.parameter,
-  }) : labelName = ipgScanCommandMap[commandType], super(key: key);
+  })  : labelName = ipgScanCommandMap[commandType],
+        super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
