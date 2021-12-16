@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'widget/connection_info.dart';
 import 'widget/job_list_view.dart';
 import 'widget/command_button_grid.dart';
+import 'widget/data_exchange_list_view.dart';
 
 void main() {
   runApp(
