@@ -150,26 +150,3 @@ String setCommand(ipgScanCommandList command, String parameter) {
     return '${ipgScanCommandMap[command]?.replaceAll(' ', '')}\r\n';
   }
 }
-
-
-/// notes
-/// 7.10.2021
-/// /windows/runner/main.cpp icerisinden CreateAndShow kısmından
-/// uygulama title degistirilebiliyor.
-
-
-/// bugs
-/// 
-/// 5.8.21
-/// 1-bağlantı kurulduktan sonra gelen stop ekranı kapatılabiliyor.
-/// kapattıktan sonra job start komutu verirsem devam edip çalışıyor
-/// 
-/// 2-SystemSetVariable 1 abc yaptıktan sonra 1 numaralı değişken okunmak
-/// istendiğinde "bc" olarak döndürüyor. IPGWeld ekranında gözüken.
-/// 
-/// 6.10.21
-/// 3-Error bilgisi yazı olarak gelmemeli. Hata kodu olarak gelmeli0
-/// 
-/// 22.10.21
-/// 4-JobList cevabında End Of Job List'in sonunda \r\n olduğu için listede
-///  bir tane daha varmış gibi görüyor.
