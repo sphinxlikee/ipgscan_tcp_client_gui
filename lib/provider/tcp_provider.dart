@@ -7,7 +7,6 @@ TCPClient tcpClient = TCPClient.initial();
 
 final tcpClientProvider = StateNotifierProvider<TCPClientNotifier, TCPClient>(
   (ref) {
-    print('tcpClientProvider is here');
     return TCPClientNotifier(tcpClient);
   },
 );

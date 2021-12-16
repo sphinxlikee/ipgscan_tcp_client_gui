@@ -4,57 +4,75 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class TCPClient {
   String serverAddress;
   int serverPort;
-  String receivedData;
+  String dataReceived, dataSent;
   bool isConnected, isDataReceived, isDataSent;
-  DateTime receivedDataTimestamp, sentDataTimestamp;
+  DateTime dataReceivedTimestamp, dataSentTimestamp;
+  List<String> dataReceivedList, dataSentList;
+  List<String> dataReceivedSentList;
 
   TCPClient(
     this.serverAddress,
     this.serverPort,
-    this.receivedData,
     this.isConnected,
+    this.dataReceived,
+    this.dataReceivedList,
     this.isDataReceived,
+    this.dataReceivedTimestamp,
+    this.dataSent,
+    this.dataSentList,
     this.isDataSent,
-    this.receivedDataTimestamp,
-    this.sentDataTimestamp,
+    this.dataSentTimestamp,
+    this.dataReceivedSentList,
   );
 
   factory TCPClient.initial() {
     return TCPClient(
       '127.0.0.1',
       88,
-      '',
       false,
-      false,
+      StringBuffer().toString(),
+      [StringBuffer().toString()],
       false,
       DateTime.now(),
+      StringBuffer().toString(),
+      [StringBuffer().toString()],
+      false,
       DateTime.now(),
+      [StringBuffer().toString()],
     );
   }
 
   TCPClient copyWith({
     String? serverAddress,
     int? serverPort,
-    String? receivedData,
     bool? isConnected,
+    String? dataReceived,
+    List<String>? dataReceivedList,
     bool? isDataReceived,
+    DateTime? dataReceivedTimestamp,
+    String? dataSent,
+    List<String>? dataSentList,
     bool? isDataSent,
-    DateTime? receivedDataTimestamp,
-    DateTime? sentDataTimestamp,
+    DateTime? dataSentTimestamp,
   }) {
     return TCPClient(
       serverAddress ?? this.serverAddress,
       serverPort ?? this.serverPort,
-      receivedData ?? this.receivedData,
       isConnected ?? this.isConnected,
+      dataReceived ?? this.dataReceived,
+      dataReceivedList ?? this.dataReceivedList,
       isDataReceived ?? this.isDataReceived,
+      dataReceivedTimestamp ?? this.dataReceivedTimestamp,
+      dataSent ?? this.dataSent,
+      dataSentList ?? this.dataSentList,
       isDataSent ?? this.isDataSent,
-      receivedDataTimestamp ?? this.receivedDataTimestamp,
-      sentDataTimestamp ?? this.sentDataTimestamp,
+      dataSentTimestamp ?? this.dataSentTimestamp,
+      dataReceivedSentList,
     );
   }
 }
@@ -72,25 +90,10 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
     }
   }
 
-  void changeDataSentState() {
-    state = state.copyWith(
-      isDataSent: true,
-    );
-  }
-
-  void changeDataReceivedState(Uint8List data) {
-    state = state.copyWith(
-      receivedDataTimestamp: DateTime.now(),
-      receivedData: String.fromCharCodes(data),
-      isDataReceived: true,
-    );
-    print('received data in function: ${state.receivedData}');
-  }
-
   Future<void> streamDone() async {
     state = state.copyWith(
       isConnected: false,
-      receivedData: '',
+      dataReceived: '',
       isDataReceived: false,
       isDataSent: false,
     );
@@ -99,12 +102,19 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
   }
 
   Future<void> writeToServer(String data) async {
-    state = state.copyWith(
-      sentDataTimestamp: DateTime.now(),
-    );
+    final _dateformat = DateFormat.Hms();
     socket?.write(data);
+    state = state.copyWith(
+      dataSent: data.substring(0, data.length - 1), // to remove line feed
+      dataSentTimestamp: DateTime.now(),
+    );
+    state.dataSentList
+        .add('#sent: ${_dateformat.format(DateTime.now())} ${state.dataSent}');
+
+    state.dataReceivedSentList.add(state.dataSentList.last);
+
     if (!state.isDataSent) {
-      changeDataSentState();
+      state = state.copyWith(isDataSent: true);
     }
   }
 
@@ -112,13 +122,25 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
     try {
       socket = await Socket.connect(state.serverAddress, state.serverPort);
       socket?.listen(
-        (Uint8List data) {
-          changeDataReceivedState(data);
+        (Uint8List data) async {
+          final _dateformat = DateFormat.Hms();
+          state = state.copyWith(
+            dataReceivedTimestamp: DateTime.now(),
+            dataReceived: String.fromCharCodes(data),
+            isDataReceived: true,
+          );
+          String.fromCharCodes(data).split('\n').toList().forEach((element) {
+            if (element.isNotEmpty) {
+              state.dataReceivedList.add(
+                '#received: ${_dateformat.format(state.dataReceivedTimestamp)} $element',
+              );
+              state.dataReceivedSentList.add(state.dataReceivedList.last);
+            }
+          });
         },
         onDone: () {
           changeConnectionState();
           streamDone();
-          print('socket is closed');
         },
       );
       changeConnectionState();

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../ipg/ipgscan_api.dart';
 import '../provider/tcp_provider.dart';
-import 'package:intl/intl.dart';
+
+// TODO: divide widgets to another files : connection_info to ???
 
 class IPAddressTextField extends ConsumerStatefulWidget {
   const IPAddressTextField({Key? key}) : super(key: key);
@@ -32,20 +32,7 @@ class _IPAddressTextFieldState extends ConsumerState<IPAddressTextField> {
     super.dispose();
   }
 
-  // // will be applied
-  // RegExp ipExp = RegExp(
-  //     r"^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$",
-  //     caseSensitive: false,
-  //     multiLine: false);
-
-  // void checkAddress() {
-  //   if (ipExp.hasMatch(ipAddressTextController.text)) {
-  //     print('${ipAddressTextController.text} is valid');
-  //   } else {
-  //     print('${ipAddressTextController.text} is not valid');
-  //   }
-  // }
-
+  // TODO: IP address check & validation
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -89,6 +76,7 @@ class _PortTextFieldState extends ConsumerState<PortTextField> {
     super.dispose();
   }
 
+  // TODO: IP port check & validation
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -111,7 +99,6 @@ class ConnectButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isConnected = ref.watch(tcpClientProvider).isConnected;
-    print('connect button: $isConnected');
     return isConnected
         ? const FloatingActionButton(
             onPressed: null,
@@ -139,7 +126,6 @@ class ConnectionCloseButton extends ConsumerWidget {
     return isClientConnected
         ? ElevatedButton(
             onPressed: () async {
-              // await ref.read(tcpClient2Provider.notifier).socket?.close();
               await ref.read(tcpClientProvider.notifier).streamDone();
             },
             child: const Text('Press for disconnect'),
@@ -157,7 +143,6 @@ class ConnectionIndicator extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isClientConnected = ref.watch(tcpClientProvider).isConnected;
-    print('connection indicator-isConnected: $isClientConnected');
     return ListTile(
       leading: Container(
         width: 30,
@@ -218,48 +203,71 @@ class DataReceiveIndicator extends ConsumerWidget {
   }
 }
 
-class ReceivedDataDisplay extends ConsumerWidget {
-  ReceivedDataDisplay({Key? key}) : super(key: key);
-  final _dateformat = DateFormat.Hms();
+class DataLine extends StatelessWidget {
+  const DataLine({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
+  final String data;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tcpClient = ref.watch(tcpClientProvider);
-    return Row(
-      children: [
-        const SizedBox(width: 16),
-        Expanded(
-          child: Align(
-            child: Text(
-                '${_dateformat.format(tcpClient.receivedDataTimestamp)}\n${tcpClient.receivedData}'),
-            alignment: Alignment.centerLeft,
-          ),
-        ),
-      ],
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text(data),
+      padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
+      margin: const EdgeInsets.only(left: 16.0),
+      alignment: Alignment.centerLeft,
+      decoration: const BoxDecoration(
+          border: Border.symmetric(vertical: BorderSide.none)),
     );
   }
 }
 
-class IPGScanStateDisplay extends ConsumerWidget {
-  IPGScanStateDisplay({Key? key}) : super(key: key);
-  final _dateformat = DateFormat.Hms();
-  // var commandedList = List<ipgScanCommandList>;
+class DataExchangeScrollView extends ConsumerStatefulWidget {
+  const DataExchangeScrollView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DataExchangeScrollViewState();
+}
+
+class _DataExchangeScrollViewState
+    extends ConsumerState<DataExchangeScrollView> {
+  final ScrollController _scrollController = ScrollController();
+
+  void animateScrollbarToBottom(Duration duration) {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: duration,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final tcpClient = ref.watch(tcpClientProvider);
-    final lastCommand = ref.watch(lastCommandProvider);
-    return Row(
-      children: [
-        const SizedBox(width: 16),
-        Align(
-          child: Text(
-            '${_dateformat.format(tcpClient.sentDataTimestamp)} Last command: ' +
-                ipgScanCommandMap[lastCommand].toString(),
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (_) => animateScrollbarToBottom(const Duration(milliseconds: 250)),
+    );
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.zero,
+        child: Scrollbar(
+          controller: _scrollController,
+          interactive: true,
+          isAlwaysShown: true,
+          showTrackOnHover: true,
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+                children: tcpClient.dataReceivedSentList
+                    .map((e) => DataLine(data: e))
+                    .toList()),
           ),
-          alignment: Alignment.centerLeft,
         ),
-      ],
+        padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
+        alignment: Alignment.bottomLeft,
+      ),
     );
   }
 }
