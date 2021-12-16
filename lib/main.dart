@@ -4,6 +4,7 @@ import 'widget/connection_info.dart';
 import 'widget/job_list_view.dart';
 import 'widget/command_button_grid.dart';
 import 'widget/data_exchange_list_view.dart';
+import 'widget/connection_info_indicators.dart';
 import 'widget/connection_control.dart';
 
 void main() {
