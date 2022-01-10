@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../provider/tcp_provider.dart';
 import '../ipg/ipgscan_api.dart';
 
+
 class IPGScanJobCommandButton extends ConsumerWidget {
   final ipgScanCommandList commandType;
   final String parameter;
@@ -20,6 +21,9 @@ class IPGScanJobCommandButton extends ConsumerWidget {
     final isConnected = ref.watch(tcpClientProvider).isConnected;
 
     return ElevatedButton(
+      style: const ButtonStyle(
+        alignment: Alignment.centerLeft,
+      ),
       onPressed: !isConnected
           ? null
           : () {
@@ -29,7 +33,11 @@ class IPGScanJobCommandButton extends ConsumerWidget {
 
               ref.read(lastCommandProvider.notifier).state = commandType;
             },
-      child: Text(labelName ?? 'label problem'),
+      child: Text(
+        labelName ?? 'label problem',
+        overflow: TextOverflow.ellipsis,
+        maxLines: 2,
+      ),
     );
   }
 }

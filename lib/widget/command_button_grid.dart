@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../widget/command_button.dart';
+import '../widget/reusables.dart';
 import '../ipg/ipgscan_api.dart';
 import '../provider/job_list_provider.dart';
 
