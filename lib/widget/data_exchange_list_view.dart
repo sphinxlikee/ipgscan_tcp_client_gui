@@ -14,7 +14,7 @@ class DataLine extends StatelessWidget {
     return Container(
       child: Text(data),
       padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
-      margin: const EdgeInsets.only(left: 16.0),
+      margin: const EdgeInsets.only(left: 4.0),
       alignment: Alignment.centerLeft,
       decoration: const BoxDecoration(
           border: Border.symmetric(vertical: BorderSide.none)),
