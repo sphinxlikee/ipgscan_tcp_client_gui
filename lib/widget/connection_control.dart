@@ -98,39 +98,41 @@ class ConnectButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isConnected = ref.watch(tcpClientProvider).isConnected;
     return isConnected
-        ? const FloatingActionButton(
-            onPressed: null,
-            child: Icon(Icons.connect_without_contact_outlined),
-            tooltip: 'Connected',
+        ? Container(
+            margin: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(16.0),
+            child: Tooltip(
+              message: 'Press for disconnect',
+              child: ElevatedButton(
+                onPressed: () async {
+                  await ref.read(tcpClientProvider.notifier).streamDone();
+                },
+                child: const Icon(Icons.sync_disabled_sharp),
+              ),
+            ),
+            decoration: const BoxDecoration(
+              shape: BoxShape.rectangle,
+            ),
+            width: double.infinity,
           )
-        : FloatingActionButton(
+        : Container(
+            margin: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(16.0),
+            child: Tooltip(
+              message: 'Press for connect',
+              child: ElevatedButton(
             onPressed: () async {
               await ref
                   .read(tcpClientProvider.notifier)
                   .createConnection(context);
             },
             child: const Icon(Icons.touch_app_sharp),
-            tooltip: 'Press for connect',
-          );
-  }
-}
-
-class ConnectionCloseButton extends ConsumerWidget {
-  const ConnectionCloseButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isClientConnected = ref.watch(tcpClientProvider).isConnected;
-    return isClientConnected
-        ? ElevatedButton(
-            onPressed: () async {
-              await ref.read(tcpClientProvider.notifier).streamDone();
-            },
-            child: const Text('Press for disconnect'),
-          )
-        : const ElevatedButton(
-            onPressed: null,
-            child: Text('Waiting for connection'),
+              ),
+            ),
+            decoration: const BoxDecoration(
+              shape: BoxShape.rectangle,
+            ),
+            width: double.infinity,
           );
   }
 }
