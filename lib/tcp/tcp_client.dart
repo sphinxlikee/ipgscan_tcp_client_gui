@@ -1,9 +1,9 @@
-// ignore_for_file: avoid_print
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tcp_client/provider/tcp_provider.dart';
 import 'package:intl/intl.dart';
 
 class TCPClient {
@@ -14,6 +14,7 @@ class TCPClient {
   DateTime dataReceivedTimestamp, dataSentTimestamp;
   List<String> dataReceivedList, dataSentList;
   List<String> dataReceivedSentList;
+  StreamSubscription<Uint8List>? tcpSubscription;
 
   TCPClient(
     this.serverAddress,
@@ -82,7 +83,7 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
   final TCPClient tcpClient;
   TCPClientNotifier(this.tcpClient) : super(tcpClient);
 
-  void changeConnectionState() {
+  Future<void> changeConnectionState() async {
     if (!state.isConnected) {
       state = state.copyWith(isConnected: true);
     } else {
@@ -101,7 +102,7 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
     await socket?.close();
   }
 
-  Future<void> writeToServer(String data) async {
+  writeToServer(String data) async {
     final _dateformat = DateFormat.Hms();
     socket?.write(data);
     state = state.copyWith(
@@ -121,7 +122,9 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
   Future<void> createConnection(BuildContext context) async {
     try {
       socket = await Socket.connect(state.serverAddress, state.serverPort);
-      socket?.listen(
+      tcpClient.tcpSubscription = socket!.listen((event) {});
+      
+      tcpClient.tcpSubscription!.onData(
         (Uint8List data) async {
           final _dateformat = DateFormat.Hms();
           state = state.copyWith(
@@ -129,20 +132,26 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
             dataReceived: String.fromCharCodes(data),
             isDataReceived: true,
           );
-          String.fromCharCodes(data).split('\n').toList().forEach((element) {
-            if (element.isNotEmpty) {
-              state.dataReceivedList.add(
-                '#received: ${_dateformat.format(state.dataReceivedTimestamp)} $element',
-              );
-              state.dataReceivedSentList.add(state.dataReceivedList.last);
-            }
-          });
+          String.fromCharCodes(data).split('\n').toList().forEach(
+            (element) {
+              if (element.isNotEmpty) {
+                state.dataReceivedList.add(
+                  '#received: ${_dateformat.format(state.dataReceivedTimestamp)} $element',
+                );
+                state.dataReceivedSentList.add(state.dataReceivedList.last);
+              }
+            },
+          );
         },
-        onDone: () {
+      );
+
+      tcpClient.tcpSubscription!.onDone(
+        () {
           changeConnectionState();
           streamDone();
         },
       );
+
       changeConnectionState();
     } catch (error) {
       return showDialog<void>(
