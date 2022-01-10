@@ -33,9 +33,12 @@ class _IPAddressTextFieldState extends ConsumerState<IPAddressTextField> {
   // TODO: IP address check & validation
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    final clientIsConnected = ref.watch(tcpClientProvider).isConnected;
+    return Container(
+      width: 144.0,
+      padding: const EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 4.0),
       child: TextField(
+        enabled: clientIsConnected ? false : true,
         controller: ipAddressTextController,
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
@@ -77,9 +80,12 @@ class _PortTextFieldState extends ConsumerState<PortTextField> {
   // TODO: IP port check & validation
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    final clientIsConnected = ref.watch(tcpClientProvider).isConnected;
+    return Container(
+      width: 144.0,
+      padding: const EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 4.0),
       child: TextField(
+        enabled: clientIsConnected ? false : true,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         controller: portTextController,
         decoration: const InputDecoration(
@@ -121,12 +127,12 @@ class ConnectButton extends ConsumerWidget {
             child: Tooltip(
               message: 'Press for connect',
               child: ElevatedButton(
-            onPressed: () async {
-              await ref
-                  .read(tcpClientProvider.notifier)
-                  .createConnection(context);
-            },
-            child: const Icon(Icons.touch_app_sharp),
+                onPressed: () async {
+                  await ref
+                      .read(tcpClientProvider.notifier)
+                      .createConnection(context);
+                },
+                child: const Icon(Icons.touch_app_sharp),
               ),
             ),
             decoration: const BoxDecoration(
