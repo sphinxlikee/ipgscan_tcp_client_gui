@@ -14,10 +14,10 @@ class CommandButtonGrid extends ConsumerWidget {
 
     return GridView.count(
       crossAxisCount: 2,
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(4.0),
       mainAxisSpacing: 4.0,
       crossAxisSpacing: 4.0,
-      childAspectRatio: 8.0,
+      childAspectRatio: 4.0,
       children: [
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.jobOpen,
