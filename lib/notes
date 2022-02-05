@@ -1,0 +1,71 @@
+
+
+/// notes
+/// 7.10.2021
+/// /windows/runner/main.cpp icerisinden CreateAndShow kısmından
+/// uygulama title degistirilebiliyor.
+
+
+/// bugs
+/// 
+/// 5.8.21
+/// 1-bağlantı kurulduktan sonra gelen stop ekranı kapatılabiliyor.
+/// kapattıktan sonra job start komutu verirsem devam edip çalışıyor
+/// 
+/// 2-SystemSetVariable 1 abc yaptıktan sonra 1 numaralı değişken okunmak
+/// istendiğinde "bc" olarak döndürüyor. IPGWeld ekranında gözüken.
+/// 
+/// 6.10.21
+/// 3-Error bilgisi yazı olarak gelmemeli. Hata kodu olarak gelmeli0
+/// 
+/// 22.10.21
+/// 4-JobList cevabında End Of Job List'in sonunda \r\n olduğu için listede
+///  bir tane daha varmış gibi görüyor.
+
+
+/// init state, add post frame , build vb. yerlere
+/// print ekleyerek widget life cycle oluştur
+
+
+
+/// stful bir widget focustayken build ( addpostframe()) şeklinde
+/// bir kod varsa fokustan çıkana kadar kod çalışıyor
+/// provider varsa build methodda, kullanmasan bile tetikleniyor yeniden
+/// build ediyor.
+/*
+  var counter = 0;
+  void incrementCounter() {
+    print('incrementCounter()');
+    counter++;
+    print('counter: $counter');
+  }
+
+  @override
+  void initState() {
+    print('initState()');
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final tcpClient = ref.watch(tcpClientProvider);
+    final jobListWatcher = ref.watch(jobListProvider);
+    final selectedJobIndex = ref.watch(selectedJobIndexProvider);
+    final lastCommand = ref.watch(lastCommandProvider);
+    print('build()');
+    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //   print('addPostFrameCallback()');
+    //   incrementCounter();
+    // });
+
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (_) {
+        print('addPostFrameCallback()');
+        counter++;
+        print('counter: $counter');
+        if (lastCommand == ipgScanCommandList.jobList) {
+          jobListWatcher.jobListParser(tcpClient.dataReceived);
+        }
+      },
+    );
+    */
