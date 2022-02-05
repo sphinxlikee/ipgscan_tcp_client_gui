@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tcp_client/ipg/ipgscan_api.dart';
 import 'package:flutter_tcp_client/widget/scanners_list_view.dart';
 import 'widget/job_list_view.dart';
 import 'widget/command_button_grid.dart';
@@ -108,26 +109,35 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.all(4.0),
                     child: Column(
                       children: [
-                        const InfoLabel(text: 'Computer name:'),
-                        const InfoLabel(text: 'IPGScan status:'),
-                        const InfoLabel(text: 'Connected scanner:'),
-                        const InfoLabel(text: 'Encoding:'),
-                        const InfoLabel(text: 'Start bit:'),
-                        const InfoLabel(text: 'Enable bit:'),
-                        const InfoLabel(text: 'Port A:'),
+                        InfoLabel('Computer name',
+                            ipgScanCommandList.connectionGetStatus),
+                        InfoLabel('Connected scanner',
+                            ipgScanCommandList.scannerGetStatus),
+                        InfoLabel(
+                            'IPGScan status', ipgScanCommandList.jobGetStatus),
+                        InfoLabel('Encoding', ipgScanCommandList.getEncoding),
+                        InfoLabel(
+                            'Start bit', ipgScanCommandList.scannerGetStartBit),
+                        InfoLabel('Enable bit',
+                            ipgScanCommandList.scannerGetEnableBit),
+                        InfoLabel('Port A', ipgScanCommandList.scannerGetPortA),
+                        InfoLabel('Scanner connection status',
+                            ipgScanCommandList.scannerGetConnectionStatus),
+                        InfoLabel('Last job status',
+                            ipgScanCommandList.jobLastRunSuccessful),
                         const GalvoPosition(
                           enableState: true,
                         ),
                         const GalvoPosition(
                           enableState: false,
                         ),
-                        const InfoLabel(text: 'Scanner connection status:'),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
-                            InfoLabel(text: 'Set variable '),
-                            VariableList(),
-                            SizedBox(
+                          children: [
+                            InfoLabel('Set variable',
+                                ipgScanCommandList.systemSetVariable),
+                            const VariableList(),
+                            const SizedBox(
                               height: 24,
                               width: 24,
                               child: TextField(
@@ -139,10 +149,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                         Row(
-                          children: const [
-                            InfoLabel(text: 'Get variable '),
-                            VariableList(),
-                            SizedBox(
+                          children: [
+                            InfoLabel('Get variable: ',
+                                ipgScanCommandList.systemGetVariable),
+                            const VariableList(),
+                            const SizedBox(
                               height: 24,
                               width: 24,
                               child: TextField(
@@ -161,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          Container(width: 2, color: Colors.black26),
+          const VerticalDivider(color: Colors.black38, thickness: 1,width: 4),
           Expanded(
             flex: 2,
             child: Column(
@@ -171,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          Container(width: 2, color: Colors.black26),
+          const VerticalDivider(color: Colors.black38, thickness: 1,width: 4),
           Expanded(
             flex: 2,
             child: Column(
@@ -179,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 TitleWidget(text: 'Job list in C:\\IPGP\\IPGScan\\Jobs'),
                 Expanded(child: JobListView()),
                 TitleWidget(text: 'Scanner list'),
-                Expanded(child: ScannersListView()),
+                Expanded(child: ScannerListView()),
                 TitleWidget(text: 'Data communication'),
                 DataExchangeScrollView(),
               ],
