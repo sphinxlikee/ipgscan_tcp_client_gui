@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../ipg/ipgscan_api.dart';
 import '../provider/tcp_provider.dart';
-import '../provider/job_list_provider.dart';
+import '../provider/scanner_list_provider.dart';
 
 class ScannerListView extends ConsumerStatefulWidget {
   const ScannerListView({Key? key}) : super(key: key);
