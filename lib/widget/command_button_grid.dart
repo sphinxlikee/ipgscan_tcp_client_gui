@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widget/reusables.dart';
 import '../ipg/ipgscan_api.dart';
 import '../provider/job_list_provider.dart';
+import '../provider/scanner_list_provider.dart';
 
 class CommandButtonGrid extends ConsumerWidget {
   const CommandButtonGrid({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class CommandButtonGrid extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedJobIndex = ref.watch(selectedJobIndexProvider);
     final jobListWatcher = ref.watch(jobListProvider);
+    final selectedScannerIndex = ref.watch(selectedScannerIndexProvider);
+    final scannerListWatcher = ref.watch(scannerListProvider);
 
     return GridView.count(
       crossAxisCount: 2,
@@ -82,16 +85,16 @@ class CommandButtonGrid extends ConsumerWidget {
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          /// update parameter
-          /// parameter: scanner name
           commandType: ipgScanCommandList.scannerLock,
-          parameter: parameterScannerName,
+          parameter: scannerListWatcher.scannerList.isEmpty
+              ? 'not selected'
+              : scannerListWatcher.scannerList[selectedScannerIndex],
         ),
         IPGScanJobCommandButton(
-          /// update parameter
-          /// parameter: scanner name
           commandType: ipgScanCommandList.scannerUnlock,
-          parameter: parameterScannerName,
+          parameter: scannerListWatcher.scannerList.isEmpty
+              ? 'not selected'
+              : scannerListWatcher.scannerList[selectedScannerIndex],
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.scannerInit,
@@ -115,7 +118,9 @@ class CommandButtonGrid extends ConsumerWidget {
           /// update parameter
           /// parameter: scanner name
           commandType: ipgScanCommandList.scannerGetConnectionStatus,
-          parameter: parameterScannerName,
+          parameter: scannerListWatcher.scannerList.isEmpty
+              ? 'not selected'
+              : scannerListWatcher.scannerList[selectedScannerIndex],
         ),
         IPGScanJobCommandButton(
           /// update parameter
