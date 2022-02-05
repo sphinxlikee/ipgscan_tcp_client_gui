@@ -12,4 +12,11 @@ final tcpClientProvider = StateNotifierProvider<TCPClientNotifier, TCPClient>(
 );
 
 final lastCommandProvider =
-    StateProvider((ref) => ipgScanCommandList.noCommand);
+    StateProvider<ipgScanCommandList>((ref) => ipgScanCommandList.noCommand);
+
+final tcpClientdataProvider = StateProvider<String>((ref) {
+  final data = ref.watch(tcpClientProvider).dataReceived;
+  print('data: $data');
+
+  return data;
+});
