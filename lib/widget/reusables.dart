@@ -192,15 +192,15 @@ class _VariableListState extends State<VariableList> {
   }
 }
 
-class GalvoPosition extends StatefulWidget {
-  const GalvoPosition({Key? key, required this.readOnly}) : super(key: key);
+class BeamPosition extends StatefulWidget {
+  const BeamPosition({Key? key, required this.readOnly}) : super(key: key);
   final bool readOnly;
 
   @override
-  _GalvoPositionState createState() => _GalvoPositionState();
+  _BeamPositionState createState() => _BeamPositionState();
 }
 
-class _GalvoPositionState extends State<GalvoPosition> {
+class _BeamPositionState extends State<BeamPosition> {
   @override
   Widget build(BuildContext context) {
     return Flex(
@@ -208,8 +208,8 @@ class _GalvoPositionState extends State<GalvoPosition> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         widget.readOnly
-            ? InfoLabel('Set galvo position', ipgScanCommandList.scannerParkAt)
-            : InfoLabel('Get galvo position',
+            ? InfoLabel('Set beam position', ipgScanCommandList.scannerParkAt)
+            : InfoLabel('Get beam position',
                 ipgScanCommandList.scannerGetWorkspacePosition),
         Container(
           height: 24,

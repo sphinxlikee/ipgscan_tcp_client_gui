@@ -125,12 +125,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             ipgScanCommandList.scannerGetConnectionStatus),
                         InfoLabel('Last job status',
                             ipgScanCommandList.jobLastRunSuccessful),
-                        const GalvoPosition(
-                          readOnly: true,
-                        ),
-                        const GalvoPosition(
-                          readOnly: false,
-                        ),
+                        const BeamPosition(readOnly: false),
+                        const BeamPosition(readOnly: true),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
