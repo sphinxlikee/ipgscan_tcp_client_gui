@@ -193,8 +193,8 @@ class _VariableListState extends State<VariableList> {
 }
 
 class GalvoPosition extends StatefulWidget {
-  const GalvoPosition({Key? key, required this.enableState}) : super(key: key);
-  final bool enableState;
+  const GalvoPosition({Key? key, required this.readOnly}) : super(key: key);
+  final bool readOnly;
 
   @override
   _GalvoPositionState createState() => _GalvoPositionState();
@@ -207,7 +207,7 @@ class _GalvoPositionState extends State<GalvoPosition> {
       direction: Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        widget.enableState
+        widget.readOnly
             ? InfoLabel('Set galvo position', ipgScanCommandList.scannerParkAt)
             : InfoLabel('Get galvo position',
                 ipgScanCommandList.scannerGetWorkspacePosition),
@@ -215,7 +215,8 @@ class _GalvoPositionState extends State<GalvoPosition> {
           height: 24,
           width: 60,
           child: TextField(
-            enabled: widget.enableState,
+            readOnly:
+                widget.readOnly,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),
@@ -226,7 +227,7 @@ class _GalvoPositionState extends State<GalvoPosition> {
           height: 24,
           width: 60,
           child: TextField(
-            enabled: widget.enableState,
+            readOnly: widget.readOnly,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),
@@ -237,7 +238,7 @@ class _GalvoPositionState extends State<GalvoPosition> {
           height: 24,
           width: 60,
           child: TextField(
-            enabled: widget.enableState,
+            readOnly: widget.readOnly,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),

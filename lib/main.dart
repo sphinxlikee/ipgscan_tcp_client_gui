@@ -126,10 +126,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         InfoLabel('Last job status',
                             ipgScanCommandList.jobLastRunSuccessful),
                         const GalvoPosition(
-                          enableState: true,
+                          readOnly: true,
                         ),
                         const GalvoPosition(
-                          enableState: false,
+                          readOnly: false,
                         ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
