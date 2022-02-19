@@ -66,7 +66,7 @@ class CommandButtonGrid extends ConsumerWidget {
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          commandType: ipgScanCommandList.connectionGetStatus,
+          commandType: ipgScanCommandList.jobOpenedList,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
@@ -75,6 +75,10 @@ class CommandButtonGrid extends ConsumerWidget {
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.jobGetStatus,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.jobExport,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
@@ -87,6 +91,10 @@ class CommandButtonGrid extends ConsumerWidget {
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.scannerGetEnableBit,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.connectionGetStatus,
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
@@ -122,24 +130,26 @@ class CommandButtonGrid extends ConsumerWidget {
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          /// update parameter
-          /// parameter: scanner name
+          commandType: ipgScanCommandList.scannerGetStatusList,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
           commandType: ipgScanCommandList.scannerGetConnectionStatus,
           parameter: scannerListWatcher.scannerList.isEmpty
               ? 'not selected'
               : scannerListWatcher.scannerList[selectedScannerIndex],
         ),
         IPGScanJobCommandButton(
-          /// update parameter
-          /// parameter: check it
-          commandType: ipgScanCommandList.systemSetVariable,
-          parameter: '$parameterVariableNumber $parameterVariableValue',
+          commandType: ipgScanCommandList.scannerGuideOff,
+          parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          /// update parameter
-          /// parameter: check it
+          commandType: ipgScanCommandList.systemSetVariable,
+          parameter: '$setVariable $setVariableValue',
+        ),
+        IPGScanJobCommandButton(
           commandType: ipgScanCommandList.systemGetVariable,
-          parameter: parameterVariableNumber,
+          parameter: '$getVariable',
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.jobGetStatus2,
@@ -150,6 +160,41 @@ class CommandButtonGrid extends ConsumerWidget {
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.scannerGetMessageStatus,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.systemGetVersion,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.dwsResetRunningMax,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.dwsGetRunningMax,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.dwsGetInstantValue,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.systemResetAllAlarms,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.laserGetStatusCode,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.laserGetStatusMessage,
+          parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.help,
+          parameter: parameterNone,
+        ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.helpCommand,
           parameter: helpSpecialCommand,
