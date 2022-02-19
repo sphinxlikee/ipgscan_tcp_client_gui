@@ -133,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ipgScanCommandList.jobStart),
                             const JobStartGuideCheckBox(),
                           ],
-                                ),
+                        ),
                         Row(
                           children: [
                             InfoLabel('Job Start -savefile',
@@ -148,6 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             const JobStartGroupName(),
                           ],
                         ),
+                        const CommandListWidget(),
                       ],
                     ),
                   ),

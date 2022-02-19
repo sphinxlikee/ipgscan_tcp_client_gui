@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../provider/job_command_providers.dart';
 import '../provider/tcp_provider.dart';
 import '../ipg/ipgscan_api.dart';
 
@@ -546,7 +548,8 @@ class _InfoLabelState extends ConsumerState<InfoLabel> {
     final lastCommand = ref.watch(lastCommandProvider);
     final dataReceived = ref.watch(tcpClientProvider).dataReceived;
 
-    if (widget.commandType == ipgScanCommandList.systemSetVariable ||
+    if (widget.commandType == ipgScanCommandList.jobStart ||
+        widget.commandType == ipgScanCommandList.systemSetVariable ||
         widget.commandType == ipgScanCommandList.systemGetVariable ||
         widget.commandType == ipgScanCommandList.scannerParkAt ||
         widget.commandType == ipgScanCommandList.scannerGetWorkspacePosition) {
@@ -554,7 +557,6 @@ class _InfoLabelState extends ConsumerState<InfoLabel> {
     } else if (widget.commandType == lastCommand) {
       widget.receivedDataText = dataReceived;
       widget.receivedDataText.trim();
-      // widget.receivedDataText.split('\n');
     }
 
     return Container(
@@ -669,6 +671,68 @@ class _JobStartGroupNameState extends ConsumerState<JobStartGroupName> {
         ),
       ),
       padding: const EdgeInsets.all(2.0),
+    );
+  }
+}
+
+class CommandListWidget extends ConsumerStatefulWidget {
+  const CommandListWidget({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _CommandListWidgetState();
+}
+
+class _CommandListWidgetState extends ConsumerState<CommandListWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        InfoLabel('Command List', ipgScanCommandList.noCommand),
+        const CommandDropDownList(),
+      ],
+    );
+  }
+}
+
+class CommandDropDownList extends ConsumerStatefulWidget {
+  const CommandDropDownList({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _CommandDropDownList();
+}
+
+class _CommandDropDownList extends ConsumerState<CommandDropDownList> {
+  int dropdownValue = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    final helpCommand = ref.watch(helpSpecialCommandProvider.notifier);
+
+    return DropdownButtonHideUnderline(
+      child: DropdownButton<int>(
+        value: dropdownValue,
+        onChanged: (newValue) {
+          setState(() {
+            dropdownValue = newValue!;
+            helpCommand.state = ipgScanCommandMap[
+                    ipgScanCommandList.values.elementAt(dropdownValue)]
+                .toString();
+          });
+        },
+        items: List.generate(
+          ipgScanCommandMap.length,
+          (index) => index,
+        )
+            .map(
+              (e) => DropdownMenuItem(
+                value: e,
+                child: Text(
+                  '${ipgScanCommandMap[ipgScanCommandList.values.elementAt(e)]}',
+                ),
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }

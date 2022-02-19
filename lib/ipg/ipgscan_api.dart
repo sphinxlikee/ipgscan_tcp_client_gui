@@ -147,8 +147,8 @@ const Map<ipgScanCommandList, String> ipgScanCommandMap = {
   ipgScanCommandList.systemResetAllAlarms: 'System Reset All Alarms',
   ipgScanCommandList.laserGetStatusCode: 'Laser Get Status Code',
   ipgScanCommandList.laserGetStatusMessage: 'Laser Get Status Message',
-  ipgScanCommandList.help: 'Help',
-  ipgScanCommandList.helpCommand: 'Help Command',
+  ipgScanCommandList.help: 'Commands list',
+  ipgScanCommandList.helpCommand: 'Command help',
 };
 
 // parameters
@@ -169,6 +169,8 @@ String setCommand(ipgScanCommandList command, String parameter) {
       command == ipgScanCommandList.systemSetVariable ||
       command == ipgScanCommandList.systemGetVariable) {
     return '${ipgScanCommandMap[command]?.replaceAll(' ', '')} $parameter\r\n';
+  } else if (command == ipgScanCommandList.helpCommand) {
+    return 'Help ${parameter.replaceAll(' ', '')}\r\n';
   } else {
     return '${ipgScanCommandMap[command]?.replaceAll(' ', '')}\r\n';
   }

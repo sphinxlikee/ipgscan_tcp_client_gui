@@ -27,3 +27,7 @@ final setVariableValueProvider = StateProvider<String>((ref) {
 final getVariableProvider = StateProvider<int>((ref) {
   return 1;
 });
+
+final helpSpecialCommandProvider = StateProvider<String>((ref) {
+  return 'No command';
+});

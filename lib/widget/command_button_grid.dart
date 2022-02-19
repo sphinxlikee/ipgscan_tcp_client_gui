@@ -22,6 +22,7 @@ class CommandButtonGrid extends ConsumerWidget {
     final setVariable = ref.watch(setVariableProvider);
     final setVariableValue = ref.watch(setVariableValueProvider);
     final getVariable = ref.watch(getVariableProvider);
+    final helpSpecialCommand = ref.watch(helpSpecialCommandProvider);
 
     return GridView.count(
       crossAxisCount: 2,
@@ -147,6 +148,11 @@ class CommandButtonGrid extends ConsumerWidget {
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.jobLastRunSuccessful,
           parameter: parameterNone,
+        ),
+        IPGScanJobCommandButton(
+        IPGScanJobCommandButton(
+          commandType: ipgScanCommandList.helpCommand,
+          parameter: helpSpecialCommand,
         ),
       ],
     );
