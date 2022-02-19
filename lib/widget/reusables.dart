@@ -68,26 +68,220 @@ class TitleWidget extends StatelessWidget {
   }
 }
 
-class VariableList extends StatefulWidget {
-  const VariableList({Key? key}) : super(key: key);
+class SetVariableWidget extends ConsumerStatefulWidget {
+  const SetVariableWidget({Key? key}) : super(key: key);
 
   @override
-  _VariableListState createState() => _VariableListState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SetVariableWidgetState();
 }
 
-class _VariableListState extends State<VariableList> {
+class _SetVariableWidgetState extends ConsumerState<SetVariableWidget> {
+  @override
+  Widget build(BuildContext context) {
+    final setVariableValue = ref.watch(setVariableValueProvider.notifier);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        InfoLabel('Set variable', ipgScanCommandList.systemSetVariable),
+        const SetVariableList(),
+        Container(
+          height: 24,
+          width: 90,
+          child: TextField(
+            onChanged: (value) {
+              setVariableValue.state = value;
+            },
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+          ),
+          padding: const EdgeInsets.all(2.0),
+        ),
+      ],
+    );
+  }
+}
+
+class SetVariableList extends ConsumerStatefulWidget {
+  const SetVariableList({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SetVariableListState();
+}
+
+class _SetVariableListState extends ConsumerState<SetVariableList> {
   int dropdownValue = 1;
 
   @override
   Widget build(BuildContext context) {
+    final variable = ref.watch(setVariableProvider.notifier);
     return DropdownButtonHideUnderline(
       child: DropdownButton<int>(
         value: dropdownValue,
         onChanged: (newValue) {
           setState(() {
             dropdownValue = newValue!;
+            variable.state = dropdownValue;
           });
-          print(dropdownValue);
+        },
+        items: const [
+          DropdownMenuItem(
+            value: 1,
+            child: Text('1'),
+          ),
+          DropdownMenuItem(
+            value: 2,
+            child: Text('2'),
+          ),
+          DropdownMenuItem(
+            value: 3,
+            child: Text('3'),
+          ),
+          DropdownMenuItem(
+            value: 4,
+            child: Text('4'),
+          ),
+          DropdownMenuItem(
+            value: 5,
+            child: Text('5'),
+          ),
+          DropdownMenuItem(
+            value: 6,
+            child: Text('6'),
+          ),
+          DropdownMenuItem(
+            value: 7,
+            child: Text('7'),
+          ),
+          DropdownMenuItem(
+            value: 8,
+            child: Text('8'),
+          ),
+          DropdownMenuItem(
+            value: 9,
+            child: Text('9'),
+          ),
+          DropdownMenuItem(
+            value: 10,
+            child: Text('10'),
+          ),
+          DropdownMenuItem(
+            value: 11,
+            child: Text('11'),
+          ),
+          DropdownMenuItem(
+            value: 12,
+            child: Text('12'),
+          ),
+          DropdownMenuItem(
+            value: 13,
+            child: Text('13'),
+          ),
+          DropdownMenuItem(
+            value: 14,
+            child: Text('14'),
+          ),
+          DropdownMenuItem(
+            value: 15,
+            child: Text('15'),
+          ),
+          DropdownMenuItem(
+            value: 16,
+            child: Text('16'),
+          ),
+          DropdownMenuItem(
+            value: 17,
+            child: Text('17'),
+          ),
+          DropdownMenuItem(
+            value: 18,
+            child: Text('18'),
+          ),
+          DropdownMenuItem(
+            value: 19,
+            child: Text('19'),
+          ),
+          DropdownMenuItem(
+            value: 20,
+            child: Text('20'),
+          ),
+          DropdownMenuItem(
+            value: 21,
+            child: Text('21'),
+          ),
+          DropdownMenuItem(
+            value: 22,
+            child: Text('22'),
+          ),
+          DropdownMenuItem(
+            value: 23,
+            child: Text('23'),
+          ),
+          DropdownMenuItem(
+            value: 24,
+            child: Text('24'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class GetVariableWidget extends ConsumerStatefulWidget {
+  const GetVariableWidget({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _GetVariableWidgetState();
+}
+
+class _GetVariableWidgetState extends ConsumerState<GetVariableWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        InfoLabel('Get variable: ', ipgScanCommandList.systemGetVariable),
+        const GetVariableList(),
+        Container(
+          height: 24,
+          width: 90,
+          child: const TextField(
+            readOnly: true,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+          ),
+          padding: const EdgeInsets.all(2.0),
+        ),
+      ],
+    );
+  }
+}
+
+class GetVariableList extends ConsumerStatefulWidget {
+  const GetVariableList({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _GetVariableListState();
+}
+
+class _GetVariableListState extends ConsumerState<GetVariableList> {
+  int dropdownValue = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    final variable = ref.watch(getVariableProvider.notifier);
+    return DropdownButtonHideUnderline(
+      child: DropdownButton<int>(
+        value: dropdownValue,
+        onChanged: (newValue) {
+          setState(() {
+            dropdownValue = newValue!;
+            variable.state = dropdownValue;
+          });
         },
         items: const [
           DropdownMenuItem(

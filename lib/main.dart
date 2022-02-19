@@ -127,6 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             ipgScanCommandList.jobLastRunSuccessful),
                         const BeamPositionSet(),
                         const BeamPositionGet(),
+                        const SetVariableWidget(),
+                        const GetVariableWidget(),
                         Row(
                           children: [
                             InfoLabel('Job Start -guide',
