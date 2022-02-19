@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tcp_client/provider/tcp_provider.dart';
 import 'package:intl/intl.dart';
 
 class TCPClient {
@@ -130,7 +129,6 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
           dataReceived: String.fromCharCodes(data),
           isDataReceived: true,
         );
-        print(state.dataReceived);
         String.fromCharCodes(data).split('\n').toList().forEach(
           (element) {
             if (element.isNotEmpty) {
