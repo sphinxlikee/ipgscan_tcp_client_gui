@@ -17,6 +17,7 @@ class CommandButtonGrid extends ConsumerWidget {
     final jobStartGuideOption = ref.watch(jobStartGuideOptionProvider);
     final jobStartSavefileOption = ref.watch(jobStartSavefileOptionProvider);
     final jobStartGroupOption = ref.watch(jobStartGroupOptionProvider);
+    final beamPositionSet = ref.watch(beamPositionSetProvider);
 
     return GridView.count(
       crossAxisCount: 2,

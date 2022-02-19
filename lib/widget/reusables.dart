@@ -192,58 +192,144 @@ class _VariableListState extends State<VariableList> {
   }
 }
 
-class BeamPosition extends StatefulWidget {
-  const BeamPosition({Key? key, required this.readOnly}) : super(key: key);
-  final bool readOnly;
+class BeamPositionSet extends ConsumerStatefulWidget {
+  const BeamPositionSet({Key? key}) : super(key: key);
 
   @override
-  _BeamPositionState createState() => _BeamPositionState();
+  ConsumerState<ConsumerStatefulWidget> createState() => BeamPositionSetState();
 }
 
-class _BeamPositionState extends State<BeamPosition> {
+class BeamPositionSetState extends ConsumerState<BeamPositionSet> {
+  String xValue = '0', yValue = '0', zValue = '0';
+
+  void updatePosition() {
+    ref.read(beamPositionSetProvider.notifier).state =
+        '$xValue $yValue $zValue';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Flex(
       direction: Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        widget.readOnly
-            ? InfoLabel('Set beam position', ipgScanCommandList.scannerParkAt)
-            : InfoLabel('Get beam position',
-                ipgScanCommandList.scannerGetWorkspacePosition),
+        InfoLabel('Set beam position', ipgScanCommandList.scannerParkAt),
         Container(
           height: 24,
-          width: 60,
+          width: 72,
           child: TextField(
-            readOnly:
-                widget.readOnly,
+            onChanged: (value) {
+              xValue = value;
+              if (xValue.isEmpty) {
+                xValue = '0';
+              }
+              updatePosition();
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+              LengthLimitingTextInputFormatter(5),
+            ],
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(2.0),
         ),
         Container(
           height: 24,
-          width: 60,
+          width: 72,
           child: TextField(
-            readOnly: widget.readOnly,
+            onChanged: (value) {
+              yValue = value;
+              if (yValue.isEmpty) {
+                yValue = '0';
+              }
+              updatePosition();
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+              LengthLimitingTextInputFormatter(5),
+            ],
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(2.0),
         ),
         Container(
           height: 24,
-          width: 60,
+          width: 72,
           child: TextField(
-            readOnly: widget.readOnly,
+            onChanged: (value) {
+              zValue = value;
+              if (zValue.isEmpty) {
+                zValue = '0';
+              }
+              updatePosition();
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+              LengthLimitingTextInputFormatter(5),
+            ],
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(2.0),
+        ),
+      ],
+    );
+  }
+}
+
+class BeamPositionGet extends ConsumerStatefulWidget {
+  const BeamPositionGet({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => BeamPositionGetState();
+}
+
+class BeamPositionGetState extends ConsumerState<BeamPositionGet> {
+  @override
+  Widget build(BuildContext context) {
+    return Flex(
+      direction: Axis.horizontal,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        InfoLabel('Get beam position',
+            ipgScanCommandList.scannerGetWorkspacePosition),
+        Container(
+          height: 24,
+          width: 72,
+          child: const TextField(
+            readOnly: true,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+          ),
+          padding: const EdgeInsets.all(2.0),
+        ),
+        Container(
+          height: 24,
+          width: 72,
+          child: const TextField(
+            readOnly: true,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+          ),
+          padding: const EdgeInsets.all(2.0),
+        ),
+        Container(
+          height: 24,
+          width: 72,
+          child: const TextField(
+            readOnly: true,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+          ),
+          padding: const EdgeInsets.all(2.0),
         ),
       ],
     );

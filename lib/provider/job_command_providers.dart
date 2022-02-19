@@ -11,3 +11,7 @@ final jobStartSavefileOptionProvider = StateProvider<String>((ref) {
 final jobStartGroupOptionProvider = StateProvider<String>((ref) {
   return '';
 });
+
+final beamPositionSetProvider = StateProvider<String>((ref) {
+  return '0 0 0';
+});

@@ -125,8 +125,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             ipgScanCommandList.scannerGetConnectionStatus),
                         InfoLabel('Last job status',
                             ipgScanCommandList.jobLastRunSuccessful),
-                        const BeamPosition(readOnly: false),
-                        const BeamPosition(readOnly: true),
+                        const BeamPositionSet(),
+                        const BeamPositionGet(),
                         Row(
                           children: [
                             InfoLabel('Job Start -guide',
