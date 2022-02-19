@@ -128,104 +128,9 @@ class _SetVariableListState extends ConsumerState<SetVariableList> {
             variable.state = dropdownValue;
           });
         },
-        items: const [
-          DropdownMenuItem(
-            value: 1,
-            child: Text('1'),
-          ),
-          DropdownMenuItem(
-            value: 2,
-            child: Text('2'),
-          ),
-          DropdownMenuItem(
-            value: 3,
-            child: Text('3'),
-          ),
-          DropdownMenuItem(
-            value: 4,
-            child: Text('4'),
-          ),
-          DropdownMenuItem(
-            value: 5,
-            child: Text('5'),
-          ),
-          DropdownMenuItem(
-            value: 6,
-            child: Text('6'),
-          ),
-          DropdownMenuItem(
-            value: 7,
-            child: Text('7'),
-          ),
-          DropdownMenuItem(
-            value: 8,
-            child: Text('8'),
-          ),
-          DropdownMenuItem(
-            value: 9,
-            child: Text('9'),
-          ),
-          DropdownMenuItem(
-            value: 10,
-            child: Text('10'),
-          ),
-          DropdownMenuItem(
-            value: 11,
-            child: Text('11'),
-          ),
-          DropdownMenuItem(
-            value: 12,
-            child: Text('12'),
-          ),
-          DropdownMenuItem(
-            value: 13,
-            child: Text('13'),
-          ),
-          DropdownMenuItem(
-            value: 14,
-            child: Text('14'),
-          ),
-          DropdownMenuItem(
-            value: 15,
-            child: Text('15'),
-          ),
-          DropdownMenuItem(
-            value: 16,
-            child: Text('16'),
-          ),
-          DropdownMenuItem(
-            value: 17,
-            child: Text('17'),
-          ),
-          DropdownMenuItem(
-            value: 18,
-            child: Text('18'),
-          ),
-          DropdownMenuItem(
-            value: 19,
-            child: Text('19'),
-          ),
-          DropdownMenuItem(
-            value: 20,
-            child: Text('20'),
-          ),
-          DropdownMenuItem(
-            value: 21,
-            child: Text('21'),
-          ),
-          DropdownMenuItem(
-            value: 22,
-            child: Text('22'),
-          ),
-          DropdownMenuItem(
-            value: 23,
-            child: Text('23'),
-          ),
-          DropdownMenuItem(
-            value: 24,
-            child: Text('24'),
-          ),
-        ],
+        items: List.generate(24, (index) => index)
+            .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
+            .toList(),
       ),
     );
   }
@@ -284,105 +189,9 @@ class _GetVariableListState extends ConsumerState<GetVariableList> {
             dropdownValue = newValue!;
             variable.state = dropdownValue;
           });
-        },
-        items: const [
-          DropdownMenuItem(
-            value: 1,
-            child: Text('1'),
-          ),
-          DropdownMenuItem(
-            value: 2,
-            child: Text('2'),
-          ),
-          DropdownMenuItem(
-            value: 3,
-            child: Text('3'),
-          ),
-          DropdownMenuItem(
-            value: 4,
-            child: Text('4'),
-          ),
-          DropdownMenuItem(
-            value: 5,
-            child: Text('5'),
-          ),
-          DropdownMenuItem(
-            value: 6,
-            child: Text('6'),
-          ),
-          DropdownMenuItem(
-            value: 7,
-            child: Text('7'),
-          ),
-          DropdownMenuItem(
-            value: 8,
-            child: Text('8'),
-          ),
-          DropdownMenuItem(
-            value: 9,
-            child: Text('9'),
-          ),
-          DropdownMenuItem(
-            value: 10,
-            child: Text('10'),
-          ),
-          DropdownMenuItem(
-            value: 11,
-            child: Text('11'),
-          ),
-          DropdownMenuItem(
-            value: 12,
-            child: Text('12'),
-          ),
-          DropdownMenuItem(
-            value: 13,
-            child: Text('13'),
-          ),
-          DropdownMenuItem(
-            value: 14,
-            child: Text('14'),
-          ),
-          DropdownMenuItem(
-            value: 15,
-            child: Text('15'),
-          ),
-          DropdownMenuItem(
-            value: 16,
-            child: Text('16'),
-          ),
-          DropdownMenuItem(
-            value: 17,
-            child: Text('17'),
-          ),
-          DropdownMenuItem(
-            value: 18,
-            child: Text('18'),
-          ),
-          DropdownMenuItem(
-            value: 19,
-            child: Text('19'),
-          ),
-          DropdownMenuItem(
-            value: 20,
-            child: Text('20'),
-          ),
-          DropdownMenuItem(
-            value: 21,
-            child: Text('21'),
-          ),
-          DropdownMenuItem(
-            value: 22,
-            child: Text('22'),
-          ),
-          DropdownMenuItem(
-            value: 23,
-            child: Text('23'),
-          ),
-          DropdownMenuItem(
-            value: 24,
-            child: Text('24'),
-          ),
-        ],
+        },items: List.generate(24, (index) => index)
+            .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
+            .toList(),
       ),
     );
   }
@@ -679,7 +488,8 @@ class CommandListWidget extends ConsumerStatefulWidget {
   const CommandListWidget({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CommandListWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CommandListWidgetState();
 }
 
 class _CommandListWidgetState extends ConsumerState<CommandListWidget> {
