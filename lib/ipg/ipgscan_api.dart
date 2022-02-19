@@ -155,11 +155,6 @@ const Map<ipgScanCommandList, String> ipgScanCommandMap = {
 String parameterFileName =
     'deneme'; // it will come from ListView - inside of IPGScan Jobs folder
 String parameterNone = '';
-String parameterScannerName = 'laser-801F123F43B1.local.';
-String parameterGalvoPositionSet = '5 5 5';
-String parameterVariableNumber = '1';
-String parameterVariableValue = 'new param2';
-String parameterCommandName = 'JobOpen';
 
 String setCommand(ipgScanCommandList command, String parameter) {
   if (command == ipgScanCommandList.jobOpen ||
