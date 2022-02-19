@@ -4,6 +4,7 @@ import '../widget/reusables.dart';
 import '../ipg/ipgscan_api.dart';
 import '../provider/job_list_provider.dart';
 import '../provider/scanner_list_provider.dart';
+import '../provider/job_command_providers.dart';
 
 class CommandButtonGrid extends ConsumerWidget {
   const CommandButtonGrid({Key? key}) : super(key: key);
@@ -18,6 +19,9 @@ class CommandButtonGrid extends ConsumerWidget {
     final jobStartSavefileOption = ref.watch(jobStartSavefileOptionProvider);
     final jobStartGroupOption = ref.watch(jobStartGroupOptionProvider);
     final beamPositionSet = ref.watch(beamPositionSetProvider);
+    final setVariable = ref.watch(setVariableProvider);
+    final setVariableValue = ref.watch(setVariableValueProvider);
+    final getVariable = ref.watch(getVariableProvider);
 
     return GridView.count(
       crossAxisCount: 2,
@@ -105,10 +109,8 @@ class CommandButtonGrid extends ConsumerWidget {
           parameter: parameterNone,
         ),
         IPGScanJobCommandButton(
-          /// update parameter
-          /// parameter: galvo position to set to
           commandType: ipgScanCommandList.scannerParkAt,
-          parameter: parameterGalvoPositionSet,
+          parameter: beamPositionSet,
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.scannerGetWorkspacePosition,
