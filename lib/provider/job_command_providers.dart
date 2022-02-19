@@ -15,3 +15,15 @@ final jobStartGroupOptionProvider = StateProvider<String>((ref) {
 final beamPositionSetProvider = StateProvider<String>((ref) {
   return '0 0 0';
 });
+
+final setVariableProvider = StateProvider<int>((ref) {
+  return 1;
+});
+
+final setVariableValueProvider = StateProvider<String>((ref) {
+  return '0';
+});
+
+final getVariableProvider = StateProvider<int>((ref) {
+  return 1;
+});
