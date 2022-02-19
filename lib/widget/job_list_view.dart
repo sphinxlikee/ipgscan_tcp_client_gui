@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tcp_client/ipg/ipgscan_api.dart';
+import '../ipg/ipgscan_api.dart';
 import '../provider/tcp_provider.dart';
 import '../provider/job_list_provider.dart';
 

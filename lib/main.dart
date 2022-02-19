@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tcp_client/ipg/ipgscan_api.dart';
-import 'package:flutter_tcp_client/widget/scanners_list_view.dart';
+import 'ipg/ipgscan_api.dart';
+import 'widget/scanners_list_view.dart';
 import 'widget/job_list_view.dart';
 import 'widget/command_button_grid.dart';
 import 'widget/data_exchange_list_view.dart';
@@ -12,14 +12,12 @@ import 'widget/reusables.dart';
 
 void main() {
   runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
+    const ProviderScope(child: MyApp()),
   );
 
   doWhenWindowReady(() {
-    const initialSize = Size(1080, 768);
-    appWindow.minSize = const Size(100, 70);
+    const initialSize = Size(1080, 800);
+    appWindow.minSize = initialSize;
     appWindow.size = initialSize;
     appWindow.alignment = Alignment.center;
     appWindow.show();
@@ -157,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          const VerticalDivider(color: Colors.black38, thickness: 1,width: 4),
+          const VerticalDivider(color: Colors.black38, thickness: 1, width: 4),
           Expanded(
             flex: 2,
             child: Column(
@@ -167,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          const VerticalDivider(color: Colors.black38, thickness: 1,width: 4),
+          const VerticalDivider(color: Colors.black38, thickness: 1, width: 4),
           Expanded(
             flex: 2,
             child: Column(
