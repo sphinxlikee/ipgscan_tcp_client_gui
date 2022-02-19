@@ -128,37 +128,24 @@ class _MyHomePageState extends State<MyHomePage> {
                         const BeamPosition(readOnly: false),
                         const BeamPosition(readOnly: true),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            InfoLabel('Set variable',
-                                ipgScanCommandList.systemSetVariable),
-                            const VariableList(),
-                            const SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
+                            InfoLabel('Job Start -guide',
+                                ipgScanCommandList.jobStart),
+                            const JobStartGuideCheckBox(),
+                          ],
                                 ),
-                              ),
-                            ),
+                        Row(
+                          children: [
+                            InfoLabel('Job Start -savefile',
+                                ipgScanCommandList.jobStart),
+                            const JobStartSavefileCheckBox(),
                           ],
                         ),
                         Row(
                           children: [
-                            InfoLabel('Get variable: ',
-                                ipgScanCommandList.systemGetVariable),
-                            const VariableList(),
-                            const SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: TextField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
-                            ),
+                            InfoLabel('Job Start -groupName',
+                                ipgScanCommandList.jobStart),
+                            const JobStartGroupName(),
                           ],
                         ),
                       ],

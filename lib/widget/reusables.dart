@@ -296,3 +296,99 @@ class _InfoLabelState extends ConsumerState<InfoLabel> {
     );
   }
 }
+
+class JobStartGuideCheckBox extends ConsumerStatefulWidget {
+  const JobStartGuideCheckBox({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _JobStartGuideCheckBoxState();
+}
+
+class _JobStartGuideCheckBoxState extends ConsumerState<JobStartGuideCheckBox> {
+  bool? checkVal = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      value: checkVal,
+      onChanged: (val) {
+        setState(() {
+          checkVal = val;
+          if (val != null && val == true) {
+            ref.read(jobStartGuideOptionProvider.notifier).state = ' -guide';
+          } else {
+            ref.read(jobStartGuideOptionProvider.notifier).state = '';
+          }
+        });
+      },
+    );
+  }
+}
+
+class JobStartSavefileCheckBox extends ConsumerStatefulWidget {
+  const JobStartSavefileCheckBox({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _JobStartSavefileCheckBoxState();
+}
+
+class _JobStartSavefileCheckBoxState
+    extends ConsumerState<JobStartSavefileCheckBox> {
+  bool? checkVal = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      value: checkVal,
+      onChanged: (val) {
+        setState(() {
+          checkVal = val;
+          if (val != null && val == true) {
+            ref.read(jobStartSavefileOptionProvider.notifier).state =
+                ' -savefile';
+          } else {
+            ref.read(jobStartSavefileOptionProvider.notifier).state = '';
+          }
+        });
+      },
+    );
+  }
+}
+
+class JobStartGroupName extends ConsumerStatefulWidget {
+  const JobStartGroupName({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _JobStartGroupNameState();
+}
+
+class _JobStartGroupNameState extends ConsumerState<JobStartGroupName> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 24,
+      width: 60,
+      child: TextField(
+        onChanged: (val) {
+          if (val.isNotEmpty) {
+            ref.read(jobStartGroupOptionProvider.notifier).state =
+                ' -groupG$val';
+          } else {
+            ref.read(jobStartGroupOptionProvider.notifier).state = '';
+          }
+        },
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(3),
+        ],
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+        ),
+      ),
+      padding: const EdgeInsets.all(2.0),
+    );
+  }
+}

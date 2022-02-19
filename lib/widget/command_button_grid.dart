@@ -14,6 +14,9 @@ class CommandButtonGrid extends ConsumerWidget {
     final jobListWatcher = ref.watch(jobListProvider);
     final selectedScannerIndex = ref.watch(selectedScannerIndexProvider);
     final scannerListWatcher = ref.watch(scannerListProvider);
+    final jobStartGuideOption = ref.watch(jobStartGuideOptionProvider);
+    final jobStartSavefileOption = ref.watch(jobStartSavefileOptionProvider);
+    final jobStartGroupOption = ref.watch(jobStartGroupOptionProvider);
 
     return GridView.count(
       crossAxisCount: 2,
@@ -32,7 +35,7 @@ class CommandButtonGrid extends ConsumerWidget {
           commandType: ipgScanCommandList.jobStart,
           parameter: jobListWatcher.jobList.isEmpty
               ? 'not selected'
-              : jobListWatcher.jobList[selectedJobIndex],
+              : '${jobListWatcher.jobList[selectedJobIndex]}$jobStartGuideOption$jobStartSavefileOption$jobStartGroupOption',
         ),
         IPGScanJobCommandButton(
           commandType: ipgScanCommandList.jobStop,
