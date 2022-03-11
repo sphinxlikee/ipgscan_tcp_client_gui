@@ -21,7 +21,7 @@ class DataSentIndicator extends ConsumerWidget {
               color: isDataSent ? Colors.green : Colors.red,
             ),
           ),
-          Text(isDataSent ? 'Data sent' : 'No data sent'),
+          const Text('Data sent'),
         ],
       ),
     );
@@ -47,7 +47,7 @@ class DataReceivedIndicator extends ConsumerWidget {
               color: isDataReceived ? Colors.green : Colors.red,
             ),
           ),
-          Text(isDataReceived ? 'Data received' : 'No data received'),
+          const Text('Data received'),
         ],
       ),
     );
@@ -73,7 +73,7 @@ class ConnectionIndicator extends ConsumerWidget {
               color: isConnected ? Colors.green : Colors.red,
             ),
           ),
-          Text(isConnected ? 'Connection ready' : 'No connection'),
+          const Text('Connection active'),
         ],
       ),
     );
