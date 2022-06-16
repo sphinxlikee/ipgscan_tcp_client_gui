@@ -106,6 +106,95 @@ enum ipgScanCommandList {
   helpCommand,
 }
 
+enum IPGScanCommand {
+  noCommand(displayLabel: 'Initial connection state', commandLabel: ' '),
+  jobOpen(displayLabel: 'Job Open', commandLabel: 'JobOpen'),
+  jobStart(displayLabel: 'Job Start', commandLabel: 'JobStart'),
+  jobStop(displayLabel: 'Job Stop', commandLabel: 'JobStop'),
+  jobAbort(displayLabel: 'Job Abort', commandLabel: 'JobAbort'),
+  jobClose(displayLabel: 'Job Close', commandLabel: 'JobClose'),
+  jobList(displayLabel: 'Job List', commandLabel: 'JobList'),
+  jobOpenedList(displayLabel: 'Job Opened List', commandLabel: 'JobOpenedList'),
+  scannerGetStatus(
+      displayLabel: 'Scanner Get Status', commandLabel: 'ScannerGetStatus'),
+  jobGetStatus(displayLabel: 'Job Get Status', commandLabel: 'JobGetStatus'),
+  jobExport(displayLabel: 'Job Export', commandLabel: 'JobExport'),
+  getEncoding(displayLabel: 'Get Encoding', commandLabel: 'GetEncoding'),
+  scannerGetStartBit(
+      displayLabel: 'Scanner Get Start Bit',
+      commandLabel: 'ScannerGetStartBit'),
+  scannerGetEnableBit(
+      displayLabel: 'Scanner Get Enable Bit',
+      commandLabel: 'ScannerGetEnableBit'),
+  connectionGetStatus(
+      displayLabel: 'Connection Get Status',
+      commandLabel: 'ConnectionGetStatus'),
+  scannerGetPortA(
+      displayLabel: 'Scanner Get Port A', commandLabel: 'ScannerGetPortA'),
+  scannerLock(displayLabel: 'Scanner Lock', commandLabel: 'ScannerLock'),
+  scannerUnlock(displayLabel: 'Scanner Unlock', commandLabel: 'ScannerUnlock'),
+  scannerInit(displayLabel: 'Scanner Init', commandLabel: 'ScannerInit'),
+  scannerParkAt(displayLabel: 'Scanner Park At', commandLabel: 'ScannerParkAt'),
+  scannerGetWorkspacePosition(
+      displayLabel: 'Scanner Get Workspace Position',
+      commandLabel: 'ScannerGetWorkspacePosition'),
+  scannerGetList(
+      displayLabel: 'Scanner Get List', commandLabel: 'ScannerGetList'),
+  scannerGetStatusList(
+      displayLabel: 'Scanner Get Status List',
+      commandLabel: 'ScannerGetStatusList'),
+  scannerGetConnectionStatus(
+      displayLabel: 'Scanner Get Connection Status',
+      commandLabel: 'ScannerGetConnectionStatus'),
+  scannerGuideOff(
+      displayLabel: 'Scanner Guide Off', commandLabel: 'ScannerGuideOff'),
+  systemSetVariable(
+      displayLabel: 'System Set Variable', commandLabel: 'SystemSetVariable'),
+  systemGetVariable(
+      displayLabel: 'System Get Variable', commandLabel: 'SystemGetVariable'),
+  jobGetStatus2(
+      displayLabel: 'Job Get Status2',
+      commandLabel: 'JobGetStatus2'), //currently executing group&object name
+  jobLastRunSuccessful(
+      displayLabel: 'Job Last Run Successful',
+      commandLabel: 'JobLastRunSuccessful'),
+  scannerGetMessageStatus(
+      displayLabel: 'Scanner Get Message Status',
+      commandLabel: 'ScannerGetMessageStatus'),
+  systemGetVersion(
+      displayLabel: 'System Get Version', commandLabel: 'SystemGetVersion'),
+  dwsResetRunningMax(
+      displayLabel: 'DWS Reset Running Max',
+      commandLabel: 'DWSResetRunningMax'),
+  dwsGetRunningMax(
+      displayLabel: 'DWS Get Running Max', commandLabel: 'DWSGetRunningMax'),
+  dwsGetInstantValue(
+      displayLabel: 'DWS Get Instant Value',
+      commandLabel: 'DWSGetInstantValue'),
+  systemResetAllAlarms(
+      displayLabel: 'System Reset All Alarms',
+      commandLabel: 'SystemResetAllAlarms'),
+  laserGetStatusCode(
+      displayLabel: 'Laser Get Status Code',
+      commandLabel: 'LaserGetStatusCode'),
+  laserGetStatusMessage(
+      displayLabel: 'Laser Get Status Message',
+      commandLabel: 'LaserGetStatusMessage'),
+  help(displayLabel: 'Commands list', commandLabel: 'Help'),
+  helpCommand(displayLabel: 'Commands help', commandLabel: 'Help');
+
+  const IPGScanCommand({
+    required this.displayLabel,
+    required this.commandLabel,
+  });
+
+  final String displayLabel;
+  final String commandLabel;
+
+  String get getDisplayLabel => displayLabel;
+  String get getCommandLabel => commandLabel;
+}
+
 const Map<ipgScanCommandList, String> ipgScanCommandMap = {
   ipgScanCommandList.noCommand: 'Initial connection state',
   ipgScanCommandList.jobOpen: 'Job Open',
@@ -171,6 +260,8 @@ String setCommand(ipgScanCommandList command, String parameter) {
     return '${ipgScanCommandMap[command]?.replaceAll(' ', '')} $parameter\r\n';
   } else if (command == ipgScanCommandList.helpCommand) {
     return 'Help ${parameter.replaceAll(' ', '')}\r\n';
+  } else if (command == ipgScanCommandList.help) {
+    return 'Help\r\n';
   } else {
     return '${ipgScanCommandMap[command]?.replaceAll(' ', '')}\r\n';
   }
