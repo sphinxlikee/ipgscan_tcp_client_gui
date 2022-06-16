@@ -55,16 +55,16 @@ class TitleWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(2.0),
       height: 24,
-      child: Text(
-        text,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
       alignment: Alignment.center,
       decoration: const BoxDecoration(
         color: Colors.grey,
         border: Border.symmetric(
           horizontal: BorderSide(width: 1.0, color: Colors.black26),
         ),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -90,6 +90,7 @@ class _SetVariableWidgetState extends ConsumerState<SetVariableWidget> {
         Container(
           height: 24,
           width: 90,
+          padding: const EdgeInsets.all(2.0),
           child: TextField(
             onChanged: (value) {
               setVariableValue.state = value;
@@ -98,7 +99,6 @@ class _SetVariableWidgetState extends ConsumerState<SetVariableWidget> {
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(2.0),
         ),
       ],
     );
@@ -154,13 +154,13 @@ class _GetVariableWidgetState extends ConsumerState<GetVariableWidget> {
         Container(
           height: 24,
           width: 90,
+          padding: const EdgeInsets.all(2.0),
           child: const TextField(
             readOnly: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(2.0),
         ),
       ],
     );
@@ -189,7 +189,8 @@ class _GetVariableListState extends ConsumerState<GetVariableList> {
             dropdownValue = newValue!;
             variable.state = dropdownValue;
           });
-        },items: List.generate(24, (index) => index)
+        },
+        items: List.generate(24, (index) => index)
             .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
             .toList(),
       ),
@@ -222,6 +223,7 @@ class BeamPositionSetState extends ConsumerState<BeamPositionSet> {
         Container(
           height: 24,
           width: 72,
+          padding: const EdgeInsets.all(2.0),
           child: TextField(
             onChanged: (value) {
               xValue = value;
@@ -238,11 +240,11 @@ class BeamPositionSetState extends ConsumerState<BeamPositionSet> {
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(2.0),
         ),
         Container(
           height: 24,
           width: 72,
+          padding: const EdgeInsets.all(2.0),
           child: TextField(
             onChanged: (value) {
               yValue = value;
@@ -259,11 +261,11 @@ class BeamPositionSetState extends ConsumerState<BeamPositionSet> {
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(2.0),
         ),
         Container(
           height: 24,
           width: 72,
+          padding: const EdgeInsets.all(2.0),
           child: TextField(
             onChanged: (value) {
               zValue = value;
@@ -280,7 +282,6 @@ class BeamPositionSetState extends ConsumerState<BeamPositionSet> {
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(2.0),
         ),
       ],
     );
@@ -306,35 +307,35 @@ class BeamPositionGetState extends ConsumerState<BeamPositionGet> {
         Container(
           height: 24,
           width: 72,
+          padding: const EdgeInsets.all(2.0),
           child: const TextField(
             readOnly: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(2.0),
         ),
         Container(
           height: 24,
           width: 72,
+          padding: const EdgeInsets.all(2.0),
           child: const TextField(
             readOnly: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(2.0),
         ),
         Container(
           height: 24,
           width: 72,
+          padding: const EdgeInsets.all(2.0),
           child: const TextField(
             readOnly: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
             ),
           ),
-          padding: const EdgeInsets.all(2.0),
         ),
       ],
     );
@@ -371,6 +372,7 @@ class _InfoLabelState extends ConsumerState<InfoLabel> {
     return Container(
       padding: const EdgeInsets.all(2.0),
       height: 24,
+      alignment: Alignment.centerLeft,
       child: Text.rich(
         TextSpan(
           children: [
@@ -383,7 +385,6 @@ class _InfoLabelState extends ConsumerState<InfoLabel> {
           ],
         ),
       ),
-      alignment: Alignment.centerLeft,
     );
   }
 }
@@ -462,6 +463,7 @@ class _JobStartGroupNameState extends ConsumerState<JobStartGroupName> {
     return Container(
       height: 24,
       width: 60,
+      padding: const EdgeInsets.all(2.0),
       child: TextField(
         onChanged: (val) {
           if (val.isNotEmpty) {
@@ -479,7 +481,6 @@ class _JobStartGroupNameState extends ConsumerState<JobStartGroupName> {
           border: OutlineInputBorder(),
         ),
       ),
-      padding: const EdgeInsets.all(2.0),
     );
   }
 }

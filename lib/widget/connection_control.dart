@@ -107,6 +107,10 @@ class ConnectButton extends ConsumerWidget {
         ? Container(
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.all(16.0),
+            decoration: const BoxDecoration(
+              shape: BoxShape.rectangle,
+            ),
+            width: double.infinity,
             child: Tooltip(
               message: 'Press for disconnect',
               child: ElevatedButton(
@@ -116,14 +120,14 @@ class ConnectButton extends ConsumerWidget {
                 child: const Icon(Icons.sync_disabled_sharp),
               ),
             ),
-            decoration: const BoxDecoration(
-              shape: BoxShape.rectangle,
-            ),
-            width: double.infinity,
           )
         : Container(
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.all(16.0),
+            decoration: const BoxDecoration(
+              shape: BoxShape.rectangle,
+            ),
+            width: double.infinity,
             child: Tooltip(
               message: 'Press for connect',
               child: ElevatedButton(
@@ -135,10 +139,6 @@ class ConnectButton extends ConsumerWidget {
                 child: const Icon(Icons.touch_app_sharp),
               ),
             ),
-            decoration: const BoxDecoration(
-              shape: BoxShape.rectangle,
-            ),
-            width: double.infinity,
           );
   }
 }
