@@ -54,8 +54,8 @@ class _DataExchangeScrollViewState
         child: Scrollbar(
           controller: _scrollController,
           interactive: true,
-          isAlwaysShown: true,
-          showTrackOnHover: true,
+          thumbVisibility: true,
+          trackVisibility: true,
           child: SingleChildScrollView(
             controller: _scrollController,
             child: Column(
