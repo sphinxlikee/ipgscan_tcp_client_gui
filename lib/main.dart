@@ -108,21 +108,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                       children: [
                         InfoLabel('Computer name',
-                            ipgScanCommandList.connectionGetStatus),
+                            IPGScanCommandList.connectionGetStatus),
                         InfoLabel('Connected scanner',
-                            ipgScanCommandList.scannerGetStatus),
+                            IPGScanCommandList.scannerGetStatus),
                         InfoLabel(
-                            'IPGScan status', ipgScanCommandList.jobGetStatus),
-                        InfoLabel('Encoding', ipgScanCommandList.getEncoding),
+                            'IPGScan status', IPGScanCommandList.jobGetStatus),
+                        InfoLabel('Encoding', IPGScanCommandList.getEncoding),
                         InfoLabel(
-                            'Start bit', ipgScanCommandList.scannerGetStartBit),
+                            'Start bit', IPGScanCommandList.scannerGetStartBit),
                         InfoLabel('Enable bit',
-                            ipgScanCommandList.scannerGetEnableBit),
-                        InfoLabel('Port A', ipgScanCommandList.scannerGetPortA),
+                            IPGScanCommandList.scannerGetEnableBit),
+                        InfoLabel('Port A', IPGScanCommandList.scannerGetPortA),
                         InfoLabel('Scanner connection status',
-                            ipgScanCommandList.scannerGetConnectionStatus),
+                            IPGScanCommandList.scannerGetConnectionStatus),
                         InfoLabel('Last job status',
-                            ipgScanCommandList.jobLastRunSuccessful),
+                            IPGScanCommandList.jobLastRunSuccessful),
                         const BeamPositionSet(),
                         const BeamPositionGet(),
                         const SetVariableWidget(),
@@ -130,21 +130,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         Row(
                           children: [
                             InfoLabel('Job Start -guide',
-                                ipgScanCommandList.jobStart),
+                                IPGScanCommandList.jobStart),
                             const JobStartGuideCheckBox(),
                           ],
                         ),
                         Row(
                           children: [
                             InfoLabel('Job Start -savefile',
-                                ipgScanCommandList.jobStart),
+                                IPGScanCommandList.jobStart),
                             const JobStartSavefileCheckBox(),
                           ],
                         ),
                         Row(
                           children: [
                             InfoLabel('Job Start -groupName',
-                                ipgScanCommandList.jobStart),
+                                IPGScanCommandList.jobStart),
                             const JobStartGroupName(),
                           ],
                         ),

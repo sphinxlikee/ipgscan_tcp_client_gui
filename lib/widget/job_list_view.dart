@@ -28,7 +28,7 @@ class _JobListViewState extends ConsumerState<JobListView> {
 
     WidgetsBinding.instance?.addPostFrameCallback(
       (_) {
-        if (lastCommand == ipgScanCommandList.jobList) {
+        if (lastCommand == IPGScanCommandList.jobList) {
           jobListWatcher.jobListParser(tcpClient.dataReceived);
         }
       },

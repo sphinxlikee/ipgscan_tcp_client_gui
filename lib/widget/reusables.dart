@@ -6,16 +6,16 @@ import '../provider/tcp_provider.dart';
 import '../ipg/ipgscan_api.dart';
 
 class IPGScanJobCommandButton extends ConsumerWidget {
-  final ipgScanCommandList commandType;
+  final IPGScanCommandList commandType;
   final String parameter;
-  final String? labelName;
+  final String labelName;
 
   IPGScanJobCommandButton({
     Key? key,
+    required this.labelName,
     required this.commandType,
     required this.parameter,
-  })  : labelName = ipgScanCommandMap[commandType],
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +35,7 @@ class IPGScanJobCommandButton extends ConsumerWidget {
               ref.read(lastCommandProvider.notifier).state = commandType;
             },
       child: Text(
-        labelName ?? 'label problem',
+        labelName,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
       ),
@@ -85,7 +85,7 @@ class _SetVariableWidgetState extends ConsumerState<SetVariableWidget> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        InfoLabel('Set variable', ipgScanCommandList.systemSetVariable),
+        InfoLabel('Set variable', IPGScanCommandList.systemSetVariable),
         const SetVariableList(),
         Container(
           height: 24,
@@ -149,7 +149,7 @@ class _GetVariableWidgetState extends ConsumerState<GetVariableWidget> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        InfoLabel('Get variable: ', ipgScanCommandList.systemGetVariable),
+        InfoLabel('Get variable: ', IPGScanCommandList.systemGetVariable),
         const GetVariableList(),
         Container(
           height: 24,
@@ -219,7 +219,7 @@ class BeamPositionSetState extends ConsumerState<BeamPositionSet> {
       direction: Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        InfoLabel('Set beam position', ipgScanCommandList.scannerParkAt),
+        InfoLabel('Set beam position', IPGScanCommandList.scannerParkAt),
         Container(
           height: 24,
           width: 72,
@@ -302,8 +302,8 @@ class BeamPositionGetState extends ConsumerState<BeamPositionGet> {
       direction: Axis.horizontal,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        InfoLabel('Get beam position',
-            ipgScanCommandList.scannerGetWorkspacePosition),
+        InfoLabel(
+            'Get beam position', IPGScanCommandList.scannerGetWorkspacePosition),
         Container(
           height: 24,
           width: 72,
@@ -344,7 +344,7 @@ class BeamPositionGetState extends ConsumerState<BeamPositionGet> {
 
 class InfoLabel extends ConsumerStatefulWidget {
   final String label;
-  final ipgScanCommandList commandType;
+  final IPGScanCommandList commandType;
   String receivedDataText = '';
   InfoLabel(this.label, this.commandType, {Key? key}) : super(key: key);
 
@@ -358,11 +358,11 @@ class _InfoLabelState extends ConsumerState<InfoLabel> {
     final lastCommand = ref.watch(lastCommandProvider);
     final dataReceived = ref.watch(tcpClientProvider).dataReceived;
 
-    if (widget.commandType == ipgScanCommandList.jobStart ||
-        widget.commandType == ipgScanCommandList.systemSetVariable ||
-        widget.commandType == ipgScanCommandList.systemGetVariable ||
-        widget.commandType == ipgScanCommandList.scannerParkAt ||
-        widget.commandType == ipgScanCommandList.scannerGetWorkspacePosition) {
+    if (widget.commandType == IPGScanCommandList.jobStart ||
+        widget.commandType == IPGScanCommandList.systemSetVariable ||
+        widget.commandType == IPGScanCommandList.systemGetVariable ||
+        widget.commandType == IPGScanCommandList.scannerParkAt ||
+        widget.commandType == IPGScanCommandList.scannerGetWorkspacePosition) {
       widget.receivedDataText = '';
     } else if (widget.commandType == lastCommand) {
       widget.receivedDataText = dataReceived;
@@ -498,7 +498,7 @@ class _CommandListWidgetState extends ConsumerState<CommandListWidget> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        InfoLabel('Command List', ipgScanCommandList.noCommand),
+        InfoLabel('Command List', IPGScanCommandList.noCommand),
         const CommandDropDownList(),
       ],
     );
@@ -525,20 +525,19 @@ class _CommandDropDownList extends ConsumerState<CommandDropDownList> {
         onChanged: (newValue) {
           setState(() {
             dropdownValue = newValue!;
-            helpCommand.state = ipgScanCommandMap[
-                    ipgScanCommandList.values.elementAt(dropdownValue)]
-                .toString();
+            helpCommand.state =
+                IPGScanCommandList.values.elementAt(dropdownValue).command;
           });
         },
         items: List.generate(
-          ipgScanCommandMap.length,
+          IPGScanCommandList.values.length,
           (index) => index,
         )
             .map(
               (e) => DropdownMenuItem(
                 value: e,
                 child: Text(
-                  '${ipgScanCommandMap[ipgScanCommandList.values.elementAt(e)]}',
+                  IPGScanCommandList.values.elementAt(e).commandLabel,
                 ),
               ),
             )

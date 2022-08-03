@@ -29,7 +29,7 @@ class _ScannerListViewState extends ConsumerState<ScannerListView> {
 
     WidgetsBinding.instance?.addPostFrameCallback(
       (_) {
-        if (lastCommand == ipgScanCommandList.scannerGetList) {
+        if (lastCommand == IPGScanCommandList.scannerGetList) {
           scannerListWatcher.scannerListParser(tcpClient.dataReceived);
         }
       },
