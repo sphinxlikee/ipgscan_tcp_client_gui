@@ -27,7 +27,7 @@ class _ScannerListViewState extends ConsumerState<ScannerListView> {
     final selectedScannerIndex = ref.watch(selectedScannerIndexProvider);
     final lastCommand = ref.watch(lastCommandProvider);
 
-    WidgetsBinding.instance?.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         if (lastCommand == IPGScanCommandList.scannerGetList) {
           scannerListWatcher.scannerListParser(tcpClient.dataReceived);

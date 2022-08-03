@@ -26,7 +26,7 @@ class _JobListViewState extends ConsumerState<JobListView> {
     final selectedJobIndex = ref.watch(selectedJobIndexProvider);
     final lastCommand = ref.watch(lastCommandProvider);
 
-    WidgetsBinding.instance?.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         if (lastCommand == IPGScanCommandList.jobList) {
           jobListWatcher.jobListParser(tcpClient.dataReceived);

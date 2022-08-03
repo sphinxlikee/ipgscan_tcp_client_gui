@@ -45,7 +45,7 @@ class _DataExchangeScrollViewState
   @override
   Widget build(BuildContext context) {
     final tcpClient = ref.watch(tcpClientProvider);
-    WidgetsBinding.instance?.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (_) => animateScrollbarToBottom(const Duration(milliseconds: 250)),
     );
     return Expanded(
