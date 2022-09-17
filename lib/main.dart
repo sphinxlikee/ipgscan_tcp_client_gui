@@ -7,21 +7,33 @@ import 'widget/command_button_grid.dart';
 import 'widget/data_exchange_list_view.dart';
 import 'widget/connection_info_indicators.dart';
 import 'widget/connection_control.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'widget/reusables.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Must add this line.
+  await windowManager.ensureInitialized();
+
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(1280, 800),
+    center: true,
+    backgroundColor: Colors.transparent,
+    skipTaskbar: false,
+    titleBarStyle: TitleBarStyle.normal,
+  );
+
+  windowManager.waitUntilReadyToShow(
+    windowOptions,
+    () async {
+      await windowManager.show();
+      await windowManager.focus();
+    },
+  );
+
   runApp(
     const ProviderScope(child: MyApp()),
   );
-
-  doWhenWindowReady(() {
-    const initialSize = Size(1080, 800);
-    appWindow.minSize = initialSize;
-    appWindow.size = initialSize;
-    appWindow.alignment = Alignment.center;
-    appWindow.show();
-  });
 }
 
 class MyApp extends StatelessWidget {
@@ -107,44 +119,34 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.all(4.0),
                     child: Column(
                       children: [
-                        InfoLabel('Computer name',
-                            IPGScanCommandList.connectionGetStatus),
-                        InfoLabel('Connected scanner',
-                            IPGScanCommandList.scannerGetStatus),
-                        InfoLabel(
-                            'IPGScan status', IPGScanCommandList.jobGetStatus),
+                        InfoLabel('Computer name', IPGScanCommandList.connectionGetStatus),
+                        InfoLabel('Connected scanner', IPGScanCommandList.scannerGetStatus),
+                        InfoLabel('IPGScan status', IPGScanCommandList.jobGetStatus),
                         InfoLabel('Encoding', IPGScanCommandList.getEncoding),
-                        InfoLabel(
-                            'Start bit', IPGScanCommandList.scannerGetStartBit),
-                        InfoLabel('Enable bit',
-                            IPGScanCommandList.scannerGetEnableBit),
+                        InfoLabel('Start bit', IPGScanCommandList.scannerGetStartBit),
+                        InfoLabel('Enable bit', IPGScanCommandList.scannerGetEnableBit),
                         InfoLabel('Port A', IPGScanCommandList.scannerGetPortA),
-                        InfoLabel('Scanner connection status',
-                            IPGScanCommandList.scannerGetConnectionStatus),
-                        InfoLabel('Last job status',
-                            IPGScanCommandList.jobLastRunSuccessful),
+                        InfoLabel('Scanner connection status', IPGScanCommandList.scannerGetConnectionStatus),
+                        InfoLabel('Last job status', IPGScanCommandList.jobLastRunSuccessful),
                         const BeamPositionSet(),
                         const BeamPositionGet(),
                         const SetVariableWidget(),
                         const GetVariableWidget(),
                         Row(
                           children: [
-                            InfoLabel('Job Start -guide',
-                                IPGScanCommandList.jobStart),
+                            InfoLabel('Job Start -guide', IPGScanCommandList.jobStart),
                             const JobStartGuideCheckBox(),
                           ],
                         ),
                         Row(
                           children: [
-                            InfoLabel('Job Start -savefile',
-                                IPGScanCommandList.jobStart),
+                            InfoLabel('Job Start -savefile', IPGScanCommandList.jobStart),
                             const JobStartSavefileCheckBox(),
                           ],
                         ),
                         Row(
                           children: [
-                            InfoLabel('Job Start -groupName',
-                                IPGScanCommandList.jobStart),
+                            InfoLabel('Job Start -groupName', IPGScanCommandList.jobStart),
                             const JobStartGroupName(),
                           ],
                         ),

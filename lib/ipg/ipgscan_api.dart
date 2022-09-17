@@ -124,8 +124,6 @@ const String parameterNone = '';
 String setCommand(IPGScanCommandList command, String parameter) {
   if (command == IPGScanCommandList.jobOpen ||
       command == IPGScanCommandList.jobStart ||
-      command == IPGScanCommandList.jobStop ||
-      command == IPGScanCommandList.jobAbort ||
       command == IPGScanCommandList.jobClose ||
       command == IPGScanCommandList.scannerLock ||
       command == IPGScanCommandList.scannerUnlock ||
