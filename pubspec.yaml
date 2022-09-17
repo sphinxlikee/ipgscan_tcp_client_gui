@@ -16,10 +16,13 @@ dependencies:
   flutter_lints: ^2.0.1
   flutter_riverpod: ^1.0.0
   intl: ^0.17.0
+  freezed_annotation: ^2.1.0
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  freezed: ^2.1.0+1
+  build_runner: ^2.2.1
 
 flutter:
 
