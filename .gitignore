@@ -48,4 +48,3 @@ app.*.map.json
 /android/app/release
 .vscode/settings.json
 pubspec.lock
-lib/tcp/tcp_client_notifier.dart
