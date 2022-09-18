@@ -6,11 +6,11 @@ part 'tcp_client.freezed.dart';
 
 @freezed
 class TCPClient with _$TCPClient {
+  const TCPClient._();
 
   factory TCPClient({
-    
-    required String serverAddress,
-    required int serverPort,
+    @Default('127.0.0.1') String serverAddress,
+    @Default(88) int serverPort,
     @Default('') String dataReceived,
     @Default('') String dataSent,
     @Default(false) bool isConnected,
@@ -23,4 +23,5 @@ class TCPClient with _$TCPClient {
     @Default(['']) List<String> dataReceivedSentList,
     StreamSubscription<Uint8List>? tcpSubscription,
   }) = _TCPClient;
+
 }
