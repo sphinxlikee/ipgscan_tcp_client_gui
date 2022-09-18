@@ -36,9 +36,17 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
       dataSent: data.substring(0, data.length - 1), // to remove line feed
       dataSentTimestamp: DateTime.now(),
     );
-    state.dataSentList.add('#sent: ${_dateformat.format(DateTime.now())} ${state.dataSent}');
+    // state.dataSentList.add('#sent: ${_dateformat.format(DateTime.now())} ${state.dataSent}');
 
-    state.dataReceivedSentList.add(state.dataSentList.last);
+    var sentListCopy = [...state.dataSentList];
+    print(state.dataSentList);
+    sentListCopy.add('#sent: ${_dateformat.format(DateTime.now())} ${state.dataSent}');
+    state.copyWith(dataSentList: sentListCopy);
+
+    // state.dataReceivedSentList.add(state.dataSentList.last);
+    var receivedSentListCopy = [...state.dataReceivedSentList];
+    receivedSentListCopy.add(state.dataSentList.last);
+    state.copyWith(dataReceivedSentList: receivedSentListCopy);
 
     if (!state.isDataSent) {
       state = state.copyWith(isDataSent: true);
@@ -46,35 +54,72 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
   }
 
   Future<void> listenServer() async {
-    tcpClient.tcpSubscription = socket?.listen((event) {});
+    var tcpSubs = socket?.listen((event) {})
+      ?..onData(
+        (Uint8List data) async {
+          final _dateformat = DateFormat.Hms();
+          state = state.copyWith(
+            dataReceivedTimestamp: DateTime.now(),
+            dataReceived: String.fromCharCodes(data),
+            isDataReceived: true,
+          );
+          String.fromCharCodes(data).split('\n').toList().forEach(
+            (element) {
+              if (element.isNotEmpty) {
+                // state.dataReceivedList.add(
+                //   '#received: ${_dateformat.format(state.dataReceivedTimestamp as DateTime)} $element',);
+                var receivedListCopy = [...state.dataReceivedList];
+                receivedListCopy.add('#received: ${_dateformat.format(state.dataReceivedTimestamp as DateTime)} $element');
+                state = state.copyWith(dataReceivedList: receivedListCopy);
 
-    tcpClient.tcpSubscription?.onData(
-      (Uint8List data) async {
-        final _dateformat = DateFormat.Hms();
-        state = state.copyWith(
-          dataReceivedTimestamp: DateTime.now(),
-          dataReceived: String.fromCharCodes(data),
-          isDataReceived: true,
-        );
-        String.fromCharCodes(data).split('\n').toList().forEach(
-          (element) {
-            if (element.isNotEmpty) {
-              state.dataReceivedList.add(
-                '#received: ${_dateformat.format(state.dataReceivedTimestamp)} $element',
-              );
-              state.dataReceivedSentList.add(state.dataReceivedList.last);
-            }
-          },
-        );
-      },
-    );
+                // state.dataReceivedSentList.add(state.dataReceivedList.last);
+                var receivedSentListCopy = [...state.dataReceivedSentList];
+                receivedSentListCopy.add(state.dataReceivedList.last);
+                state = state.copyWith(dataReceivedSentList: receivedSentListCopy);
+              }
+            },
+          );
+        },
+      )
+      ..onDone(
+        () {
+          changeConnectionState();
+          streamDone();
+        },
+      );
 
-    tcpClient.tcpSubscription?.onDone(
-      () {
-        changeConnectionState();
-        streamDone();
-      },
-    );
+    state.copyWith(tcpSubscription: tcpSubs);
+
+    // tcpClient.tcpSubscription = socket?.listen((event) {});
+
+    // tcpClient.tcpSubscription?.onData(
+    //   (Uint8List data) async {
+    //     final _dateformat = DateFormat.Hms();
+    //     print('ooo');
+    //     state = state.copyWith(
+    //       dataReceivedTimestamp: DateTime.now(),
+    //       dataReceived: String.fromCharCodes(data),
+    //       isDataReceived: true,
+    //     );
+    //     String.fromCharCodes(data).split('\n').toList().forEach(
+    //       (element) {
+    //         if (element.isNotEmpty) {
+    //           state.dataReceivedList.add(
+    //             '#received: ${_dateformat.format(state.dataReceivedTimestamp as DateTime)} $element',
+    //           );
+    //           state.dataReceivedSentList.add(state.dataReceivedList.last);
+    //         }
+    //       },
+    //     );
+    //   },
+    // );
+
+    // state.tcpSubscription?.onDone(
+    //   () {
+    //     changeConnectionState();
+    //     streamDone();
+    //   },
+    // );
 
     changeConnectionState();
   }

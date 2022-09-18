@@ -21,7 +21,8 @@ class _IPAddressTextFieldState extends ConsumerState<IPAddressTextField> {
 
   void _setAddressValue() {
     final value = ipAddressTextController.text;
-    ref.read(tcpClientProvider).serverAddress = value;
+
+    ref.read(tcpClientProvider).copyWith(serverAddress: value);
   }
 
   @override
@@ -68,7 +69,7 @@ class _PortTextFieldState extends ConsumerState<PortTextField> {
 
   void _setPortValue() {
     final value = int.tryParse(portTextController.text) ?? portDefaultValue;
-    ref.read(tcpClientProvider).serverPort = value;
+    ref.read(tcpClientProvider).copyWith(serverPort: value);
   }
 
   @override
@@ -132,9 +133,7 @@ class ConnectButton extends ConsumerWidget {
               message: 'Press for connect',
               child: ElevatedButton(
                 onPressed: () async {
-                  await ref
-                      .read(tcpClientProvider.notifier)
-                      .createConnection(context);
+                  await ref.read(tcpClientProvider.notifier).createConnection(context);
                 },
                 child: const Icon(Icons.touch_app_sharp),
               ),
