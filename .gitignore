@@ -48,3 +48,6 @@ app.*.map.json
 /android/app/release
 .vscode/settings.json
 pubspec.lock
+
+*.freezed.dart
+*.g.dart 
