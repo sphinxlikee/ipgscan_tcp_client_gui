@@ -30,7 +30,7 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
   }
 
   Future<void> writeToServer(String data) async {
-    final dateformat = DateFormat.Hms();
+    final dateformat = DateFormat.Hms();  // TODO: I couldn't add it as a member to the TCPClient
     socket?.write(data);
 
     // add the data to "dataSent"
@@ -62,7 +62,7 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
     var tcpSubs = socket?.listen((event) {})
       ?..onData(
         (Uint8List data) async {
-          final dateformat = DateFormat.Hms();
+          final dateformat = DateFormat.Hms();  // TODO: I couldn't add it as a member to the TCPClient
           state = state.copyWith(
             dataReceivedTimestamp: DateTime.now(),
             dataReceived: String.fromCharCodes(data),
