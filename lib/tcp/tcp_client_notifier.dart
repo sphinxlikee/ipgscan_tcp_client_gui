@@ -30,23 +30,28 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
   }
 
   Future<void> writeToServer(String data) async {
-    final _dateformat = DateFormat.Hms();
+    final dateformat = DateFormat.Hms();
     socket?.write(data);
+
+    // add the data to "dataSent"
     state = state.copyWith(
       dataSent: data.substring(0, data.length - 1), // to remove line feed
       dataSentTimestamp: DateTime.now(),
     );
-    // state.dataSentList.add('#sent: ${_dateformat.format(DateTime.now())} ${state.dataSent}');
 
+    // create a copy of "dataSentList"
+    // add a current sent item to the copy list
+    // update "dataSentList"
     var sentListCopy = [...state.dataSentList];
-    print(state.dataSentList);
-    sentListCopy.add('#sent: ${_dateformat.format(DateTime.now())} ${state.dataSent}');
-    state.copyWith(dataSentList: sentListCopy);
+    sentListCopy.add('#sent: ${dateformat.format(DateTime.now())} ${state.dataSent}');
+    state = state.copyWith(dataSentList: sentListCopy);
 
-    // state.dataReceivedSentList.add(state.dataSentList.last);
+    // create a copy of "dataReceivedSentList"
+    // add a current last sent item to the copy list
+    // update "dataReceivedSentList"
     var receivedSentListCopy = [...state.dataReceivedSentList];
     receivedSentListCopy.add(state.dataSentList.last);
-    state.copyWith(dataReceivedSentList: receivedSentListCopy);
+    state = state.copyWith(dataReceivedSentList: receivedSentListCopy);
 
     if (!state.isDataSent) {
       state = state.copyWith(isDataSent: true);
@@ -57,7 +62,7 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
     var tcpSubs = socket?.listen((event) {})
       ?..onData(
         (Uint8List data) async {
-          final _dateformat = DateFormat.Hms();
+          final dateformat = DateFormat.Hms();
           state = state.copyWith(
             dataReceivedTimestamp: DateTime.now(),
             dataReceived: String.fromCharCodes(data),
@@ -66,13 +71,16 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
           String.fromCharCodes(data).split('\n').toList().forEach(
             (element) {
               if (element.isNotEmpty) {
-                // state.dataReceivedList.add(
-                //   '#received: ${_dateformat.format(state.dataReceivedTimestamp as DateTime)} $element',);
+                // create a copy of "dataReceivedList"
+                // add a current received item to the copy list
+                // update "dataReceivedList"
                 var receivedListCopy = [...state.dataReceivedList];
-                receivedListCopy.add('#received: ${_dateformat.format(state.dataReceivedTimestamp as DateTime)} $element');
+                receivedListCopy.add('#received: ${dateformat.format(state.dataReceivedTimestamp as DateTime)} $element');
                 state = state.copyWith(dataReceivedList: receivedListCopy);
 
-                // state.dataReceivedSentList.add(state.dataReceivedList.last);
+                // create a copy of "dataReceivedSentList"
+                // add a current last received item to the copy list
+                // update "dataReceivedSentList"
                 var receivedSentListCopy = [...state.dataReceivedSentList];
                 receivedSentListCopy.add(state.dataReceivedList.last);
                 state = state.copyWith(dataReceivedSentList: receivedSentListCopy);
@@ -93,6 +101,8 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
   }
 
   Future<void> createConnection(BuildContext context) async {
+    // try connect to the IPGScan
+    // if it is not possible create an alert dialog
     try {
       socket = await Socket.connect(state.serverAddress, state.serverPort);
       await listenServer();
