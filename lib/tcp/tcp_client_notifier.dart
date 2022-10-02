@@ -43,7 +43,7 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
     // add a current sent item to the copy list
     // update "dataSentList"
     var sentListCopy = [...state.dataSentList];
-    sentListCopy.add('#sent: ${dateformat.format(DateTime.now())} ${state.dataSent}');
+    sentListCopy.add('#sent: ${dateformat.format(state.dataSentTimestamp as DateTime)} ${state.dataSent}');
     state = state.copyWith(dataSentList: sentListCopy);
 
     // create a copy of "dataReceivedSentList"
