@@ -88,39 +88,7 @@ class TCPClientNotifier extends StateNotifier<TCPClient> {
         },
       );
 
-    state.copyWith(tcpSubscription: tcpSubs);
-
-    // tcpClient.tcpSubscription = socket?.listen((event) {});
-
-    // tcpClient.tcpSubscription?.onData(
-    //   (Uint8List data) async {
-    //     final _dateformat = DateFormat.Hms();
-    //     print('ooo');
-    //     state = state.copyWith(
-    //       dataReceivedTimestamp: DateTime.now(),
-    //       dataReceived: String.fromCharCodes(data),
-    //       isDataReceived: true,
-    //     );
-    //     String.fromCharCodes(data).split('\n').toList().forEach(
-    //       (element) {
-    //         if (element.isNotEmpty) {
-    //           state.dataReceivedList.add(
-    //             '#received: ${_dateformat.format(state.dataReceivedTimestamp as DateTime)} $element',
-    //           );
-    //           state.dataReceivedSentList.add(state.dataReceivedList.last);
-    //         }
-    //       },
-    //     );
-    //   },
-    // );
-
-    // state.tcpSubscription?.onDone(
-    //   () {
-    //     changeConnectionState();
-    //     streamDone();
-    //   },
-    // );
-
+    state = state.copyWith(tcpSubscription: tcpSubs);
     changeConnectionState();
   }
 
